@@ -1,3 +1,25 @@
 <app-header></app-header>
 
-<p>registration works!</p>
+<h4 class= "heading">Register a patient</h4>
+<form id= "registerPatientForm" [formGroup]= "registerPatientForm" (submit)= "registerPatient()">
+  <div>
+    <label for= "first-name">First Name:</label>
+    <input id= "first-name" type= "text" formControlName= "firstName">
+  </div>
+
+  <label for= "middle-name">Middle Name:</label>
+  <input id= "middle-name" type= "text" formControlName= "middleName">
+
+  <label for= "last-name">Last Name:</label>
+  <input id= "last-name" type= "text" formControlName= "lastName">
+
+  <label for= "sex">Sex:</label>
+  <select id= "sex" type= "text" formControlName= "sex">
+    <option value= "female">Female</option>
+    <option value= "male">Male</option>
+  </select>
+  <label for= "date-of-birth">Date of Birth:</label>
+  <input id= "date-of-birth" type= "date" formControlName= "dateOfBirth">
+
+  <button type= "submit" class= "primary">Register patient</button>
+</form>
