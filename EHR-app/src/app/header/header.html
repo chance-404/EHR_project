@@ -1,0 +1,35 @@
+<nav class= "navbar navbar-expand-lg navbar-dark bg-dark">
+    <a routerLink= "/dashboard" routerLinkActive="activebutton" ariaCurrentWhenActive="page"
+      class= "navbar-brand" style= "color:#fff; text-decoration: none; padding: 8px 12px; border-radius: 4px;" 
+      onmouseover= "this.style.backgroundColor= 'rgba(255,255,255,0.1)'" 
+      onmouseout= "this.style.backgroundColor= 'transparent'">Dashboard</a>
+    <ul class= "nav utility bar">
+      <li style= "padding: 0 15px;">
+        <a routerLink= "/flow-board" routerLinkActive="activebutton" ariaCurrentWhenActive="page"
+          style= "color: #fff; text-decoration: none; padding: 8px 12px; border-radius: 4px;" 
+          onmouseover= "this.style.backgroundColor= 'rgba(255,255,255,0.1)'" 
+          onmouseout= "this.style.backgroundColor= 'transparent'">Flow Board</a>
+      </li>
+        <li style= "padding: 0 15px;">
+          <a routerLink= "/registration" routerLinkActive="activebutton" ariaCurrentWhenActive="page" 
+            style= "color: #fff; text-decoration: none; padding: 8px 12px; border-radius: 4px;"
+            onmouseover= "this.style.backgroundColor= 'rgba(255,255,255,0.1)'" 
+            onmouseout= "this.style.backgroundColor= 'transparent'">Registration</a>
+        </li>
+        <li style= "padding: 0 15px;">
+          <a routerLink= "/orders" routerLinkActive="activebutton" ariaCurrentWhenActive="page" 
+            style="color: #fff; text-decoration: none; padding: 8px 12px; border-radius: 4px;"
+            onmouseover= "this.style.backgroundColor= 'rgba(255,255,255,0.1)'" 
+            onmouseout= "this.style.backgroundColor= 'transparent'">Orders</a>
+        </li>
+    </ul>
+    <!-- <form class= "form-inline" style= "margin-left: auto; display: flex; align-items: center;">
+      <input type= "search" (ngModelChange)= "searchPatients(key.value)" #key= "ngModel" ngModel name= "key" id= "search-patient" 
+        placeholder="Search for patient" 
+        style= "padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px 4px 4px 4px; border-right: none; outline: none;">
+      <button type= "submit" style= "padding: 6px 12px; background-color: #007bff; color: white; border: 1px solid #007bff; 
+        border-radius: 0 4px 4px 0; cursor: pointer; outline: none;"
+        onmouseover= "this.style.backgroundColor='#0056b3'" 
+        onmouseout= "this.style.backgroundColor='#007bff'">Search</button>
+    </form> -->
+</nav>

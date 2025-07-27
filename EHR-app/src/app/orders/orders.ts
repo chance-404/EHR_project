@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { Header } from "../header/header";
 
 @Component({
-  selector: 'app-landing',
+  selector: 'app-orders',
   imports: [Header],
-  templateUrl: './landing.html',
-  styleUrl: './landing.css'
+  templateUrl: './orders.html',
+  styleUrl: './orders.css'
 })
-export class Landing {
+export class Orders {
 
 }

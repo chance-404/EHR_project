@@ -2,6 +2,15 @@
 @import 'https://maxcdn.booutstrapcdn. com/font-awesome/4.3.0/css/font-awesome.min.css';
 
 
-body{margin-top: 0px;
-background-color: #f7f7fc;
+body {
+  margin-top: 0px;
+  background-color: #f7f7fc;
+}
+
+.activebutton {
+  box-shadow: inset 0 0px 0 0 #bcc9d4;
+  background: #95a0aa linear-gradient(to bottom, #697888 5%, #606d7a 100%);
+  /* border: : */
+  color: #ffffff;
+  text-shadow: 0 0px 0 #528ecc;
 }
