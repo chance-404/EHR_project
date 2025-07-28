@@ -37,14 +37,13 @@ export class Registration {
       dateOfBirth,
       this.registerPatientForm.value.sex ?? ''
     ).subscribe({
+      // Need to add user feedback messages / error handling
       next: (response) => {
         console.log('Patient registered successfully:', response);
         this.registerPatientForm.reset();
-        // Add success message or redirect logic here
       },
       error: (error) => {
         console.error('Error registering patient:', error);
-        // Add error handling logic here
       }
     });
 

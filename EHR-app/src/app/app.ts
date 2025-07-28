@@ -13,4 +13,6 @@ import { RouterOutlet, RouterModule } from '@angular/router';
 })
 export class App {
   protected readonly title = signal('EHR-app');
+
+  
 }

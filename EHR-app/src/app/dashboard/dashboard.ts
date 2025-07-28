@@ -78,7 +78,7 @@ export class Dashboard implements OnInit {
     this.patients = this.allPatients.filter(patient => 
       patient.lastName.toLowerCase().includes(searchKey) ||
       patient.firstName.toLowerCase().includes(searchKey) ||
-      (patient.middleName && patient.middleName.toLowerCase().includes(searchKey)) ||
+      patient.middleName.toLowerCase().includes(searchKey) ||
       patient.mrn.toString().includes(searchKey) ||
       patient.dateOfBirth.toString().includes(searchKey)
     );

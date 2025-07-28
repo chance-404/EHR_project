@@ -1,12 +1,34 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Header } from "../header/header";
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-landing',
-  imports: [Header],
+  imports: [Header, ReactiveFormsModule],
   templateUrl: './landing.html',
   styleUrl: './landing.css'
 })
 export class Landing {
+
+  loginForm: FormGroup = new FormGroup({
+    username: new FormControl(''),
+    password: new FormControl('')
+  });
+
+
+  doLogin() {
+
+    const formValue = this.loginForm.value;
+
+    if (!formValue.username || formValue.username.trim() === '' || 
+      !formValue.password || formValue.password.trim() === '') {
+      alert('Enter a user name and password');
+      return;
+      }
+    
+  }
+
 
 }

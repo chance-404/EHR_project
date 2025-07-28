@@ -1,3 +1,21 @@
 <app-header></app-header>
 
-<p>landing / login page</p>
+<!-- Need to add user feedback messages / error handling -->
+
+<form id= "loginForm" [formGroup]= "loginForm" (ngSubmit)= "doLogin()">
+  <h4>Login:</h4>
+  <label for= "username" placeholder= "enter user name">Username:</label>
+  <input id= "username" type= "text" formControlName= "username">
+
+  <br>
+  <br>
+
+  <label for= "password" aria-placeholder= "enter password">Password:</label>
+  <input id= "password" type= "password" formControlName= "password">
+
+  <br>
+  <br>
+
+  <button type= "submit" id= "login-button">Login</button>
+</form>
+
