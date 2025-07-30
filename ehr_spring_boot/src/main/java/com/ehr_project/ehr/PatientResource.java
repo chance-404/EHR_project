@@ -17,7 +17,7 @@ import com.ehr_project.ehr.model.Patient;
 import com.ehr_project.ehr.service.PatientService;
 
 @RestController
-@RequestMapping("/patient")
+@RequestMapping("/user")
 public class PatientResource {
     private final PatientService patientService;
 
