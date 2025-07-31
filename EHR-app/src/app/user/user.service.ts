@@ -13,26 +13,26 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   public getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.apiServerUrl}/User/all`);
+    return this.http.get<User[]>(`${this.apiServerUrl}/user/all`);
   }
 
   public addUser(user: User): Observable<User> {
-    return this.http.post<User>(`${this.apiServerUrl}/User/add`, user);
+    return this.http.post<User>(`${this.apiServerUrl}/user/add`, user);
   }
 
   public updateUser(user: User): Observable<User> {
-    return this.http.put<User>(`${this.apiServerUrl}/User/update`, user);
+    return this.http.put<User>(`${this.apiServerUrl}/user/update`, user);
   }
 
   public deleteUser(userId: String): Observable<void> {
-    return this.http.delete<void>(`${this.apiServerUrl}/User/delete/${userId}`);
+    return this.http.delete<void>(`${this.apiServerUrl}/user/delete/${userId}`);
   }
 
   public addNewUser(firstName: string, lastName: string) {
     const User: User = {
       lastName: lastName,
       firstName: firstName,
-      password: 'defaultPassword', // Default password, can be changed later
+      password: 'password', // Default password, can be changed later
       userId: this.makeRandomUserId(),
     };
 
@@ -48,8 +48,15 @@ export class UserService {
     );
   }
 
-  private makeRandomUserId(): String {
-    return String(Math.floor(Math.random() * 1000000));
+  private makeRandomUserId(): string {
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const randomLetters = Array.from({length: 3}, () => 
+    letters.charAt(Math.floor(Math.random() * letters.length))
+    ).join('');
+  
+    const randomDigits = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+  
+    return randomLetters + randomDigits;
   }
 
 

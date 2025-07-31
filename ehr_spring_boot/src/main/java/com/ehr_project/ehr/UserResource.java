@@ -1,4 +1,4 @@
-  package com.ehr_project.ehr;
+package com.ehr_project.ehr;
 
 import java.util.List;
 
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ehr_project.ehr.model.User;
 import com.ehr_project.ehr.service.UserService;
+
 
 @RestController
 @RequestMapping("/user")

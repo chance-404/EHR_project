@@ -20,7 +20,7 @@ public class User implements Serializable {
     @Column(nullable = false)
     private String firstName;
 
-    @Column
+    @Column(nullable = false)
     private String password;
 
     public void setUserId(String userId) {
