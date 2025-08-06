@@ -11,32 +11,32 @@ import com.ehr_project.ehr.repo.UserRepo;
 
 @Service
 public class UserService {
-    private final UserRepo userRepo;
+    private final UserRepo UserRepo;
 
     @Autowired
-    public UserService(UserRepo userRepo) {
-        this.userRepo = userRepo;
+    public UserService(UserRepo UserRepo) {
+        this.UserRepo = UserRepo;
     }
 
-    public User addUser(User user){
-        return userRepo.save(user);
+    public User addUser(User User){
+        return UserRepo.save(User);
     }
 
     public List<User> findAllUsers() {
-        return userRepo.findAll();
+        return UserRepo.findAll();
     }
 
-    public User updateUser(User user) {
-        return userRepo.save(user);
+    public User updateUser(User User) {
+        return UserRepo.save(User);
     }
 
-    public User findUserByuserId(String userId) {
-        return userRepo.findUserByuserId(userId)
-                .orElseThrow(() -> new UserNotFoundException("User by ID " + userId + " was not found."));
+    public User findUserByUserId(String userId) {
+        return UserRepo.findUserByUserId(userId)
+                .orElseThrow(() -> new UserNotFoundException("User by User ID " + userId + " was not found."));
     }
 
     public void deleteUser(String userId) {
-        userRepo.deleteUserByuserId(userId);
+        UserRepo.deleteUserByUserId(userId);
     }
 
     

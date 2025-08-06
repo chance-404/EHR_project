@@ -1,61 +1,51 @@
-import { Component, Output, EventEmitter, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Header } from "../header/header";
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserService } from '../user/user.service';
-import { User } from '../user/user';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { catchError, of } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'app-landing',
-  imports: [Header, ReactiveFormsModule],
+  imports: [Header, ReactiveFormsModule, CommonModule],
   templateUrl: './landing.html',
   styleUrl: './landing.css'
 })
 export class Landing {
 
+  private http = inject(HttpClient);
   private router = inject(Router);
-  private userService = inject(UserService);
 
   loginForm: FormGroup = new FormGroup({
-    userId: new FormControl(''),
-    password: new FormControl('')
+    username: new FormControl('', [Validators.required, Validators.minLength(6)]),
+    password: new FormControl('', [Validators.required, Validators.minLength(8)]) 
   });
 
+  isLoading = false;
+  errorMessage = '';
 
-  doLogin() {
+  // doLogin() {
 
-    const formValue = this.loginForm.value;
+  //   const formValue = this.loginForm.value;
 
-    // Makes sure input isn't blank
-    if (!formValue.userId || formValue.userId.trim() === '' || 
-      !formValue.password || formValue.password.trim() === '') {
-      alert('Enter a user name and password');
-      return;
-      }
+  //   this.isLoading = true;
+  //   this.errorMessage = '';  
     
-    // Calls backend
-    this.authenticateUser(formValue.userId, formValue.password);
-  }
+  //   this.http.post<any>('http://localhost:8080/users', {
+  //     userId: formValue.username,
+  //     password: formValue.password
+  //   }
 
-  private authenticateUser(userId: string, password: string) {
-
-    let isAuthenticated: boolean = false;
-
-    this.userService.getUsers().subscribe({ 
-      next: (users: User[]) => {
-        const user = users.find(u => u.userId === userId);
-
-        if (user && user.password === password) {
-          console.log('Login successful');
-          isAuthenticated = true;
-          this.router.navigate(['/dashboard']);
-        } else {
-          alert('Invalid user ID or password');
-        }
-      }
-    })
-  }
+      
+  //     if (response) {
+  //       // Login successful
+  //       console.log('Login successful:', response);
+  //       this.router.navigate(['/dashboard']);
+  //     }
+  //   }); 
+  // }
 
 
 }

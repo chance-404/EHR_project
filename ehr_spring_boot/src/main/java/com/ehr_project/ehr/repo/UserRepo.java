@@ -8,7 +8,7 @@ import com.ehr_project.ehr.model.User;
 
 public interface UserRepo extends JpaRepository<User, String> {
 
-    Optional<User> findUserByuserId(String userId);
+    Optional<User> findUserByUserId(String userId);
 
-    public void deleteUserByuserId(String userId);
+    public void deleteUserByUserId(String userId);
 }
