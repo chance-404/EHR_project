@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,11 +18,12 @@ import com.ehr_project.ehr.model.Patient;
 import com.ehr_project.ehr.service.PatientService;
 
 @RestController
-@RequestMapping("/user")
-public class PatientResource {
+@RequestMapping("/patients")
+@CrossOrigin(origins = "http://localhost:4200")
+public class PatientController {
     private final PatientService patientService;
 
-    public PatientResource(PatientService patientService) {
+    public PatientController(PatientService patientService) {
         this.patientService = patientService;
     }
 

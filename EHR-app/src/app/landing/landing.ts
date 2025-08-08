@@ -26,26 +26,17 @@ export class Landing {
   isLoading = false;
   errorMessage = '';
 
-  // doLogin() {
+  doLogin() {
 
-  //   const formValue = this.loginForm.value;
+    const formValue = this.loginForm.value;
 
-  //   this.isLoading = true;
-  //   this.errorMessage = '';  
+    this.isLoading = true;
+    this.errorMessage = '';  
     
-  //   this.http.post<any>('http://localhost:8080/users', {
-  //     userId: formValue.username,
-  //     password: formValue.password
-  //   }
+  
 
       
-  //     if (response) {
-  //       // Login successful
-  //       console.log('Login successful:', response);
-  //       this.router.navigate(['/dashboard']);
-  //     }
-  //   }); 
-  // }
+  }
 
 
 }
