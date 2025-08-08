@@ -1,16 +1,36 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { User } from './user';
+
+
+export interface LoginRequest{
+  userId: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  userId: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
+
   private apiServerUrl = 'http://localhost:8080';
 
-
   constructor(private http: HttpClient) { }
+
+  public login(loginRequest: LoginRequest): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.apiServerUrl}/users/login`, loginRequest)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.error('Login error:', error);
+          return throwError(() => error);
+        })
+      );
+  }
 
   public getUsers(): Observable<User[]> {
     return this.http.get<User[]>(`${this.apiServerUrl}/users/all`);
@@ -49,6 +69,7 @@ export class UserService {
   }
 
   private makeRandomUserId(): string {
+    let userId = '';
     const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const randomLetters = Array.from({length: 3}, () => 
     letters.charAt(Math.floor(Math.random() * letters.length))
@@ -56,9 +77,8 @@ export class UserService {
   
     const randomDigits = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
   
-    return randomLetters + randomDigits;
+    userId = randomLetters + randomDigits;
+    return userId;
   }
-
-
 
 }

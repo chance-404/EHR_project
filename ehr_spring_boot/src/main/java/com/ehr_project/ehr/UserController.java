@@ -28,6 +28,18 @@ public class UserController {
     this.userService = userService;
   }
 
+  @GetMapping("/all")
+    public ResponseEntity<List<User>> getAllUsers() {
+      List<User> users = userService.findAllUsers();
+      return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+  @GetMapping("/{userId}")
+  public ResponseEntity<User> getUserByUserId(@PathVariable("userId") String userId) {
+    User user = userService.findUserByUserId(userId);
+    return new ResponseEntity<>(user, HttpStatus.OK);
+  }
+
   @PostMapping("/login")
   public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
     try {
@@ -37,102 +49,69 @@ public class UserController {
       if (user.getPassword().equals(loginRequest.getPassword())) {
         // Remove password from response for security
         LoginResponse response = new LoginResponse(
-            user.getUserId(),
-            user.getFirstName(),
-            user.getLastName()
+            user.getUserId()
         );
         return ResponseEntity.ok(response);
-      } else {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-          .body(Map.of("error", "Invalid credentials"));
-      }
+    } else {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+        .body(Map.of("error", "Invalid credentials"));
+    }
             
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(Map.of("error", "User not found"));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("error", "Login failed"));
-        }
+    } catch (UserNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(Map.of("error", "User not found"));
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(Map.of("error", "Login failed"));
     }
-
-    @GetMapping("/all")
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.findAllUsers();
-        return new ResponseEntity<>(users, HttpStatus.OK);
-    }
-
-    @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserByUserId(@PathVariable("userId") String userId) {
-        User user = userService.findUserByUserId(userId);
-        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
   // Inner classes for request/response
     public static class LoginRequest {
-        private String userId;
-        private String password;
+      private String userId;
+      private String password;
 
-        // Constructors
-        public LoginRequest() {}
+      // Constructors
+      public LoginRequest() {}
 
-        public LoginRequest(String userId, String password) {
-            this.userId = userId;
-            this.password = password;
-        }
+      public LoginRequest(String userId, String password) {
+        this.userId = userId;
+        this.password = password;
+      }
 
-        public String getUserId() {
-            return userId;
-        }
+      public String getUserId() {
+        return userId;
+      }
 
-        public void setUserId(String userId) {
-            this.userId = userId;
-        }
+      public void setUserId(String userId) {
+        this.userId = userId;
+      }
 
-        public String getPassword() {
-            return password;
-        }
+      public String getPassword() {
+        return password;
+      }
 
-        public void setPassword(String password) {
-            this.password = password;
-        }
+      public void setPassword(String password) {
+        this.password = password;
+      }
+  }
+
+  public static class LoginResponse {
+    private String userId;
+
+    public LoginResponse(String userId) {
+      this.userId = userId;
     }
 
-    public static class LoginResponse {
-        private String userId;
-        private String firstName;
-        private String lastName;
+      // Getters and setters
+      public String getUserId() {
+        return userId;
+      }
 
-        public LoginResponse(String userId, String firstName, String lastName) {
-            this.userId = userId;
-            this.firstName = firstName;
-            this.lastName = lastName;
-        }
+      public void setUserId(String userId) {
+        this.userId = userId;
+      }
 
-        // Getters and setters
-        public String getUserId() {
-            return userId;
-        }
-
-        public void setUserId(String userId) {
-            this.userId = userId;
-        }
-
-        public String getFirstName() {
-            return firstName;
-        }
-
-        public void setFirstName(String firstName) {
-            this.firstName = firstName;
-        }
-
-        public String getLastName() {
-            return lastName;
-        }
-
-        public void setLastName(String lastName) {
-            this.lastName = lastName;
-        }
     }    
 
 }

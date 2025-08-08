@@ -3,7 +3,7 @@ import { Dashboard } from './dashboard/dashboard';
 import { Registration } from './registration/registration';
 import { Orders } from './orders/orders';
 import { FlowBoard } from './flow-board/flow-board';
-import { Landing } from './landing/landing';
+import { Login } from './login/login';
 
 export const routes: Routes = [
     {path: 'dashboard', component: Dashboard},
@@ -14,7 +14,7 @@ export const routes: Routes = [
 
     {path: 'flow-board', component: FlowBoard},
 
-    {path: 'landing', component: Landing},
+    {path: 'login', component: Login},
 
-    {path: '', redirectTo: '/landing', pathMatch: 'full'}
+    {path: '', redirectTo: '/login', pathMatch: 'full'}
 ];
