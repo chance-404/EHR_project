@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Patient } from '../patient/patient';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PatientService } from '../patient/patient.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 
 @Component({
@@ -17,6 +17,7 @@ import { RouterModule } from '@angular/router';
 export class Dashboard implements OnInit {
   public patients!: Patient[];
   private allPatients!: Patient[];
+  private router = inject(Router);
 
   currentSort = {
     column: '' as keyof Patient,
@@ -82,6 +83,13 @@ export class Dashboard implements OnInit {
       patient.mrn.toString().includes(searchKey) ||
       patient.dateOfBirth.toString().includes(searchKey)
     );
+  }
+
+  public logout() {
+    // Clear all stored session data
+    localStorage.clear();
+    sessionStorage.clear();
+    this.router.navigate(['/login']);
   }
 
 }

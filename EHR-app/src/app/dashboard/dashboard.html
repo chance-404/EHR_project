@@ -23,6 +23,12 @@
             onmouseout= "this.style.backgroundColor= 'transparent'">Orders</a>
         </li>
     </ul>
+
+    <button (click)="logout()" id="logout-button"
+      onmouseover="this.style.backgroundColor='#0056b3'" 
+      onmouseout="this.style.backgroundColor='#007bff'">Logout
+    </button>
+
     <form class= "form-inline" style= "margin-left: auto; display: flex; align-items: center;">
       <input type= "search" (ngModelChange)= "searchPatients(key.value)" #key= "ngModel" ngModel name= "key" id= "search-patient" 
         placeholder="Search for patient" 
