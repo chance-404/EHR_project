@@ -28,12 +28,6 @@ export class Login {
   });
 
   checkLogin() {
-    // debugging info
-    // console.log('Form valid:', this.loginForm.valid);
-    // console.log('Form value:', this.loginForm.value);
-    // console.log('Form errors:', this.loginForm.errors);
-    // console.log('UserId control:', this.loginForm.get('userId'));
-    // console.log('Password control:', this.loginForm.get('password'));
 
     if (this.loginForm.valid) {
       this.isLoading = true;
@@ -58,7 +52,7 @@ export class Login {
           this.isLoading = false;
           
           if (error.status === 401) {
-            this.errorMessage = 'Invalid credentials. Please try again.';
+            this.errorMessage = 'Invalid credentials.';
           } else if (error.status === 404) {
             this.errorMessage = 'User ID invalid.';
           } else if (error.status === 500) {

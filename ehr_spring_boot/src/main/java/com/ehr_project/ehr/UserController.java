@@ -40,14 +40,13 @@ public class UserController {
     return new ResponseEntity<>(user, HttpStatus.OK);
   }
 
+  // Calls public methods in Userservice.java to check userID and password in UserRepo
   @PostMapping("/login")
   public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
     try {
       User user = userService.findUserByUserId(loginRequest.getUserId());
             
-            
-      if (user.getPassword().equals(loginRequest.getPassword())) {
-        // Remove password from response for security
+      if (userService.verifyPassword(loginRequest.getPassword(), user.getPassword())) {
         LoginResponse response = new LoginResponse(
             user.getUserId()
         );
@@ -64,14 +63,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(Map.of("error", "Login failed"));
     }
-    }
+  }
 
   // Inner classes for request/response
     public static class LoginRequest {
       private String userId;
       private String password;
 
-      // Constructors
       public LoginRequest() {}
 
       public LoginRequest(String userId, String password) {
@@ -103,7 +101,6 @@ public class UserController {
       this.userId = userId;
     }
 
-      // Getters and setters
       public String getUserId() {
         return userId;
       }
@@ -112,6 +109,7 @@ public class UserController {
         this.userId = userId;
       }
 
-    }    
+    } 
+
 
 }

@@ -22,6 +22,7 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
+  // Sends LoginRequest to @PostMapping("/login") in UserController.java, returns LoginResponse
   public login(loginRequest: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiServerUrl}/users/login`, loginRequest)
       .pipe(
@@ -52,7 +53,7 @@ export class UserService {
     const User: User = {
       lastName: lastName,
       firstName: firstName,
-      password: 'password', // Default password, can be changed later
+      password: 'password', 
       userId: this.makeRandomUserId(),
     };
 
