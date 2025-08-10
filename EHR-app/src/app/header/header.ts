@@ -1,7 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { Router } from 'express';
+import { AuthenticationService } from '../authentication/authentication.service';
 
 
 @Component({
@@ -10,15 +10,10 @@ import { Router } from 'express';
   templateUrl: './header.html',
   styleUrl: './header.css'
 })
-export class Header {
+export class Header implements OnInit {
   
-  // private router = inject(Router)
- 
-  // public logout() {
-  //   // Clear all stored session data
-  //   localStorage.clear();
-  //   sessionStorage.clear();
-  //   this.router.navigate(['/login']);
-  // }
+  constructor(private authenticationService: AuthenticationService) {}
+
+  ngOnInit() {}
   
 }

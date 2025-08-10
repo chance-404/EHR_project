@@ -1,20 +1,45 @@
-import { Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { Dashboard } from './dashboard/dashboard';
 import { Registration } from './registration/registration';
 import { Orders } from './orders/orders';
 import { FlowBoard } from './flow-board/flow-board';
 import { Login } from './login/login';
+import { Logout } from './logout/logout';
+import { AuthGuard } from './service/auth-guard';
+import { NgModule } from '@angular/core';
+
 
 export const routes: Routes = [
-    {path: 'dashboard', component: Dashboard},
+    {path: 'dashboard', component: Dashboard,
+      canActivate: [AuthGuard]
+    },
 
-    {path: 'registration', component: Registration},
+    {path: 'registration', component: Registration,
+      canActivate: [AuthGuard]
+    },
 
-    {path: 'orders', component: Orders},
+    {path: 'orders', component: Orders,
+      canActivate: [AuthGuard]
+    },
 
-    {path: 'flow-board', component: FlowBoard},
+    {path: 'flow-board', component: FlowBoard,
+      canActivate: [AuthGuard]
+    },
 
-    {path: 'login', component: Login},
+    {path: 'login', component: Login,
+      canActivate: []
+    },
 
-    {path: '', redirectTo: '/login', pathMatch: 'full'}
+    {path: 'logout', component: Logout},
+
+    {path: '', redirectTo: 'login', pathMatch: 'full'},
+
+    {path: '**', redirectTo: 'login'}
 ];
+
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
