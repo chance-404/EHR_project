@@ -1,3 +1,126 @@
 <app-header></app-header>
 
-<p>flow-board works!</p>
+<div class="grid-container">
+  <div class="room-card">
+    <h2>Room 1</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Start Time</th>
+          <th>Length</th>
+          <th>People</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let case of room1.case">
+          <td>{{ case.startTime }}</td>
+          <td>{{ case.length }}</td>
+          <td>{{ case.people }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="add-case-btn" (click)="addCase(1)">Add case</button>
+  </div>
+  <div class="room-card">
+    <h2>Room 2</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Start Time</th>
+          <th>Length</th>
+          <th>People</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let case of room2.case">
+          <td>{{ case.startTime }}</td>
+          <td>{{ case.length }}</td>
+          <td>{{ case.people }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="add-case-btn" (click)="addCase(2)">Add case</button>
+  </div>
+  <div class="room-card">
+    <h2>Room 3</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Start Time</th>
+          <th>Length</th>
+          <th>People</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let case of room3.case">
+          <td>{{ case.startTime }}</td>
+          <td>{{ case.length }}</td>
+          <td>{{ case.people }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="add-case-btn" (click)="addCase(3)">Add case</button>
+  </div>
+  <div class="room-card">
+    <h2>Room 4</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Start Time</th>
+          <th>Length</th>
+          <th>People</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let case of room4.case">
+          <td>{{ case.startTime }}</td>
+          <td>{{ case.length }}</td>
+          <td>{{ case.people }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="add-case-btn" (click)="addCase(4)">Add case</button>
+  </div>
+  <div class="room-card">
+    <h2>Room 5</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Start Time</th>
+          <th>Length</th>
+          <th>People</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let case of room5.case">
+          <td>{{ case.startTime }}</td>
+          <td>{{ case.length }}</td>
+          <td>{{ case.people }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="add-case-btn" (click)="addCase(5)">Add case</button>
+  </div>
+  <div class="room-card">
+    <h2>Room 6</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Start Time</th>
+          <th>Length</th>
+          <th>People</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let case of room6.case">
+          <td>{{ case.startTime }}</td>
+          <td>{{ case.length }}</td>
+          <td>{{ case.people }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="add-case-btn" (click)="addCase(6)">Add case</button>
+  </div>
+</div>
+
+
