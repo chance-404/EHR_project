@@ -1,27 +1,29 @@
-import { Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { Dashboard } from './dashboard/dashboard';
 import { Registration } from './registration/registration';
 import { Orders } from './orders/orders';
 import { FlowBoard } from './flow-board/flow-board';
 import { Login } from './login/login';
 import { Logout } from './logout/logout';
+import { AuthGuard } from './service/auth-guard';
+import { NgModule } from '@angular/core';
 
 
 export const routes: Routes = [
     {path: 'dashboard', component: Dashboard,
-      canActivate: []
+      canActivate: [AuthGuard]
     },
 
     {path: 'registration', component: Registration,
-      canActivate: []
+      canActivate: [AuthGuard]
     },
 
     {path: 'orders', component: Orders,
-      canActivate: []
+      canActivate: [AuthGuard]
     },
 
     {path: 'flow-board', component: FlowBoard,
-      canActivate: []
+      canActivate: [AuthGuard]
     },
 
     {path: 'login', component: Login,
@@ -34,3 +36,10 @@ export const routes: Routes = [
 
     {path: '**', redirectTo: 'login'}
 ];
+
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
