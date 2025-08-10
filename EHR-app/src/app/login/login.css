@@ -21,7 +21,7 @@ form select {
   margin: 7px;
   padding: 6px 12px; 
   background-color: #082d53; 
-  color: #e8e7f1; 
+  color: rgb(208, 210, 223); 
   border: 0px solid #b3cae4; 
   border-radius: 4px 4px 4px 4px; 
   cursor: pointer; 

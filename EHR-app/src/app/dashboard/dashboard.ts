@@ -5,6 +5,7 @@ import { PatientService } from '../patient/patient.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { AuthenticationService } from '../authentication/authentication.service';
 
 
 @Component({
@@ -15,6 +16,9 @@ import { Router, RouterModule } from '@angular/router';
 })
 
 export class Dashboard implements OnInit {
+
+  constructor(private patientService: PatientService, public authenticationService: AuthenticationService) {}
+
   public patients!: Patient[];
   private allPatients!: Patient[];
   private router = inject(Router);
@@ -23,8 +27,6 @@ export class Dashboard implements OnInit {
     column: '' as keyof Patient,
     direction: 'asc' as 'asc' | 'desc'
   };
-
-  constructor(private patientService: PatientService){}
 
   ngOnInit() {
     this.getPatients();  
@@ -70,7 +72,7 @@ export class Dashboard implements OnInit {
   }
 
   public searchPatients(key: string): void {
-    if (!key || key.trim() === '') {
+    if (!key || key.trim() === '') { // Keeps all pts in list if seach box is empty
       this.patients = [...this.allPatients];
       return;
     }
@@ -79,17 +81,11 @@ export class Dashboard implements OnInit {
     this.patients = this.allPatients.filter(patient => 
       patient.lastName.toLowerCase().includes(searchKey) ||
       patient.firstName.toLowerCase().includes(searchKey) ||
-      patient.middleName.toLowerCase().includes(searchKey) ||
+      patient.middleName.toLowerCase().includes(searchKey) || // Need to keep middleName as search parameter?
       patient.mrn.toString().includes(searchKey) ||
       patient.dateOfBirth.toString().includes(searchKey)
     );
   }
 
-  public logout() {
-    // Clear all stored session data
-    localStorage.clear();
-    sessionStorage.clear();
-    this.router.navigate(['/login']);
-  }
 
 }

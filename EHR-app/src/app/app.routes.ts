@@ -4,17 +4,33 @@ import { Registration } from './registration/registration';
 import { Orders } from './orders/orders';
 import { FlowBoard } from './flow-board/flow-board';
 import { Login } from './login/login';
+import { Logout } from './logout/logout';
+
 
 export const routes: Routes = [
-    {path: 'dashboard', component: Dashboard},
+    {path: 'dashboard', component: Dashboard,
+      canActivate: []
+    },
 
-    {path: 'registration', component: Registration},
+    {path: 'registration', component: Registration,
+      canActivate: []
+    },
 
-    {path: 'orders', component: Orders},
+    {path: 'orders', component: Orders,
+      canActivate: []
+    },
 
-    {path: 'flow-board', component: FlowBoard},
+    {path: 'flow-board', component: FlowBoard,
+      canActivate: []
+    },
 
-    {path: 'login', component: Login},
+    {path: 'login', component: Login,
+      canActivate: []
+    },
 
-    {path: '', redirectTo: '/login', pathMatch: 'full'}
+    {path: 'logout', component: Logout},
+
+    {path: '', redirectTo: 'login', pathMatch: 'full'},
+
+    {path: '**', redirectTo: 'login'}
 ];

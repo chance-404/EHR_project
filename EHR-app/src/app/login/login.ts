@@ -1,11 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Header } from "../header/header";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { LoginRequest, UserService } from '../user/user.service';
+import { AuthenticationService } from '../authentication/authentication.service';
 
 
 @Component({
@@ -14,60 +12,48 @@ import { LoginRequest, UserService } from '../user/user.service';
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
-export class Login {
+export class Login implements OnInit {
 
-  private userService = inject(UserService);
   private router = inject(Router);
-
-  errorMessage: string = '';
-  isLoading: boolean = false;
+  private authenticationService = inject(AuthenticationService);
 
   loginForm: FormGroup = new FormGroup({
     userId: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]) 
   });
 
+  invalidLogin: boolean = false;
+  errorMessage: string = '';
+
+  constructor() {}
+  
+  ngOnInit() {}
+  
   checkLogin() {
 
     if (this.loginForm.valid) {
-      this.isLoading = true;
-      this.errorMessage = '';
-
-      const loginRequest: LoginRequest = {
-        userId: this.loginForm.value.userId,
-        password: this.loginForm.value.password
-      };
-
-      // debugging
-      // console.log('Attempting login with:', loginRequest);
-
-      this.userService.login(loginRequest).subscribe({
-        next: (response) => {
-          console.log('Login successful:', response);
-          this.isLoading = false;
-
-          this.router.navigate(['/dashboard']);
-        },
-        error: (error: HttpErrorResponse) => {
-          this.isLoading = false;
-          
-          if (error.status === 401) {
-            this.errorMessage = 'Invalid credentials.';
-          } else if (error.status === 404) {
-            this.errorMessage = 'User ID invalid.';
-          } else if (error.status === 500) {
-            this.errorMessage = 'Server error. Please try again later.';
+      const userId = this.loginForm.value.userId;
+      const password = this.loginForm.value.password;
+    
+      this.authenticationService.authenticate(userId, password).subscribe({
+        next: (success) => {
+          if (success) {
+            this.router.navigate(['/dashboard']);
+            this.invalidLogin = false;
           } else {
-            this.errorMessage = 'Login failed. Please try again.';
+            this.invalidLogin = true;
+            this.errorMessage = 'Invalid credentials';
           }
-          
-          console.error('Login failed:', error);
+        },
+        error: (error) => {
+          this.invalidLogin = true;
+          this.errorMessage = "Login failed";
+          console.log(error);
         }
       });
     } else {
-      this.errorMessage = 'Enter user ID and password.';
+      this.errorMessage = 'Enter user ID and password';
+      this.invalidLogin = true;
     }
-  }
-
-
+  }        
 }
