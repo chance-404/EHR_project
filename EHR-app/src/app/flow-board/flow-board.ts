@@ -1,15 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, inject, NgModule } from '@angular/core';
 import { Header } from "../header/header";
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Dialog } from '@angular/cdk/dialog';
+import { AddCaseComponent } from '../modals/add-case-form';
 
-interface Case {
+export interface Case {
   startTime: string;
-  length: string;
-  people: string;
+  endTime: string;
+  surgeon: string;
+  circulator: string;
+  scrub: string;
+  patient: string;
 }
 
-interface Room {
+export interface Room {
   id: number;
   name: string;
   case: Case[];
@@ -21,7 +26,13 @@ interface Room {
   templateUrl: './flow-board.html',
   styleUrl: './flow-board.css'
 })
+
 export class FlowBoard {
+  private dialog = inject(Dialog);
+  protected openModal() {
+    this.dialog.open(AddCaseComponent);
+  }
+  
   room1: Room;
   room2: Room;
   room3: Room;
@@ -37,48 +48,42 @@ export class FlowBoard {
       case:[]
     };
     this.room2 = {
-      id: 1,
-      name: 'Room 1',
+      id: 2,
+      name: 'Room 2',
       case:[]
     };
     this.room3 = {
-      id: 1,
-      name: 'Room 1',
+      id: 3,
+      name: 'Room 3',
       case:[]
     };
     this.room4 = {
-      id: 1,
-      name: 'Room 1',
+      id: 4,
+      name: 'Room 4',
       case:[]
     };
     this.room5 = {
-      id: 1,
-      name: 'Room 1',
+      id: 5,
+      name: 'Room 5',
       case:[]
     };
     this.room6 = {
-      id: 1,
-      name: 'Room 1',
+      id: 6,
+      name: 'Room 6',
       case:[]
     };
   }
 
-  addCase(roomId: number) {
-    const startTime = prompt("Enter start time (e.g., 09:00):");
-    if (!startTime) return;
-
-    const length = prompt("Enter est. length (e.g., 1h or 30m):");
-    if (!length) return;
-
-    const people = prompt("Enter people (comma separated):");
-    if (!people) return;
-
-   
-      this.roomId.case.push (
-      startTime,
-      length,
-      people
-      );
+  public getRoomById(id: number): Room | null {
+    switch(id) {
+      case 1: return this.room1;
+      case 2: return this.room2;
+      case 3: return this.room3;
+      case 4: return this.room4;
+      case 5: return this.room5;
+      case 6: return this.room6;
+      default: return null;
+    }
   }
 }
 
