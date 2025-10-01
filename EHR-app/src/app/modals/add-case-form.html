@@ -1,8 +1,11 @@
 <h4 class= "heading">Add a Case</h4>
-<form id= "addCaseForm" [formGroup]= "addCaseForm" (submit)= "addCase()">
+<form id= "addCaseForm" [formGroup]= "addCaseForm" (ngSubmit)= "addCase(data.roomId)">
   
   <label for= "mrn">MRN:</label>
   <input id= "mrn" type= "text" formControlName= "mrn">
+
+  <label for="procedure">Procedure:</label>
+  <input id="procedure" type="text" formControlName="procedure">
 
   <label for= "start-time">Start Time:</label>
   <input id= "start-time" type= "time" formControlName= "startTime">

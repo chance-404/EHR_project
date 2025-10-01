@@ -8,7 +8,7 @@ import com.ehr_project.ehr.model.SurgeryCase;
 
 public interface SurgeryCaseRepo extends JpaRepository<SurgeryCase, Long> {
   
-  Optional<SurgeryCase> findSurgeryCaseBySurgeryCaseId(Long caseId);
+  Optional<SurgeryCase> findSurgeryCaseBySurgeryCaseId(Long surgeryCaseId);
 
-  public void deleteCaseByCaseId(Long caseId);
+  public void deleteSurgeryCaseBySurgeryCaseId(Long surgeryCaseId);
 }

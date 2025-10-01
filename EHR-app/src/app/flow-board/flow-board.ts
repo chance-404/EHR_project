@@ -1,18 +1,12 @@
-import { Component, inject, NgModule } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Header } from "../header/header";
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Dialog } from '@angular/cdk/dialog';
 import { AddCaseComponent } from '../modals/add-case-form';
-
-export interface Case {
-  startTime: string;
-  endTime: string;
-  surgeon: string;
-  circulator: string;
-  scrub: string;
-  patient: string;
-}
+import { HttpErrorResponse } from '@angular/common/http';
+import { SurgeryCaseService } from '../surgery case/surgery-case.service';
+import { SurgeryCase } from '../surgery case/surgery-case';
 
 export interface Room {
   id: number;
@@ -27,19 +21,17 @@ export interface Room {
   styleUrl: './flow-board.css'
 })
 
-export class FlowBoard {
-  private dialog = inject(Dialog);
-  protected openModal() {
-    this.dialog.open(AddCaseComponent);
-  }
+export class FlowBoard implements OnInit{
   
+  private surgeryCaseService = inject(SurgeryCaseService);
+  private dialog = inject(Dialog);
+
   room1: Room;
   room2: Room;
   room3: Room;
   room4: Room;
   room5: Room;
   room6: Room;
-  roomId: any;
 
   constructor() {
     this.room1 = {
@@ -72,6 +64,22 @@ export class FlowBoard {
       name: 'Room 6',
       case:[]
     };
+  }
+
+  ngOnInit() {
+    this.getSurgeryCases();
+  }
+
+  public getSurgeryCases(): void {
+      this.surgeryCaseService.getSurgeryCases().subscribe({
+        next: (response: SurgeryCase[]) => {
+          const room = this.getRoomById(this.surgeryCaseService.roomId)
+        }
+      });
+    }
+
+  protected openModal(roomId: number) {
+    this.dialog.open(AddCaseComponent);
   }
 
   public getRoomById(id: number): Room | null {

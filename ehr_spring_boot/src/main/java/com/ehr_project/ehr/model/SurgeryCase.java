@@ -1,13 +1,15 @@
 package com.ehr_project.ehr.model;
 
+import java.io.Serializable;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "cases")
-public class SurgeryCase {
+@Table(name = "surgeryCases")
+public class SurgeryCase implements Serializable{
   
   @Id
   @Column(nullable = false, unique = true)
@@ -27,6 +29,9 @@ public class SurgeryCase {
 
   @Column
   private String patient;
+
+  @Column 
+  private Integer roomId;
 
   public Long getSurgeryCaseId() {
       return surgeryCaseId;
@@ -74,6 +79,14 @@ public class SurgeryCase {
 
   public void setPatient(String patient) {
       this.patient = patient;
+  }
+
+  public Integer getRoomId() {
+      return roomId;
+  }
+
+  public void setRoomId(Integer roomId) {
+      this.roomId = roomId;
   }
 
 }
