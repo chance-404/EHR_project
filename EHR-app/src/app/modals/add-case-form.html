@@ -1,26 +1,30 @@
-<h4 class= "heading">Add a Case</h4>
-<form id= "addCaseForm" [formGroup]= "addCaseForm" (ngSubmit)= "addCase(data.roomId)">
-  
-  <label for= "mrn">MRN:</label>
-  <input id= "mrn" type= "text" formControlName= "mrn">
+<div class="modal-overlay">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <h4 class="heading">Add a Case</h4>
+    <form id="addCaseForm" [formGroup]="addCaseForm">
+      <label for="mrn">MRN:</label>
+      <input id="mrn" type="text" formControlName="mrn">
 
-  <label for="procedure">Procedure:</label>
-  <input id="procedure" type="text" formControlName="procedure">
+      <label for="procedure">Procedure:</label>
+      <input id="procedure" type="text" formControlName="procedure">
 
-  <label for= "start-time">Start Time:</label>
-  <input id= "start-time" type= "time" formControlName= "startTime">
+      <label for="start-time">Start Time:</label>
+      <input id="start-time" type="time" formControlName="startTime">
 
-  <label for= "end-time">End Time:</label>
-  <input id= "end-time" type= "time" formControlName= "endTime">
+      <label for="end-time">End Time:</label>
+      <input id="end-time" type="time" formControlName="endTime">
 
-  <label= for="surgeon">Surgeon:</label>
-  <input id= "surgeon" type= "text" formControlName= "surgeon">
+      <label for="surgeon">Surgeon:</label>
+      <input id="surgeon" type="text" formControlName="surgeon">
 
-  <label for= "circulator">Circulator:</label>
-  <input id= "circulator" type= "text" formControlName= "circulator">
+      <label for="circulator">Circulator:</label>
+      <input id="circulator" type="text" formControlName="circulator">
 
-  <label for="scrub">Scrub:</label>
-  <input id="scrub" type="text" formControlName="scrub">
+      <label for="scrub">Scrub:</label>
+      <input id="scrub" type="text" formControlName="scrub">
 
-  <button type= "submit" id= "add-case-button">Add Case to Schedule</button>
-</form>
+      <button type="submit" id="add-case-button" (click)="addCase(data.roomId)">Add Case to Schedule</button>
+      <button type="button" id="close-modal-button" (click)="closeModal()">Close</button>
+    </form>
+  </div>
+</div>

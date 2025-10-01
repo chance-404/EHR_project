@@ -1,13 +1,13 @@
 import { CommonModule } from "@angular/common";
-import { Component, Inject } from "@angular/core";
+import { Component, EventEmitter, Inject, Output } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { DIALOG_DATA } from "@angular/cdk/dialog";
-import { DialogRef } from '@angular/cdk/dialog';
 import { SurgeryCase } from "../surgery case/surgery-case";
+import { DIALOG_DATA, DialogModule, DialogRef } from "@angular/cdk/dialog";
 
 @Component({
-  selector: 'app-addCase',
-  imports: [CommonModule, ReactiveFormsModule],
+  selector: 'app-add-case',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, DialogModule],
   templateUrl: './add-case-form.html',
   styleUrl: './add-case-form.css'
 })
@@ -25,25 +25,31 @@ export class AddCaseComponent {
 
   constructor(
     @Inject(DIALOG_DATA) public data: { roomId: number, flowboard: any },
-    private dialogRef: DialogRef
+    private dialogRef: DialogRef<AddCaseComponent>
   ) {}
 
   addCase(roomId: number) {
     const formValue = this.addCaseForm.value;
 
-    const newCase: Case = {
+    const newSurgeryCase: SurgeryCase = {
       procedure: formValue.procedure || '',
       startTime: formValue.startTime || '',
       endTime: formValue.endTime || '',
       surgeon: formValue.surgeon || '',
       circulator: formValue.circulator || '',
       scrub: formValue.scrub || '',
-      patient: formValue.mrn || ''
+      patient: formValue.mrn || '',
+      surgeryCaseId: 0,
+      roomId: 0
     };
-
     // adds the case
-    this.data.flowboard.addCaseToRoom(this.data.roomId, newCase);
+    this.data.flowboard.addCaseToRoom(this.data.roomId, newSurgeryCase);
     // close modal when complete
     this.dialogRef.close()
+  }
+
+  @Output() close = new EventEmitter<void>();
+  closeModal() {
+    this.close.emit();
   }
 }

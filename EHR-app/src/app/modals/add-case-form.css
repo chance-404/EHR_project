@@ -1,29 +1,24 @@
-#addCaseForm {
-  
-  margin-bottom: 7px;
-  padding: 10px;
-  box-sizing: border-box;
-  background: #fff;
-  max-width: 800px;
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  border-radius: 7px;
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.05);
-  display: block;
-  font-size: 15px;
-  position: relative;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 
-#addCaseForm input,
-form select {
-  height: 40px;
-  padding: 8px;
+.popup-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  max-width: 400px;
   width: 100%;
-  font-size: 15px;
-  outline: none;
-  background: #fff;
-  border-radius: 3px;
-  border: 1px solid #4572b6;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 #add-case-button {
