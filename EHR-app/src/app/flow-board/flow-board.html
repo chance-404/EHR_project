@@ -6,24 +6,26 @@
     <table>
       <thead>
         <tr>
-          <th>Procedure</th>
           <th>Start Time</th>
           <th>End Time</th>
+          <th>Patient</th>
+          <th>Procedure</th>
           <th>Surgeon</th>
+          <th>Anesthesia</th>
           <th>Circulator</th>
           <th>Scrub</th>
-          <th>Patient</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let surgeryCase of room1.surgeryCase">
+          <td>{{ surgeryCase.startTime | timeFormat }}</td>
+          <td>{{ surgeryCase.endTime | timeFormat }}</td>
+          <td>{{ surgeryCase.patient }}</td>
           <td>{{ surgeryCase.procedure }}</td>
-          <td>{{ surgeryCase.startTime }}</td>
-          <td>{{ surgeryCase.endTime }}</td>
           <td>{{ surgeryCase.surgeon }}</td>
+          <td>{{ surgeryCase.anesthesia }}</td>
           <td>{{ surgeryCase.circulator }}</td>
           <td>{{ surgeryCase.scrub }}</td>
-          <td>{{ surgeryCase.patient }}</td>
         </tr>
       </tbody>
     </table>
@@ -34,24 +36,26 @@
     <table>
       <thead>
         <tr>
-          <th>Procedure</th>
           <th>Start Time</th>
           <th>End Time</th>
+          <th>Patient</th>
+          <th>Procedure</th>
           <th>Surgeon</th>
+          <th>Anesthesia</th>
           <th>Circulator</th>
           <th>Scrub</th>
-          <th>Patient</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let surgeryCase of room2.surgeryCase">
+          <td>{{ surgeryCase.startTime | timeFormat }}</td>
+          <td>{{ surgeryCase.endTime | timeFormat }}</td>
+          <td>{{ surgeryCase.patient }}</td>
           <td>{{ surgeryCase.procedure }}</td>
-          <td>{{ surgeryCase.startTime }}</td>
-          <td>{{ surgeryCase.endTime }}</td>
           <td>{{ surgeryCase.surgeon }}</td>
+          <td>{{ surgeryCase.anesthesia }}</td>
           <td>{{ surgeryCase.circulator }}</td>
           <td>{{ surgeryCase.scrub }}</td>
-          <td>{{ surgeryCase.patient }}</td>
         </tr>
       </tbody>
     </table>
@@ -62,24 +66,26 @@
     <table>
       <thead>
         <tr>
-          <th>Procedure</th>
           <th>Start Time</th>
           <th>End Time</th>
+          <th>Patient</th>
+          <th>Procedure</th>
           <th>Surgeon</th>
+          <th>Anesthesia</th>
           <th>Circulator</th>
           <th>Scrub</th>
-          <th>Patient</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let surgeryCase of room3.surgeryCase">
+          <td>{{ surgeryCase.startTime | timeFormat }}</td>
+          <td>{{ surgeryCase.endTime | timeFormat }}</td>
+          <td>{{ surgeryCase.patient }}</td>
           <td>{{ surgeryCase.procedure }}</td>
-          <td>{{ surgeryCase.startTime }}</td>
-          <td>{{ surgeryCase.endTime }}</td>
           <td>{{ surgeryCase.surgeon }}</td>
+          <td>{{ surgeryCase.anesthesia }}</td>
           <td>{{ surgeryCase.circulator }}</td>
           <td>{{ surgeryCase.scrub }}</td>
-          <td>{{ surgeryCase.patient }}</td>
         </tr>
       </tbody>
     </table>
@@ -90,24 +96,26 @@
     <table>
       <thead>
         <tr>
-          <th>Procedure</th>
           <th>Start Time</th>
           <th>End Time</th>
+          <th>Patient</th>
+          <th>Procedure</th>
           <th>Surgeon</th>
+          <th>Anesthesia</th>
           <th>Circulator</th>
           <th>Scrub</th>
-          <th>Patient</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let surgeryCase of room4.surgeryCase">
+          <td>{{ surgeryCase.startTime | timeFormat }}</td>
+          <td>{{ surgeryCase.endTime | timeFormat }}</td>
+          <td>{{ surgeryCase.patient }}</td>
           <td>{{ surgeryCase.procedure }}</td>
-          <td>{{ surgeryCase.startTime }}</td>
-          <td>{{ surgeryCase.endTime }}</td>
           <td>{{ surgeryCase.surgeon }}</td>
+          <td>{{ surgeryCase.anesthesia }}</td>
           <td>{{ surgeryCase.circulator }}</td>
           <td>{{ surgeryCase.scrub }}</td>
-          <td>{{ surgeryCase.patient }}</td>
         </tr>
       </tbody>
     </table>
@@ -118,24 +126,26 @@
     <table>
       <thead>
         <tr>
-          <th>Procedure</th>
           <th>Start Time</th>
           <th>End Time</th>
+          <th>Patient</th>
+          <th>Procedure</th>
           <th>Surgeon</th>
+          <th>Anesthesia</th>
           <th>Circulator</th>
           <th>Scrub</th>
-          <th>Patient</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let surgeryCase of room5.surgeryCase">
+          <td>{{ surgeryCase.startTime | timeFormat }}</td>
+          <td>{{ surgeryCase.endTime | timeFormat }}</td>
+          <td>{{ surgeryCase.patient }}</td>
           <td>{{ surgeryCase.procedure }}</td>
-          <td>{{ surgeryCase.startTime }}</td>
-          <td>{{ surgeryCase.endTime }}</td>
           <td>{{ surgeryCase.surgeon }}</td>
+          <td>{{ surgeryCase.anesthesia }}</td>
           <td>{{ surgeryCase.circulator }}</td>
           <td>{{ surgeryCase.scrub }}</td>
-          <td>{{ surgeryCase.patient }}</td>
         </tr>
       </tbody>
     </table>
@@ -146,24 +156,26 @@
     <table>
       <thead>
         <tr>
-          <th>Procedure</th>
           <th>Start Time</th>
           <th>End Time</th>
+          <th>Patient</th>
+          <th>Procedure</th>
           <th>Surgeon</th>
+          <th>Anesthesia</th>
           <th>Circulator</th>
           <th>Scrub</th>
-          <th>Patient</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let surgeryCase of room6.surgeryCase">
-          <td>{{ surgeryCase.procedure }}</td>
-          <td>{{ surgeryCase.startTime }}</td>
-          <td>{{ surgeryCase.endTime }}</td>
-          <td>{{ surgeryCase.surgeon }}</td>
-          <td>{{ surgeryCase.circulator }}</td>
-          <td>{{ surgeryCase.scrub }}</td>
+          <td>{{ surgeryCase.startTime | timeFormat }}</td>
+          <td>{{ surgeryCase.endTime | timeFormat }}</td>
           <td>{{ surgeryCase.patient }}</td>
+          <td>{{ surgeryCase.procedure }}</td>
+          <td>{{ surgeryCase.surgeon }}</td>
+          <td>{{ surgeryCase.anesthesia }}</td>
+          <td>{{ surgeryCase.circulator }}</td>
+          <td>{{ surgeryCase.scrub }}</td>>
         </tr>
       </tbody>
     </table>

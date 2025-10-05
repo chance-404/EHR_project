@@ -1,8 +1,12 @@
 import { CommonModule } from "@angular/common";
-import { Component, EventEmitter, Inject, Output } from "@angular/core";
+import { Component, EventEmitter, inject, Inject, Output } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { SurgeryCase } from "../surgery case/surgery-case";
 import { DIALOG_DATA, DialogModule, DialogRef } from "@angular/cdk/dialog";
+import { SurgeryCaseService } from "../surgery case/surgery-case.service";
+import { PatientService } from "../patient/patient.service";
+import { Patient } from "../patient/patient";
+import { HttpErrorResponse } from "@angular/common/http";
 
 @Component({
   selector: 'app-add-case',
@@ -13,12 +17,21 @@ import { DIALOG_DATA, DialogModule, DialogRef } from "@angular/cdk/dialog";
 })
 
 export class AddCaseComponent {
+  surgeryCaseService = inject(SurgeryCaseService);
+  patientService = inject(PatientService);
+  public patients!: Patient[];
+  private allPatients!: Patient[];
+  public filteredPatients: Patient[] = [];
+  public searchTerm: string = '';
+  public showDropdown = false;
+
   addCaseForm = new FormGroup({
-    mrn: new FormControl('', [Validators.required]),
+    patient: new FormControl('', [Validators.required]),
     procedure: new FormControl('', [Validators.required]),
     startTime: new FormControl('', [Validators.required]),
     endTime: new FormControl('', [Validators.required]),
     surgeon: new FormControl('', [Validators.required]),
+    anesthesia: new FormControl('', [Validators.required]),
     circulator: new FormControl(''),
     scrub: new FormControl('')      
   });
@@ -26,30 +39,90 @@ export class AddCaseComponent {
   constructor(
     @Inject(DIALOG_DATA) public data: { roomId: number, flowboard: any },
     private dialogRef: DialogRef<AddCaseComponent>
-  ) {}
+  ) {
+    this.getPatients();
+  }
 
   addCase(roomId: number) {
-    const formValue = this.addCaseForm.value;
 
-    const newSurgeryCase: SurgeryCase = {
-      procedure: formValue.procedure || '',
-      startTime: formValue.startTime || '',
-      endTime: formValue.endTime || '',
-      surgeon: formValue.surgeon || '',
-      circulator: formValue.circulator || '',
-      scrub: formValue.scrub || '',
-      patient: formValue.mrn || '',
-      surgeryCaseId: 0,
-      roomId: 0
-    };
-    // adds the case
-    this.data.flowboard.addCaseToRoom(this.data.roomId, newSurgeryCase);
-    // close modal when complete
-    this.dialogRef.close()
+    if (!this.addCaseForm.value.patient || !this.addCaseForm.value.procedure || !this.addCaseForm.value.startTime || 
+        !this.addCaseForm.value.endTime || !this.addCaseForm.value.surgeon || !this.addCaseForm.value.anesthesia) {
+      console.error('Required fields are missing');
+      return;
+    }
+    
+    const startTime = this.convertToTime(this.addCaseForm.value.startTime);
+    const endTime = this.convertToTime(this.addCaseForm.value.endTime);
+
+    // add the case
+    this.surgeryCaseService.addSurgeryCaseToSchedule(
+      this.addCaseForm.value.patient,
+      this.addCaseForm.value.procedure,
+      startTime,
+      endTime,
+      this.addCaseForm.value.surgeon,
+      this.addCaseForm.value.anesthesia,
+      this.addCaseForm.value.circulator ?? '',
+      this.addCaseForm.value.scrub ?? '',
+      this.data.roomId
+    ).subscribe({
+      // Need to add user feedback messages / error handling
+      next: (response: any) => {
+        console.log('Surgery case added successfully:', response);
+        this.dialogRef.close();
+      },
+      error: (error: any) => {
+        console.error('Error adding surgery case:', error);
+      }
+    });
   }
 
-  @Output() close = new EventEmitter<void>();
-  closeModal() {
-    this.close.emit();
+  private convertToTime(timeString: string): string {
+    const [hours, minutes] = timeString.split(':').map(Number);
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`;
   }
+
+  public closeModal() {
+    this.dialogRef.close();
+  }
+
+  ngOnInit() {
+    this.getPatients();  
+  }
+
+  public getPatients(): void {
+    this.patientService.getPatients().subscribe({
+      next: (response: Patient[]) => {
+        this.patients = response;
+        this.allPatients = [...response]; // Keep a copy of all patients
+      },
+      error: (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    });
+  }
+
+  public searchPatients(searchTerm: string): void {
+    this.searchTerm = searchTerm;
+    this.showDropdown = true;
+    
+    if (!searchTerm) {
+      this.filteredPatients = [];
+      return;
+    }
+
+    const searchTermLower = searchTerm.toLowerCase();
+    this.filteredPatients = this.patients.filter(patient => 
+      patient.lastName.toLowerCase().includes(searchTermLower) ||
+      patient.mrn.toString().includes(searchTermLower)
+    ).slice(0, 10); // Limits to 10 results
+  }
+
+  public selectPatient(patient: Patient): void {
+    this.addCaseForm.patchValue({
+      patient: `${patient.lastName}, ${patient.firstName} (${patient.mrn})`
+    });
+    this.showDropdown = false;
+  }
+
 }

@@ -1,9 +1,23 @@
-<div class="modal-overlay">
-  <div class="modal-content" (click)="$event.stopPropagation()">
-    <h4 class="heading">Add a Case</h4>
+<div class="modal-overlay" id="add-case-modal">
+  <div class="modal-content">
+    <h4 class="heading">Add a Case to Schedule for Room: {{data.roomId}} </h4>
     <form id="addCaseForm" [formGroup]="addCaseForm">
-      <label for="mrn">MRN:</label>
-      <input id="mrn" type="text" formControlName="mrn">
+      <label for="patient">Patient:</label>
+      <div class="search-container">
+        <input id="patient" 
+               type="search" 
+               [formControlName]="'patient'"
+               (input)="searchPatients($any($event.target).value)"
+               placeholder="Search for patient by last name or MRN">
+        
+        <div class="search-results" *ngIf="showDropdown && filteredPatients.length > 0">
+          <div class="search-result-item" 
+               *ngFor="let patient of filteredPatients"
+               (click)="selectPatient(patient)">
+           {{patient.lastName}}, {{patient.firstName}} ({{patient.mrn}})
+          </div>
+        </div>
+      </div>
 
       <label for="procedure">Procedure:</label>
       <input id="procedure" type="text" formControlName="procedure">
@@ -17,6 +31,9 @@
       <label for="surgeon">Surgeon:</label>
       <input id="surgeon" type="text" formControlName="surgeon">
 
+      <label for="anesthesia">Anesthesia:</label>
+      <input id="anesthesia" type="text" formControlName="anesthesia">
+
       <label for="circulator">Circulator:</label>
       <input id="circulator" type="text" formControlName="circulator">
 
@@ -26,5 +43,5 @@
       <button type="submit" id="add-case-button" (click)="addCase(data.roomId)">Add Case to Schedule</button>
       <button type="button" id="close-modal-button" (click)="closeModal()">Close</button>
     </form>
-  </div>
+  </div>  
 </div>

@@ -1,7 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { catchError, Observable, pipe, throwError } from "rxjs";
 import { SurgeryCase } from "./surgery-case";
+
 
 @Injectable({
   providedIn: 'root'
@@ -19,16 +20,40 @@ export class SurgeryCaseService {
     return this.http.post<SurgeryCase>(`${this.apiServerUrl}/surgeryCases/add`, surgeryCase);
   }
 
-  private makeRandomSurgeryCaseId(): number {
-    return Math.floor(Math.random() * 10000000);
-  }
-
   public updateSurgeryCase(surgeryCase: SurgeryCase): Observable<SurgeryCase> {
     return this.http.put<SurgeryCase>(`${this.apiServerUrl}/surgeryCases/update`, surgeryCase);
   }
 
   public deleteSurgeryCase(surgeryCaseId: String): Observable<void> {
     return this.http.delete<void>(`${this.apiServerUrl}/surgeryCases/delete/${surgeryCaseId}`);
+  }
+
+  public addSurgeryCaseToSchedule(
+    patient: string, procedure: string, startTime: string, endTime: string, surgeon: string, anesthesia: string,
+    circulator: string, scrub: string, roomId: number 
+  ) {
+    const surgeryCase: SurgeryCase = {
+      patient: patient,
+      procedure: procedure,
+      startTime: startTime,
+      endTime: endTime,
+      surgeon: surgeon,
+      anesthesia: anesthesia,
+      circulator: circulator,
+      scrub: scrub,
+      surgeryCaseId: this.makeRandomSurgeryCaseId(),
+      roomId: roomId
+    }
+    return this.addSurgeryCase(surgeryCase).pipe(
+          catchError(error => {
+            console.error('Error adding surgery case:', error);
+            return throwError(() => new Error('Failed to add surgery case.'));
+          })
+        );
+  }
+
+  private makeRandomSurgeryCaseId(): number {
+    return Math.floor(Math.random() * 10000000);
   }
 
 }
