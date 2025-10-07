@@ -7,6 +7,7 @@ import { SurgeryCaseService } from "../surgery case/surgery-case.service";
 import { PatientService } from "../patient/patient.service";
 import { Patient } from "../patient/patient";
 import { HttpErrorResponse } from "@angular/common/http";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-add-case',
@@ -19,8 +20,9 @@ import { HttpErrorResponse } from "@angular/common/http";
 export class AddCaseComponent {
   surgeryCaseService = inject(SurgeryCaseService);
   patientService = inject(PatientService);
+  snackBar = inject(MatSnackBar);
+
   public patients!: Patient[];
-  private allPatients!: Patient[];
   public filteredPatients: Patient[] = [];
   public searchTerm: string = '';
   public showDropdown = false;
@@ -54,7 +56,7 @@ export class AddCaseComponent {
     const startTime = this.convertToTime(this.addCaseForm.value.startTime);
     const endTime = this.convertToTime(this.addCaseForm.value.endTime);
 
-    // add the case
+    // adds the case
     this.surgeryCaseService.addSurgeryCaseToSchedule(
       this.addCaseForm.value.patient,
       this.addCaseForm.value.procedure,
@@ -66,13 +68,16 @@ export class AddCaseComponent {
       this.addCaseForm.value.scrub ?? '',
       this.data.roomId
     ).subscribe({
-      // Need to add user feedback messages / error handling
       next: (response: any) => {
         console.log('Surgery case added successfully:', response);
         this.dialogRef.close();
       },
       error: (error: any) => {
         console.error('Error adding surgery case:', error);
+        this.snackBar.open('Failed to add case schedule', 'Close', { 
+          duration: 5000,
+          panelClass: ['error-snackbar']
+        });
       }
     });
   }
@@ -94,7 +99,6 @@ export class AddCaseComponent {
     this.patientService.getPatients().subscribe({
       next: (response: Patient[]) => {
         this.patients = response;
-        this.allPatients = [...response]; // Keep a copy of all patients
       },
       error: (error: HttpErrorResponse) => {
         alert(error.message);

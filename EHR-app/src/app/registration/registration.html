@@ -3,7 +3,7 @@
 
 <!-- Need to add user feedback messages / error handling -->
 <h4 class= "heading">Register a patient</h4>
-<form id= "registerPatientForm" [formGroup]= "registerPatientForm" (submit)= "registerPatient()">
+<form id= "registerPatientForm" [formGroup]= "registerPatientForm">
   
   <label for= "first-name">First Name:</label>
   <input id= "firs-name" type= "text" formControlName= "firstName">
@@ -23,5 +23,5 @@
   <label for= "date-of-birth">Date of Birth:</label>
   <input id= "date-of-birth" type= "date" formControlName= "dateOfBirth">
 
-  <button type= "submit" id= "registration-button">Register patient</button>
+  <button class="registration-button" id="registration-button" (click)="registerPatient()">Register patient</button>
 </form>

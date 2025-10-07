@@ -74,7 +74,6 @@ export class FlowBoard implements OnInit {
   public getSurgeryCases(): void {
     this.surgeryCaseService.getSurgeryCases().subscribe({
       next: (response: SurgeryCase[]) => {
-        console.log('Raw surgery cases:', response);
         this.surgeryCases = response;
         
         // Reset all room surgery cases
@@ -85,26 +84,13 @@ export class FlowBoard implements OnInit {
         this.room5.surgeryCase = [];
         this.room6.surgeryCase = [];
 
-        // Distribute surgery cases to their respective rooms
+        // Add surgery cases to correct rooms
         response.forEach(surgeryCase => {
-          console.log('Processing case:', surgeryCase);
-          console.log('Time values:', {
-            startTime: surgeryCase.startTime,
-            endTime: surgeryCase.endTime
-          });
           const room = this.getRoomById(surgeryCase.roomId);
           if (room) {
             room.surgeryCase.push(surgeryCase);
           }
         });
-
-        // Log the final state of rooms
-        console.log('Room 1 cases:', this.room1.surgeryCase);
-        console.log('Room 2 cases:', this.room2.surgeryCase);
-        console.log('Room 3 cases:', this.room3.surgeryCase);
-        console.log('Room 4 cases:', this.room4.surgeryCase);
-        console.log('Room 5 cases:', this.room5.surgeryCase);
-        console.log('Room 6 cases:', this.room6.surgeryCase);
       },
       error: (error) => {
         console.error('Error loading surgery cases:', error);
