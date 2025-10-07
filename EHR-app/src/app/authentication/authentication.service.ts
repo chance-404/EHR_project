@@ -9,7 +9,6 @@ import { Observable, of } from 'rxjs';
 })
 export class AuthenticationService {
   
-  private http = inject(HttpClient);
   private userService = inject(UserService);
 
   constructor() { }
@@ -38,7 +37,8 @@ export class AuthenticationService {
           } else {
             console.log('Login failed. Please try again.');
           }
-          
+          // "of()"" is an Angular operator (from RxJS library) that creates an observable that emits false and completes immediately.
+          // Prevents an HTTP error from breaking the function
           return of(false);
         })
       );

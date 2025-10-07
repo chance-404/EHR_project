@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { CommonModule } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -12,14 +13,22 @@ import { CommonModule } from '@angular/common';
   styleUrl: './header.css'
 })
 export class Header implements OnInit {
-  
-  constructor(public authenticationService: AuthenticationService, private router: Router) {}
+  constructor() {}
+
+  router = inject(Router);
+  authenticationService = inject(AuthenticationService);
+  snackBar = inject(MatSnackBar);
 
   ngOnInit() {}
 
   unauthorizedClick(event: Event): void {
     if (!this.authenticationService.isUserLoggedIn()) {
-      alert('Must login first');
+      event.preventDefault();
+      this.snackBar.open('You have to log in first', 'Close', {
+        duration: 10000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
       return;
     }
   }
