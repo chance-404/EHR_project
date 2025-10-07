@@ -28,7 +28,13 @@ export class UserService {
       .pipe(
         catchError((error: HttpErrorResponse) => {
           console.error('Login error:', error);
-          return throwError(() => error);
+          if (error.status === 401) {
+            return throwError(() => new Error('Invalid credentials'));
+          } 
+          else if (error.status === 404) {
+            return throwError(() => new Error('Server not available'));
+          }
+          return throwError(() => new Error('Unknown error occured'));
         })
       );
   }
@@ -59,7 +65,7 @@ export class UserService {
     };
 
     if (!firstName || !lastName) {
-      return throwError(() => new Error('Required fields missing'));
+      return throwError(() => new Error('First and last name required.'));
     }
 
     return this.addUser(User).pipe(
@@ -70,12 +76,13 @@ export class UserService {
     );
   }
 
+
+  // makes a random "3/4 ID", 3 letters + 4 numbers
   private makeRandomUserId(): string {
     let userId = '';
     const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const randomLetters = Array.from({length: 3}, () => 
-    letters.charAt(Math.floor(Math.random() * letters.length))
-    ).join('');
+      letters.charAt(Math.floor(Math.random() * letters.length))).join('');
   
     const randomDigits = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
   
