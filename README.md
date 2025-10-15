@@ -2,9 +2,9 @@
 My first fullstack project. Working on an EHR (Electronic Health Record) that includes an operating room management system. This would be a massive project to complete solo, but the real goal here is to teach myself about backend and frontend frameworks, APIs, authentication/authorization, etc.
 
 # Tech Stack
-Frontend: Angular - TypeScript, HTML, CSS.
-Backend: Spring Boot - Java.
-Data Storage: For now, a locally hosted PostgreSQL DB managed with pgAdmin4.
+- **Frontend**: Angular - TypeScript, HTML, CSS.
+- **Backend**: Spring Boot - Java.
+- **Data Storage**: For now, a locally hosted PostgreSQL DB managed with pgAdmin4.
 
 # Next Steps
 - Implement role-based user autorization.
