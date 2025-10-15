@@ -13,7 +13,7 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
 
   // don't add token for public endpoints
   const publicEndpoints = [
-    '/login'
+    '/users/login'
   ]
   const isPublicEndpoint = publicEndpoints.some(url => req.url.endsWith(url));
 

@@ -1,0 +1,77 @@
+package com.ehr_project.ehr.config;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.ehr_project.ehr.service.TokenService;
+
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.security.SignatureException;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+@Component
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+  @Autowired
+  private TokenService tokenService;
+
+  @Override
+  protected void doFilterInternal(
+      @SuppressWarnings("null") HttpServletRequest request,
+      @SuppressWarnings("null") HttpServletResponse response,
+      @SuppressWarnings("null") FilterChain filterChain) throws ServletException, IOException {
+
+    // skip authentication for login endpoint
+    String path = request.getRequestURI();
+    if (path.equals("/users/login")) {
+      filterChain.doFilter(request, response);
+      return;
+    }
+
+    String authHeader = request.getHeader("Authorization");
+
+    if (authHeader != null && authHeader.startsWith("Bearer ")) {
+      String token = authHeader.substring(7);
+
+      try {
+        String userId = tokenService.validateTokenAndGetUserId(token);
+
+        // Create authentication token and set in security context
+        UsernamePasswordAuthenticationToken authentication = 
+          new UsernamePasswordAuthenticationToken(userId, null, new ArrayList<>());
+        
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+      } catch (ExpiredJwtException e) {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.getWriter().write("{\"error\": \"Token expired\"}");
+        return;
+      } catch (SignatureException | MalformedJwtException e) {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.getWriter().write("{\"error\": \"Invalid token\"}");
+        return;
+      } catch (Exception e) {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.getWriter().write("{\"error\": \"Authentication failed\"}");
+        return;
+      }
+    } else {
+      // No token provided
+      response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+      response.getWriter().write("{\"error\": \"No authentication token provided\"}");
+      return;
+    }
+
+    filterChain.doFilter(request, response);
+  }
+}
