@@ -30,11 +30,11 @@ export class Login implements OnInit {
   ngOnInit() {}
   
   checkLogin() {
-
+    // check if form is filled out
     if (this.loginForm.valid) {
       const userId = this.loginForm.value.userId;
       const password = this.loginForm.value.password;
-    
+      // call authenticate() function in authentication.service.ts, route to dashboard if userID and password valid
       this.authenticationService.authenticate(userId, password).subscribe({
         next: (success) => {
           if (success) {

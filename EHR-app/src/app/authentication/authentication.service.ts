@@ -1,8 +1,9 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { LoginRequest, UserService } from '../user/user.service';
 import { catchError, map } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,12 @@ import { Observable, of } from 'rxjs';
 export class AuthenticationService {
   
   private userService = inject(UserService);
+  // authentication service tries to call sessionStorage.getItem('userId') on start up,
+  // crashes app, need this check before
+  private platformId = inject(PLATFORM_ID);
+
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.isUserLoggedIn());
+  public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
   constructor() { }
 
@@ -19,14 +26,19 @@ export class AuthenticationService {
       userId: userId,
       password: password
     };
-
+      // sends login req to login() in user.service.ts, userId and JWT in response
       return this.userService.login(loginRequest).pipe(
         map((response) => {
           console.log('Login successful:', response);
-          sessionStorage.setItem('userId', response.userId);
+          if (isPlatformBrowser(this.platformId)) { // the platformId check
+            sessionStorage.setItem('userId', response.userId);
+            sessionStorage.setItem('token', response.token);
+          }
+          this.isAuthenticatedSubject.next(true);
           return true;
         }),
         catchError((error: HttpErrorResponse) => {
+          this.isAuthenticatedSubject.next(false);
           console.log(error);
           if (error.status === 401) {
             console.log('Invalid credentials');
@@ -38,7 +50,7 @@ export class AuthenticationService {
             console.log('Login failed. Please try again.');
           }
           // "of()"" is an Angular operator (from RxJS library) that creates an observable that emits false and completes immediately.
-          // Prevents an HTTP error from breaking the function
+          // prevents an HTTP error from breaking the function
           return of(false);
         })
       );
@@ -46,11 +58,24 @@ export class AuthenticationService {
   
 
   isUserLoggedIn(): boolean {
-    const user = sessionStorage.getItem('userId');
-    return user !== null;
+    if (isPlatformBrowser(this.platformId)) { // the platformId check
+      const user = sessionStorage.getItem('userId');
+      return user !== null;
+    }
+    return false; // On the server, the user is never logged in
   }
 
   logout(): void {
-    sessionStorage.removeItem('userId')
+    if (isPlatformBrowser(this.platformId)) { // the platformId check
+      sessionStorage.removeItem('userId');
+      sessionStorage.removeItem('token');
+    }
+    this.isAuthenticatedSubject.next(false);
   }
+
+  handleUnauthorized(): void {
+    console.warn('Invalid token detected...🤨');
+    this.logout();
+  }
+
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ehr_project.ehr.exceptions.UserNotFoundException;
 import com.ehr_project.ehr.model.User;
+import com.ehr_project.ehr.service.TokenService;
 import com.ehr_project.ehr.service.UserService;
 
 @RestController
@@ -22,11 +23,14 @@ import com.ehr_project.ehr.service.UserService;
 public class UserController {
 
   private final UserService userService;
+  private final TokenService tokenService;
 
   @Autowired
-  public UserController(UserService userService) {
+  public UserController(UserService userService, TokenService tokenService) {
     this.userService = userService;
-  }
+    this.tokenService = tokenService;
+  } 
+  
 
   @GetMapping("/all")
     public ResponseEntity<List<User>> getAllUsers() {
@@ -40,15 +44,18 @@ public class UserController {
     return new ResponseEntity<>(user, HttpStatus.OK);
   }
 
-  // Calls public methods in Userservice.java to check userID and password in UserRepo
+  // calls public functions in Userservice.java to check userID and password in UserRepo
   @PostMapping("/login")
   public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
     try {
       User user = userService.findUserByUserId(loginRequest.getUserId());
             
       if (userService.verifyPassword(loginRequest.getPassword(), user.getPassword())) {
+        String jwtToken = tokenService.generateToken(user);
+
         LoginResponse response = new LoginResponse(
-            user.getUserId()
+            user.getUserId(),
+            jwtToken
         );
         return ResponseEntity.ok(response);
     } else {
@@ -80,7 +87,6 @@ public class UserController {
       public String getUserId() {
         return userId;
       }
-
       public void setUserId(String userId) {
         this.userId = userId;
       }
@@ -88,26 +94,33 @@ public class UserController {
       public String getPassword() {
         return password;
       }
-
       public void setPassword(String password) {
         this.password = password;
       }
-  }
-
-  public static class LoginResponse {
-    private String userId;
-
-    public LoginResponse(String userId) {
-      this.userId = userId;
     }
 
-      public String getUserId() {
-        return userId;
+    public static class LoginResponse {
+      private String userId;
+      private String token;
+
+      public LoginResponse(String userId, String token) {
+        this.userId = userId;
+        this.token = token;
       }
 
-      public void setUserId(String userId) {
-        this.userId = userId;
-      }
+        public String getUserId() {
+          return userId;
+        }
+        public void setUserId(String userId) {
+          this.userId = userId;
+        }
+
+        public String getToken() {
+          return token;
+        }
+        public void setToken(String token) {
+          this.token = token;
+        }
 
     } 
 

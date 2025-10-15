@@ -11,6 +11,7 @@ export interface LoginRequest{
 
 export interface LoginResponse {
   userId: string;
+  token: string;
 }
 
 @Injectable({
@@ -22,7 +23,7 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  // Sends LoginRequest to @PostMapping("/login") in UserController.java, returns LoginResponse
+  // sends LoginRequest to backend @PostMapping("/login") in UserController.java, returns LoginResponse
   public login(loginRequest: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiServerUrl}/users/login`, loginRequest)
       .pipe(
@@ -32,7 +33,7 @@ export class UserService {
             return throwError(() => new Error('Invalid credentials'));
           } 
           else if (error.status === 404) {
-            return throwError(() => new Error('Server not available'));
+            return throwError(() => new Error('User not found'));
           }
           return throwError(() => new Error('Unknown error occured'));
         })
@@ -60,7 +61,7 @@ export class UserService {
     const User: User = {
       lastName: lastName,
       firstName: firstName,
-      password: 'password', 
+      password: 'password', // TODO: add change password functionality
       userId: this.makeRandomUserId(),
     };
 
