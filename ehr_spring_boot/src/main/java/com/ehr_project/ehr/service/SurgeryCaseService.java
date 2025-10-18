@@ -9,6 +9,7 @@ import com.ehr_project.ehr.model.SurgeryCase;
 import com.ehr_project.ehr.repo.SurgeryCaseRepo;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 
 @Service
 public class SurgeryCaseService {
@@ -31,6 +32,10 @@ public class SurgeryCaseService {
     return surgeryCaseRepo.save(surgeryCase);
   }
 
+  // @Transactional will automatically rollback if a RuntimeException is thrown and will
+  // automatically commit to the DB at the end of the function (no need for repo.save(entity)).
+  // I was getting a 403 error when the "Delete Case" button was clicked without adding this.
+  @Transactional
   public void deleteSurgeryCase(Long surgeryCaseId) {
     surgeryCaseRepo.deleteSurgeryCaseBySurgeryCaseId(surgeryCaseId);
   }

@@ -1,0 +1,67 @@
+<div class="modal-overlay" id="case-modal">
+  <div class="modal-content">
+    <h4 class="heading">Case for Room: {{data.SurgeryCase.roomId}} </h4>
+    <form id="caseForm" [formGroup]="SurgeryCaseForm">
+      <label for="procedure">Patient:</label>
+      <input id="patient" type="text" formControlName="patient">
+
+      <label for="procedure">Procedure:</label>
+      <input id="procedure" type="text" formControlName="procedure">
+
+      <label for="start-time">Start Time:</label>
+      <input id="start-time" type="time" formControlName="startTime">
+
+      <label for="end-time">End Time:</label>
+      <input id="end-time" type="time" formControlName="endTime">
+
+      <label for="surgeon">Surgeon:</label>
+      <select id="surgeon" formControlName="surgeon">
+        <option value="" disabled selected>-- Select Surgeon --</option>
+        <option *ngFor="let user of surgeonUsers$ | async" 
+          [value]="user.lastName + ', ' + user.firstName">
+          {{user.lastName}}, {{user.firstName}}
+        </option>
+      </select>
+
+      <label for="anesthesia">Anesthesia:</label>
+      <select id="anesthesia" formControlName="anesthesia">
+        <option value="" disabled selected>-- Select Anesthesia --</option>
+        <option *ngFor="let user of anesthesiaUsers$ | async" 
+          [value]="user.lastName + ', ' + user.firstName">
+          {{user.lastName}}, {{user.firstName}}
+        </option>
+      </select>  
+
+      <label for="nurse">Nurse:</label>
+      <select id="nurse" formControlName="nurse">
+        <option value="" disabled selected>-- Select Nurse --</option>
+        <option *ngFor="let user of nurseUsers$ | async" 
+          [value]="user.lastName + ', ' + user.firstName">
+          {{user.lastName}}, {{user.firstName}}
+        </option>
+      </select>  
+
+      <label for="scrub">Scrub:</label>
+      <select id="scrub" formControlName="scrub">
+        <option value="" disabled selected>-- Scrub --</option>
+        <option *ngFor="let user of scrubUsers$ | async" 
+          [value]="user.lastName + ', ' + user.firstName">
+          {{user.lastName}}, {{user.firstName}}
+        </option>
+      </select>
+      
+      <label for="roomDropdown">Move case to room:</label>
+      <select id="roomDropdown" formControlName="selectedRoom">
+        <option value="room1">Room 1</option>
+        <option value="room2">Room 2</option>
+        <option value="room3">Room 3</option>
+        <option value="room4">Room 4</option>
+        <option value="room5">Room 5</option>
+        <option value="room6">Room 6</option>
+      </select>
+      <button type="submit" id="update-case-button" (click)="updateSurgeryCase()">Update Case</button>
+      <button type="submit" id="delete-case-button" (click)="deleteCase(data.SurgeryCase)">Delete Case</button>
+      <button type="button" id="close-modal-button" (click)="closeModal()">Close</button>
+    </form>
+  </div>  
+</div>

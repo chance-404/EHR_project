@@ -8,6 +8,9 @@ import { PatientService } from "../patient/patient.service";
 import { Patient } from "../patient/patient";
 import { HttpErrorResponse } from "@angular/common/http";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { map, Observable } from "rxjs";
+import { User } from "../user/user";
+import { UserService } from "../user/user.service";
 
 @Component({
   selector: 'app-add-case',
@@ -20,6 +23,7 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 export class AddCaseComponent {
   surgeryCaseService = inject(SurgeryCaseService);
   patientService = inject(PatientService);
+  userService = inject(UserService);
   snackBar = inject(MatSnackBar);
 
   public patients!: Patient[];
@@ -34,16 +38,40 @@ export class AddCaseComponent {
     endTime: new FormControl('', [Validators.required]),
     surgeon: new FormControl('', [Validators.required]),
     anesthesia: new FormControl('', [Validators.required]),
-    circulator: new FormControl(''),
+    nurse: new FormControl(''),
     scrub: new FormControl('')      
   });
 
+  surgeonUsers$: Observable<User[]>;
+  anesthesiaUsers$: Observable<User[]>;
+  nurseUsers$: Observable<User[]>;
+  scrubUsers$: Observable<User[]>;
+
   constructor(
-    @Inject(DIALOG_DATA) public data: { roomId: number, flowboard: any },
+    @Inject(DIALOG_DATA) public data: { roomId: number, surgeryCase: SurgeryCase, flowboard: any },
     private dialogRef: DialogRef<AddCaseComponent>
   ) {
-    this.getPatients();
+    
+    const allUsers$ = this.userService.getUsers();
+
+    this.surgeonUsers$ = allUsers$.pipe(
+      map(users => users.filter(user => user.userRole === 'surgeon'))
+    );
+
+    this.anesthesiaUsers$ = allUsers$.pipe(
+      map(users => users.filter(user => user.userRole === 'anesthesia'))
+    );
+    
+    this.nurseUsers$ = allUsers$.pipe(
+      map(users => users.filter(user => user.userRole === 'nurse'))
+    );
+    
+    this.scrubUsers$ = allUsers$.pipe(
+      map(users => users.filter(user => user.userRole === 'scrub'))
+    );
   }
+
+  
 
   addCase(roomId: number) {
 
@@ -64,7 +92,7 @@ export class AddCaseComponent {
       endTime,
       this.addCaseForm.value.surgeon,
       this.addCaseForm.value.anesthesia,
-      this.addCaseForm.value.circulator ?? '',
+      this.addCaseForm.value.nurse ?? '',
       this.addCaseForm.value.scrub ?? '',
       this.data.roomId
     ).subscribe({
@@ -101,7 +129,7 @@ export class AddCaseComponent {
         this.patients = response;
       },
       error: (error: HttpErrorResponse) => {
-        alert(error.message);
+        this.snackBar.open(`Error fetching patients: ${error.message}`, 'Close', { duration: 5000 });
       }
     });
   }

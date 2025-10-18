@@ -1,7 +1,5 @@
 com/ehr_project/ehr/model/Patient.class
 com/ehr_project/ehr/exceptions/UserNotFoundException.class
-com/ehr_project/ehr/service/UserNotFoundException.class
-com/ehr_project/ehr/EhrApplication.class
 com/ehr_project/ehr/repo/PatientRepo.class
+com/ehr_project/ehr/EhrApplication.class
 com/ehr_project/ehr/service/PatientService.class
-com/ehr_project/ehr/PatientResource.class

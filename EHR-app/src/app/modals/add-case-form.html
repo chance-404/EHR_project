@@ -29,16 +29,40 @@
       <input id="end-time" type="time" formControlName="endTime">
 
       <label for="surgeon">Surgeon:</label>
-      <input id="surgeon" type="text" formControlName="surgeon">
+      <select id="surgeon" formControlName="surgeon">
+        <option value="" disabled selected>-- Select Surgeon --</option>
+        <option *ngFor="let user of surgeonUsers$ | async" 
+          [value]="user.lastName + ', ' + user.firstName">
+          {{user.lastName}}, {{user.firstName}}
+        </option>
+      </select>
 
       <label for="anesthesia">Anesthesia:</label>
-      <input id="anesthesia" type="text" formControlName="anesthesia">
+      <select id="anesthesia" formControlName="anesthesia">
+        <option value="" disabled selected>-- Select Anesthesia --</option>
+        <option *ngFor="let user of anesthesiaUsers$ | async" 
+          [value]="user.lastName + ', ' + user.firstName">
+          {{user.lastName}}, {{user.firstName}}
+        </option>
+      </select>  
 
-      <label for="circulator">Circulator:</label>
-      <input id="circulator" type="text" formControlName="circulator">
+      <label for="nurse">Nurse:</label>
+      <select id="nurse" formControlName="nurse">
+        <option value="">-- Select Nurse (Optional) --</option>
+        <option *ngFor="let user of nurseUsers$ | async" 
+          [value]="user.lastName + ', ' + user.firstName">
+          {{user.lastName}}, {{user.firstName}}
+        </option>
+      </select>  
 
       <label for="scrub">Scrub:</label>
-      <input id="scrub" type="text" formControlName="scrub">
+      <select id="scrub" formControlName="scrub">
+        <option value="">-- Select Scrub (Optional) --</option>
+        <option *ngFor="let user of scrubUsers$ | async" 
+          [value]="user.lastName + ', ' + user.firstName">
+          {{user.lastName}}, {{user.firstName}}
+        </option>
+      </select>
 
       <button type="submit" id="add-case-button" (click)="addCase(data.roomId)">Add Case to Schedule</button>
       <button type="button" id="close-modal-button" (click)="closeModal()">Close</button>

@@ -57,10 +57,11 @@ export class UserService {
     return this.http.delete<void>(`${this.apiServerUrl}/users/delete/${userId}`);
   }
 
-  public addNewUser(firstName: string, lastName: string) {
+  public addNewUser(firstName: string, lastName: string, userRole: string) {
     const User: User = {
       lastName: lastName,
       firstName: firstName,
+      userRole: userRole,
       password: 'password', // TODO: add change password functionality
       userId: this.makeRandomUserId(),
     };

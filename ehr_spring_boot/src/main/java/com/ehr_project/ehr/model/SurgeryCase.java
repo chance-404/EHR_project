@@ -26,7 +26,7 @@ public class SurgeryCase implements Serializable{
   private String anesthesia;
 
   @Column
-  private String circulator;
+  private String nurse;
 
   @Column 
   private String scrub;
@@ -48,7 +48,6 @@ public class SurgeryCase implements Serializable{
   public Long getSurgeryCaseId() {
       return surgeryCaseId;
   }
-
   public void setSurgeryCaseId(Long surgeryCaseId) {
       this.surgeryCaseId = surgeryCaseId;
   }
@@ -56,7 +55,6 @@ public class SurgeryCase implements Serializable{
   public String getProcedure() {
       return procedure;
   }
-
   public void setProcedure(String procedure) {
       this.procedure = procedure;
   }
@@ -64,23 +62,20 @@ public class SurgeryCase implements Serializable{
   public String getSurgeon() {
       return surgeon;
   }
-
   public void setSurgeon(String surgeon) {
       this.surgeon = surgeon;
   }
 
-  public String getCirculator() {
-      return circulator;
+  public String getNurse() {
+      return nurse;
   }
-
-  public void setCirculator(String circulator) {
-      this.circulator = circulator;
+  public void setNurse(String nurse) {
+      this.nurse = nurse;
   }
 
   public String getScrub() {
       return scrub;
   }
-
   public void setScrub(String scrub) {
       this.scrub = scrub;
   }
@@ -88,7 +83,6 @@ public class SurgeryCase implements Serializable{
   public String getPatient() {
       return patient;
   }
-
   public void setPatient(String patient) {
       this.patient = patient;
   }
@@ -96,33 +90,29 @@ public class SurgeryCase implements Serializable{
   public Integer getRoomId() {
       return roomId;
   }
-
   public void setRoomId(Integer roomId) {
       this.roomId = roomId;
   }
 
-    public String getAnesthesia() {
-        return anesthesia;
-    }
+  public String getAnesthesia() {
+      return anesthesia;
+  }
+  public void setAnesthesia(String anesthesia) {
+      this.anesthesia = anesthesia;
+  }
 
-    public void setAnesthesia(String anesthesia) {
-        this.anesthesia = anesthesia;
-    }
+  public Time getStartTime() {
+      return startTime;
+  }
+  public void setStartTime(Time startTime) {
+      this.startTime = startTime;
+  }
 
-    public Time getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Time startTime) {
-        this.startTime = startTime;
-    }
-
-    public Time getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Time endTime) {
-        this.endTime = endTime;
-    }
+  public Time getEndTime() {
+      return endTime;
+  }
+  public void setEndTime(Time endTime) {
+      this.endTime = endTime;
+  }
 
 }

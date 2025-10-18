@@ -7,6 +7,8 @@ import { SurgeryCase } from '../surgery case/surgery-case';
 import { SurgeryCaseService } from '../surgery case/surgery-case.service';
 import { AddCaseComponent } from '../modals/add-case-form';
 import { TimeFormatPipe } from '../pipes/time-format.pipe';
+import { SurgeryCaseComponent } from '../modals/case-form';
+
 
 export interface Room {
   id: number;
@@ -76,6 +78,7 @@ export class FlowBoard implements OnInit {
       next: (response: SurgeryCase[]) => {
         this.surgeryCases = response;
         
+        response.sort((a, b) => a.startTime.localeCompare(b.startTime));
         // Reset all room surgery cases
         this.room1.surgeryCase = [];
         this.room2.surgeryCase = [];
@@ -96,6 +99,7 @@ export class FlowBoard implements OnInit {
         console.error('Error loading surgery cases:', error);
       }
     });
+
   }
 
     public openModal(roomId: number): void {
@@ -104,6 +108,30 @@ export class FlowBoard implements OnInit {
         const dialogRef = this.dialog.open(AddCaseComponent, {
           data: {
             roomId: roomId,
+            flowboard: this
+          },
+          width: '500px',
+          height: '600px',
+          minWidth: '300px',
+          maxHeight: '80vh'
+        });
+
+        dialogRef.closed.subscribe(() => {
+          console.log('Dialog closed successfully');
+          // refresh surgery cases when modal closes
+          this.getSurgeryCases();
+        });
+      } catch (error) {
+        console.error('Error opening dialog:', error);
+      }
+    }
+
+    public openSurgeryCaseModal(surgeryCase: any) {
+      console.log('Opening modal for case:', surgeryCase.surgeryCaseId);
+      try {
+        const dialogRef = this.dialog.open(SurgeryCaseComponent, {
+          data: {
+            SurgeryCase: surgeryCase,
             flowboard: this
           },
           width: '500px',
@@ -133,6 +161,7 @@ export class FlowBoard implements OnInit {
         default: return null;
       }
     }
+
   }
 
 

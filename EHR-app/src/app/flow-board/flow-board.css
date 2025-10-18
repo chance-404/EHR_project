@@ -45,11 +45,19 @@ thead th {
 
 tbody td {
   padding: 8px;
-  border: 1px solid #ccc;
+  border: 2px solid #ccc;
 }
 
-tbody tr:nth-child(even) {
+/* tbody tr:nth-child(even) {
   background: #e4ecf3;
+} */
+
+.surgery-case-row {
+  cursor: pointer;
+}
+
+.surgery-case-row:hover {
+  background-color: #aab5d1;
 }
 
 .add-surgeryCase-btn {
@@ -68,8 +76,4 @@ tbody tr:nth-child(even) {
   box-shadow: 0 4px 8px rgba(8, 45, 83, 0.3);
 }
 
-@media (max-width: 800px) {
-  .room-card {
-    flex: 1 1 100%;
-  }
-}
+

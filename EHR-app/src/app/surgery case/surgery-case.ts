@@ -5,7 +5,7 @@ export interface SurgeryCase {
   endTime: string;
   surgeon: string;
   anesthesia: string;
-  circulator: string;
+  nurse: string;
   scrub: string;
   patient: string;
   roomId: number;

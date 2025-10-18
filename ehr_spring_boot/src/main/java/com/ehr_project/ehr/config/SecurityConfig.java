@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -24,6 +25,7 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+        // disable csrf for stateless APIs
         .csrf(csrf -> csrf.disable())
         // session management is stateless for JWT
         .sessionManagement(session -> session
@@ -31,8 +33,19 @@ public class SecurityConfig {
         .authorizeHttpRequests(authz -> authz
             // all http reqs can access login
             .requestMatchers("/users/login").permitAll()
-            // only authenticated users can access 
-            .requestMatchers("/users/**", "/patients/**").authenticated() 
+            .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+            // allow authenticated users to GET data
+            .requestMatchers(HttpMethod.GET, "/users/**", "/patients/**", "/surgeryCases/**").authenticated()
+            
+            // allow authenticated users to POST data
+            .requestMatchers(HttpMethod.POST,"/patients/**", "/surgeryCases/**").authenticated()
+            
+            // allow authenticated users to PUT (update) data
+            .requestMatchers(HttpMethod.PUT,"/patients/**", "/surgeryCases/**").authenticated()
+            
+            // allow authenticated users to DELETE data
+            .requestMatchers(HttpMethod.DELETE, "/surgeryCases/**").authenticated()
+
             // require authentication for all other reqs
             .anyRequest().authenticated()
         )

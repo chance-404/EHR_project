@@ -30,7 +30,7 @@ export class SurgeryCaseService {
 
   public addSurgeryCaseToSchedule(
     patient: string, procedure: string, startTime: string, endTime: string, surgeon: string, anesthesia: string,
-    circulator: string, scrub: string, roomId: number 
+    nurse: string, scrub: string, roomId: number 
   ) {
     const surgeryCase: SurgeryCase = {
       patient: patient,
@@ -39,7 +39,7 @@ export class SurgeryCaseService {
       endTime: endTime,
       surgeon: surgeon,
       anesthesia: anesthesia,
-      circulator: circulator,
+      nurse: nurse,
       scrub: scrub,
       surgeryCaseId: this.makeRandomSurgeryCaseId(),
       roomId: roomId
