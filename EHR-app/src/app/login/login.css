@@ -1,38 +1,98 @@
-#loginForm input,
-form select {
-  margin: 6px;
-  height: 40px;
-  padding: 8px;
-  width: 25%;
-  font-size: 15px;
-  outline: none;
-  color: #082d53;
-  background: #e8e7f1;
-  border-radius: 3px;
-  border: 1px solid #0c387a;
+#loginForm {
+  /* Center the form on the page */
+  max-width: 400px;
+  margin: 80px auto 0; 
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+  border: 1px solid #e0e0e0;
 }
 
 #loginForm h4 {
-  margin-top: 10px;
-  margin-left: 5px;
-}
-
-#login-button {
-  margin: 7px;
-  padding: 6px 12px; 
-  background-color: #082d53; 
-  color: rgb(208, 210, 223); 
-  border: 0px solid #b3cae4; 
-  border-radius: 4px 4px 4px 4px; 
-  cursor: pointer; 
-  outline: none;
-  font-size: 16px;
-  cursor: pointer;
-  font-weight: 500;
+  margin-top: 0;
+  margin-bottom: 25px;
   text-align: center;
-  transition: 0.1s ease;
+  color: #082d53;
+  font-size: 1.5em;
+  font-weight: 600;
 }
 
- #login-button:hover {
-  background-color: #233975;
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block; /* Make the label sit above the input */
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* Target all form inputs and selects */
+#loginForm input {
+  width: 100%; /* Fill the form container width */
+  height: 45px;
+  padding: 10px;
+  font-size: 16px;
+  color: #333;
+  background: #f8f8f8;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+/* Focus state for a polished look */
+#loginForm input:focus {
+  border-color: #0c387a; /* Primary color highlight */
+  box-shadow: 0 0 0 3px rgba(12, 56, 122, 0.2); /* Soft blue glow */
+  background-color: #ffffff;
+}
+
+/* --- Error Styling --- */
+
+/* Style for inputs that have validation errors */
+#loginForm input.error {
+  border-color: #d9534f; /* Red border for invalid fields */
+  background-color: #fce8e8; /* Light red background to draw attention */
+}
+
+/* Main error message for login failures */
+.error-message {
+  color: #a94442 !important; /* Darker red for contrast */
+  background-color: #f2dede;
+  border: 1px solid #ebccd1;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px !important;
+  text-align: center;
+}
+
+/* Validation message below the field */
+.field-error small {
+  color: #d9534f; /* Match input error color */
+  font-size: 0.85em;
+  display: block;
+  margin-top: 5px;
+}
+
+/* --- Button Styling --- */
+#login-button {
+  width: 100%; /* Full width button */
+  padding: 12px;
+  margin-top: 10px; /* Space after the last form field */
+  background-color: #0c387a; /* Strong, dark primary blue */
+  color: white; /* White text for contrast */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+#login-button:hover {
+  background-color: #174291; /* Slightly lighter shade on hover */
 }

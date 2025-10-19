@@ -4,7 +4,7 @@
   <h4>Login:</h4>
 
   <!-- Error message -->
-  <div *ngIf="errorMessage" class="error-message" style="color: red; margin-bottom: 10px;">
+  <div *ngIf="errorMessage" class="error-message">
     {{ errorMessage }}
   </div>
 
@@ -18,9 +18,6 @@
     </div>
   </div>
 
-  <br>
-  <br>
-
   <div class="form-group">
     <label for= "password" placeholder= "enter password">Password:</label>
     <input id= "password" type= "password" formControlName= "password"
@@ -30,9 +27,6 @@
       <small *ngIf="loginForm.get('password')?.errors?.['required']">Enter password</small>
     </div>
   </div>
-
-  <br>
-  <br>
 
   <button type= "submit" id= "login-button">Login</button>
   
