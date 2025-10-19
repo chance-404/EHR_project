@@ -7,6 +7,7 @@ import { Login } from './login/login';
 import { Logout } from './logout/logout';
 import { AuthGuard } from './service/auth-guard';
 import { NgModule } from '@angular/core';
+import { PatientInfo } from './patient-info/patient-info';
 
 
 export const routes: Routes = [
@@ -23,6 +24,10 @@ export const routes: Routes = [
     },
 
     {path: 'flow-board', component: FlowBoard,
+      canActivate: [AuthGuard]
+    },
+
+    {path: 'patient-info/:mrn', component: PatientInfo,
       canActivate: [AuthGuard]
     },
 

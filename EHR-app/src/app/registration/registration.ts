@@ -20,13 +20,15 @@ export class Registration {
     middleName: new FormControl(''),
     lastName: new FormControl('', [Validators.required]),
     dateOfBirth: new FormControl<Date | null>(null),
-    sex: new FormControl('')
+    sex: new FormControl(''),
+    age: new FormControl('')
   });
 
   registerPatient() {
     const dateOfBirthValue = this.registerPatientForm.value.dateOfBirth;
     const dateOfBirth = dateOfBirthValue ? new Date(dateOfBirthValue) : new Date();
-
+    const age = Number(this.registerPatientForm.value.age) || 0;
+    
     if (this.registerPatientForm.invalid) {
       console.log('Form is invalid');
       this.snackBar.open('Must enter first and last name at minimum.', 'Close', {
@@ -41,7 +43,8 @@ export class Registration {
       this.registerPatientForm.value.middleName ?? '',
       this.registerPatientForm.value.lastName ?? '',
       dateOfBirth,
-      this.registerPatientForm.value.sex ?? ''
+      this.registerPatientForm.value.sex ?? '',
+      age
     ).subscribe({
       
       next: (response) => {

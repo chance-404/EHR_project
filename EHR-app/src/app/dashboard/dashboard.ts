@@ -17,7 +17,8 @@ import { AuthenticationService } from '../authentication/authentication.service'
 
 export class Dashboard implements OnInit {
 
-  constructor(private patientService: PatientService, public authenticationService: AuthenticationService) {}
+  constructor(private patientService: PatientService, 
+              public authenticationService: AuthenticationService) {}
 
   public patients!: Patient[];
   private allPatients!: Patient[];
@@ -42,6 +43,21 @@ export class Dashboard implements OnInit {
         alert(error.message);
       }
     });
+  }
+
+  public patientRowClick(patient: Patient, event?: Event): void {
+    console.log('Patient:', patient);
+    console.log('MRN:', patient.mrn);
+    console.log('Router instance:', this.router);
+    
+    try {
+      this.router.navigate(['/patient-info', patient.mrn]).then(
+        (success) => console.log('Navigation success:', success),
+        (error) => console.error('Navigation error:', error)
+      );
+    } catch (error) {
+      console.error('Exception during navigation:', error);
+    }
   }
 
   public sortBy(column: keyof Patient, type: 'string' | 'number'): void {

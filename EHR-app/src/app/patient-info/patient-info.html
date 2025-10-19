@@ -1,0 +1,108 @@
+<app-header></app-header>
+
+<div class="demographics-header" *ngIf="patient">
+  <div class="demographic-item name">
+    <span class="label">Name:</span> 
+    <strong>{{ patient.lastName }}, {{ patient.firstName }} {{ patient.middleName }}</strong>
+  </div>
+  <div class="demographic-item mrn">
+    <span class="label">MRN:</span> 
+    <strong>{{ patient.mrn }}</strong>
+  </div>
+  <div class="demographic-item dob">
+    <span class="label">DOB:</span> 
+    {{ patient.dateOfBirth | date: 'dd/MM/yyy' }}
+  </div>
+  <div class="demographic-item age">
+    <span class="label">Age:</span> 
+    {{ patient.age }}
+  </div>
+  <div class="demographic-item sex">
+    <span class="label">Sex:</span> 
+    {{ patient.sex }}
+  </div>
+</div>
+
+
+<div class="main-grid-container">
+
+  <div class="grid-card allergies-meds-card">
+    <h3 class="card-title">Allergies & Medications</h3>
+    
+    <div class="card-section">
+      <h5>Allergies:</h5>
+      <ul>
+        <li *ngFor="let allergy of allergies" class="abnormal-list-item">{{ allergy }}</li>
+      </ul>
+    </div>
+
+    <div class="med-list">
+      <h5>Current Medications:</h5>
+      <ul>
+        <li *ngFor="let med of medications">{{ med }}</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid-card history-card">
+    <h3 class="card-title">Medical History</h3>
+    <table class="history-table">
+      <thead>
+        <tr>
+          <th>Diagnosis</th>
+          <th>Date of Diagnosis</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let history of history">
+          <td style="width:80%">{{ history.label }}</td>
+          <td style="width:20%">{{ history.dateOfDx }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid-card vitals-card">
+    <h3 class="card-title">Vital Signs</h3>
+    <ul class="vitals-list">
+      <li *ngFor="let vital of vitals">
+        <span class="vital-label">{{ vital.label }}:</span>
+        <span class="vital-value">{{ vital.value }}</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="grid-card labs-card">
+    <h3 class="card-title">Lab Values</h3>
+    
+    <div class="lab-group">
+      <h4>Complete Blood Count (CBC)</h4>
+      <ul class="lab-list">
+        <li *ngFor="let item of cbc" [class.abnormal]="item.abnormal">
+          <span class="lab-label">{{ item.label }}:</span>
+          <span class="lab-value">{{ item.value }} {{ item.units }}</span>
+          <span class="lab-ref">(Ref: {{ item.reference }})</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="lab-group">
+      <h4>Comprehensive Metabolic Panel (CMP)</h4>
+      <ul class="lab-list">
+        <li *ngFor="let item of cmp" [class.abnormal]="item.abnormal">
+          <span class="lab-label">{{ item.label }}:</span>
+          <span class="lab-value">{{ item.value }} {{ item.units }}</span>
+          <span class="lab-ref">(Ref: {{ item.reference }})</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid-card imaging-card">
+    <h3 class="card-title">Imaging Results</h3>
+    <ul>
+      <li *ngFor="let result of imagingResults">{{ result }}</li>
+    </ul>
+  </div>
+
+</div>

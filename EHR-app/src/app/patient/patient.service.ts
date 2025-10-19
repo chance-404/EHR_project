@@ -16,6 +16,10 @@ export class PatientService {
     return this.http.get<Patient[]>(`${this.apiServerUrl}/patients/all`);
   }
 
+  public getPatientByMrn(mrn: number): Observable<Patient> {
+    return this.http.get<Patient>(`${this.apiServerUrl}/patients/find/${mrn}`);
+  }
+
   public addPatient(patient: Patient): Observable<Patient> {
     return this.http.post<Patient>(`${this.apiServerUrl}/patients/add`, patient);
   }
@@ -28,13 +32,14 @@ export class PatientService {
     return this.http.delete<void>(`${this.apiServerUrl}/patients/delete/${patientMrn}`);
   }
 
-  public registerPatient(firstName: string, middleName: string, lastName: string, dateOfBirth: Date, sex: string) {
+  public registerPatient(firstName: string, middleName: string, lastName: string, dateOfBirth: Date, sex: string, age: number) {
     const patient: Patient = {
       firstName: firstName,
       middleName: middleName,
       lastName: lastName,
       dateOfBirth: dateOfBirth,
       sex: sex,
+      age: age,
       mrn: this.makeRandomMRN()
     };
 
@@ -53,7 +58,6 @@ export class PatientService {
   private makeRandomMRN(): number {
     return Math.floor(Math.random() * 1000000);
   }
-
 
 
 }

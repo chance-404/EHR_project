@@ -37,7 +37,7 @@
     </form>
 
 </nav>
-<table class = "table table-striped" style = "width:60%">
+<table class = "patient-table">
   <thead>
     <tr>
       <th>
@@ -92,7 +92,9 @@
   </thead>
   
   <tbody>  
-    <tr *ngFor="let patient of patients">
+    <tr class="patient-row" 
+        *ngFor="let patient of patients" 
+        (click)="patientRowClick(patient, $event)">
       <td>{{patient?.mrn}}</td>
       <td>{{patient?.lastName}}</td>
       <td>{{patient?.firstName}}</td>
