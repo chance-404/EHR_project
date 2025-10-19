@@ -43,7 +43,7 @@ export class SurgeryCaseService {
       scrub: scrub,
       surgeryCaseId: this.makeRandomSurgeryCaseId(),
       roomId: roomId,
-      surgeryCaseStatus: 'Patient not here yet'
+      surgeryCaseStatus: 'Patient not here yet',
     }
     return this.addSurgeryCase(surgeryCase).pipe(
           catchError(error => {

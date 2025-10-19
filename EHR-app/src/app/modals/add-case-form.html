@@ -14,7 +14,7 @@
           <div class="search-result-item" 
                *ngFor="let patient of filteredPatients"
                (click)="selectPatient(patient)">
-           {{patient.lastName}}, {{patient.firstName}} ({{patient.mrn}})
+           {{patient.lastName}}, {{patient.firstName}} {{patient.dateOfBirth}} ({{patient.mrn}})
           </div>
         </div>
       </div>

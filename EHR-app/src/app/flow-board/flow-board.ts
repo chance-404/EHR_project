@@ -8,6 +8,7 @@ import { SurgeryCaseService } from '../surgery case/surgery-case.service';
 import { AddCaseComponent } from '../modals/add-case-form';
 import { TimeFormatPipe } from '../pipes/time-format.pipe';
 import { SurgeryCaseComponent } from '../modals/case-form';
+import { PatientService } from '../patient/patient.service';
 
 
 export interface Room {
@@ -26,6 +27,7 @@ export interface Room {
 export class FlowBoard implements OnInit {
   private surgeryCaseService = inject(SurgeryCaseService);
   private dialog = inject(Dialog);
+  private patientService = inject(PatientService);
   public surgeryCases!: SurgeryCase[];
   
 
@@ -70,99 +72,113 @@ export class FlowBoard implements OnInit {
   }
 
   ngOnInit() {
-    this.getSurgeryCases();
+    this.loadFlowboardData();
   }
 
-  public getSurgeryCases(): void {
-    this.surgeryCaseService.getSurgeryCases().subscribe({
-      next: (response: SurgeryCase[]) => {
-        this.surgeryCases = response;
-        
-        response.sort((a, b) => a.startTime.localeCompare(b.startTime));
-        // Reset all room surgery cases
-        this.room1.surgeryCase = [];
-        this.room2.surgeryCase = [];
-        this.room3.surgeryCase = [];
-        this.room4.surgeryCase = [];
-        this.room5.surgeryCase = [];
-        this.room6.surgeryCase = [];
-
-        // Add surgery cases to correct rooms
-        response.forEach(surgeryCase => {
-          const room = this.getRoomById(surgeryCase.roomId);
-          if (room) {
-            room.surgeryCase.push(surgeryCase);
+  public loadFlowboardData(): void {
+    this.surgeryCaseService.getSurgeryCases().subscribe(cases => {
+      this.patientService.getPatients().subscribe(patients => {
+        // map to lookup patients by MRN
+        const patientMap = new Map(patients.map(p => [p.mrn, p]));
+        // link each case to the full patient object
+        cases.forEach(surgeryCase => {
+          const mrn = this.extractMrnFromString(surgeryCase.patient);
+          if (mrn) {
+            surgeryCase.fullPatient = patientMap.get(mrn);
           }
         });
-      },
-      error: (error) => {
-        console.error('Error loading surgery cases:', error);
+
+        // sort cases by start time
+        cases.sort((a, b) => a.startTime.localeCompare(b.startTime));
+        this.surgeryCases = cases;
+        this.distributeCasesToRooms();
+      });
+    });
+  }
+
+  private distributeCasesToRooms(): void { 
+    this.room1.surgeryCase = [];
+    this.room2.surgeryCase = [];
+    this.room3.surgeryCase = [];
+    this.room4.surgeryCase = [];
+    this.room5.surgeryCase = [];
+    this.room6.surgeryCase = [];
+
+    this.surgeryCases.forEach(surgeryCase => {
+      const room = this.getRoomById(surgeryCase.roomId);
+      if (room) {
+        room.surgeryCase.push(surgeryCase);
       }
     });
+  }    
 
+  private extractMrnFromString(patientString: string): number | undefined {
+    const match = patientString.match(/\((\d+)\)/);
+    return match ? parseInt(match[1], 10) : undefined;
+  }
+    
+
+  public openModal(roomId: number): void {
+    console.log('Opening modal for room:', roomId);
+    try {
+      const dialogRef = this.dialog.open(AddCaseComponent, {
+        data: {
+          roomId: roomId,
+          flowboard: this
+        },
+        width: '500px',
+        height: '600px',
+        minWidth: '300px',
+        maxHeight: '80vh'
+      });
+
+      dialogRef.closed.subscribe(() => {
+        console.log('Dialog closed successfully');
+        // refresh surgery cases when modal closes
+        this.loadFlowboardData();
+      });
+    } catch (error) {
+      console.error('Error opening dialog:', error);
+    }
   }
 
-    public openModal(roomId: number): void {
-      console.log('Opening modal for room:', roomId);
-      try {
-        const dialogRef = this.dialog.open(AddCaseComponent, {
-          data: {
-            roomId: roomId,
-            flowboard: this
-          },
-          width: '500px',
-          height: '600px',
-          minWidth: '300px',
-          maxHeight: '80vh'
-        });
+  public openSurgeryCaseModal(surgeryCase: any) {
+    console.log('Opening modal for case:', surgeryCase.surgeryCaseId);
+    try {
+      const dialogRef = this.dialog.open(SurgeryCaseComponent, {
+        data: {
+          SurgeryCase: surgeryCase,
+          flowboard: this
+        },
+        width: '500px',
+        height: '600px',
+        minWidth: '300px',
+        maxHeight: '80vh'
+      });
 
-        dialogRef.closed.subscribe(() => {
-          console.log('Dialog closed successfully');
-          // refresh surgery cases when modal closes
-          this.getSurgeryCases();
-        });
-      } catch (error) {
-        console.error('Error opening dialog:', error);
-      }
+      dialogRef.closed.subscribe(() => {
+        console.log('Dialog closed successfully');
+        // refresh surgery cases when modal closes
+        this.loadFlowboardData();
+      });
+    } catch (error) {
+      console.error('Error opening dialog:', error);
     }
-
-    public openSurgeryCaseModal(surgeryCase: any) {
-      console.log('Opening modal for case:', surgeryCase.surgeryCaseId);
-      try {
-        const dialogRef = this.dialog.open(SurgeryCaseComponent, {
-          data: {
-            SurgeryCase: surgeryCase,
-            flowboard: this
-          },
-          width: '500px',
-          height: '600px',
-          minWidth: '300px',
-          maxHeight: '80vh'
-        });
-
-        dialogRef.closed.subscribe(() => {
-          console.log('Dialog closed successfully');
-          // refresh surgery cases when modal closes
-          this.getSurgeryCases();
-        });
-      } catch (error) {
-        console.error('Error opening dialog:', error);
-      }
-    }
-
-    public getRoomById(id: number): Room | null {
-      switch(id) {
-        case 1: return this.room1;
-        case 2: return this.room2;
-        case 3: return this.room3;
-        case 4: return this.room4;
-        case 5: return this.room5;
-        case 6: return this.room6;
-        default: return null;
-      }
-    }
-
   }
+
+  public getRoomById(id: number): Room | null {
+    switch(id) {
+      case 1: return this.room1;
+      case 2: return this.room2;
+      case 3: return this.room3;
+      case 4: return this.room4;
+      case 5: return this.room5;
+      case 6: return this.room6;
+      default: return null;
+    }
+  }
+
+}
 
 
 

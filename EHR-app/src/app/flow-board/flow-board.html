@@ -8,6 +8,7 @@
         <tr>
           <th>Start Time</th>
           <th>End Time</th>
+          <th>Status</th>
           <th>Patient</th>
           <th>Procedure</th>
           <th>Surgeon</th>
@@ -30,7 +31,11 @@
             }">
           <td>{{ surgeryCase.startTime | timeFormat }}</td>
           <td>{{ surgeryCase.endTime | timeFormat }}</td>
-          <td>{{ surgeryCase.patient }}</td>
+          <td>{{ surgeryCase.surgeryCaseStatus }}</td>
+          <td>{{ surgeryCase.fullPatient?.lastName }}, {{ surgeryCase.fullPatient?.firstName }} 
+              {{ surgeryCase.fullPatient?.dateOfBirth | date:'MM/dd/yyyy' }} 
+              ({{ surgeryCase.fullPatient?.mrn }})
+          </td>
           <td>{{ surgeryCase.procedure }}</td>
           <td>{{ surgeryCase.surgeon }}</td>
           <td>{{ surgeryCase.anesthesia }}</td>
@@ -48,6 +53,7 @@
         <tr>
           <th>Start Time</th>
           <th>End Time</th>
+          <th>Status</th>
           <th>Patient</th>
           <th>Procedure</th>
           <th>Surgeon</th>
@@ -70,7 +76,11 @@
             }">
           <td>{{ surgeryCase.startTime | timeFormat }}</td>
           <td>{{ surgeryCase.endTime | timeFormat }}</td>
-          <td>{{ surgeryCase.patient }}</td>
+          <td>{{ surgeryCase.surgeryCaseStatus }}</td>
+          <td>{{ surgeryCase.fullPatient?.lastName }}, {{ surgeryCase.fullPatient?.firstName }} 
+              {{ surgeryCase.fullPatient?.dateOfBirth | date:'MM/dd/yyyy' }} 
+              ({{ surgeryCase.fullPatient?.mrn }})
+          </td>
           <td>{{ surgeryCase.procedure }}</td>
           <td>{{ surgeryCase.surgeon }}</td>
           <td>{{ surgeryCase.anesthesia }}</td>
@@ -88,6 +98,7 @@
         <tr>
           <th>Start Time</th>
           <th>End Time</th>
+          <th>Status</th>
           <th>Patient</th>
           <th>Procedure</th>
           <th>Surgeon</th>
@@ -110,7 +121,11 @@
             }">
           <td>{{ surgeryCase.startTime | timeFormat }}</td>
           <td>{{ surgeryCase.endTime | timeFormat }}</td>
-          <td>{{ surgeryCase.patient }}</td>
+          <td>{{ surgeryCase.surgeryCaseStatus }}</td>
+          <td>{{ surgeryCase.fullPatient?.lastName }}, {{ surgeryCase.fullPatient?.firstName }} 
+              {{ surgeryCase.fullPatient?.dateOfBirth | date:'MM/dd/yyyy' }} 
+              ({{ surgeryCase.fullPatient?.mrn }})
+          </td>
           <td>{{ surgeryCase.procedure }}</td>
           <td>{{ surgeryCase.surgeon }}</td>
           <td>{{ surgeryCase.anesthesia }}</td>
@@ -128,6 +143,7 @@
         <tr>
           <th>Start Time</th>
           <th>End Time</th>
+          <th>Status</th>
           <th>Patient</th>
           <th>Procedure</th>
           <th>Surgeon</th>
@@ -150,7 +166,11 @@
             }">
           <td>{{ surgeryCase.startTime | timeFormat }}</td>
           <td>{{ surgeryCase.endTime | timeFormat }}</td>
-          <td>{{ surgeryCase.patient }}</td>
+          <td>{{ surgeryCase.surgeryCaseStatus }}</td>
+          <td>{{ surgeryCase.fullPatient?.lastName }}, {{ surgeryCase.fullPatient?.firstName }} 
+              {{ surgeryCase.fullPatient?.dateOfBirth | date:'MM/dd/yyyy' }} 
+              ({{ surgeryCase.fullPatient?.mrn }})
+          </td>
           <td>{{ surgeryCase.procedure }}</td>
           <td>{{ surgeryCase.surgeon }}</td>
           <td>{{ surgeryCase.anesthesia }}</td>
@@ -168,6 +188,7 @@
         <tr>
           <th>Start Time</th>
           <th>End Time</th>
+          <th>Status</th>
           <th>Patient</th>
           <th>Procedure</th>
           <th>Surgeon</th>
@@ -190,7 +211,11 @@
             }">
           <td>{{ surgeryCase.startTime | timeFormat }}</td>
           <td>{{ surgeryCase.endTime | timeFormat }}</td>
-          <td>{{ surgeryCase.patient }}</td>
+          <td>{{ surgeryCase.surgeryCaseStatus }}</td>
+          <td>{{ surgeryCase.fullPatient?.lastName }}, {{ surgeryCase.fullPatient?.firstName }} 
+              {{ surgeryCase.fullPatient?.dateOfBirth | date:'MM/dd/yyyy' }} 
+              ({{ surgeryCase.fullPatient?.mrn }})
+          </td>
           <td>{{ surgeryCase.procedure }}</td>
           <td>{{ surgeryCase.surgeon }}</td>
           <td>{{ surgeryCase.anesthesia }}</td>
@@ -208,6 +233,7 @@
         <tr>
           <th>Start Time</th>
           <th>End Time</th>
+          <th>Status</th>
           <th>Patient</th>
           <th>Procedure</th>
           <th>Surgeon</th>
@@ -230,7 +256,11 @@
             }">
           <td>{{ surgeryCase.startTime | timeFormat }}</td>
           <td>{{ surgeryCase.endTime | timeFormat }}</td>
-          <td>{{ surgeryCase.patient }}</td>
+          <td>{{ surgeryCase.surgeryCaseStatus }}</td>
+          <td>{{ surgeryCase.fullPatient?.lastName }}, {{ surgeryCase.fullPatient?.firstName }} 
+              {{ surgeryCase.fullPatient?.dateOfBirth | date:'MM/dd/yyyy' }} 
+              ({{ surgeryCase.fullPatient?.mrn }})
+          </td>
           <td>{{ surgeryCase.procedure }}</td>
           <td>{{ surgeryCase.surgeon }}</td>
           <td>{{ surgeryCase.anesthesia }}</td>
