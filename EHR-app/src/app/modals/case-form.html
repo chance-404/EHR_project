@@ -49,6 +49,9 @@
           {{user.lastName}}, {{user.firstName}}
         </option>
       </select>
+
+      <label id="notes">Notes:</label>
+      <textarea cols="55" rows="4"></textarea>
       
       <label for="roomDropdown">Move case to room:</label>
       <select id="roomDropdown" formControlName="selectedRoom">
@@ -59,6 +62,18 @@
         <option value="room5">Room 5</option>
         <option value="room6">Room 6</option>
       </select>
+
+      <label for="surgery-case-status">Case Status:</label>
+      <select id="surgery-case-status" formControlName="surgeryCaseStatus">
+        <option value="Patient not here yet">Patient not here yet</option>
+        <option value="Patient waiting">Patient waiting</option>
+        <option value="Patient in pre-op">Patient in pre-op</option>
+        <option value="Patient ready">Patient ready</option>
+        <option value="Patient in OR">Patient in OR</option>
+        <option value="Patient in PACU">Patient in PACU</option>
+        <option value="Patient in ASU">Patient in ASU</option>
+      </select>
+
       <button type="submit" id="update-case-button" (click)="updateSurgeryCase()">Update Case</button>
       <button type="submit" id="delete-case-button" (click)="deleteCase(data.SurgeryCase)">Delete Case</button>
       <button type="button" id="close-modal-button" (click)="closeModal()">Close</button>

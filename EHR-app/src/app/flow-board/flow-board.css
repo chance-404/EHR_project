@@ -45,7 +45,7 @@ thead th {
 
 tbody td {
   padding: 8px;
-  border: 2px solid #ccc;
+  border: 0px solid #ccc;
 }
 
 /* tbody tr:nth-child(even) {
@@ -74,6 +74,38 @@ tbody td {
 .add-surgeryCase-btn:hover {
   background-color: #233975;
   box-shadow: 0 4px 8px rgba(8, 45, 83, 0.3);
+}
+
+.surgery-case-row td {
+  color: #333;
+}
+
+.status-not-here {
+  background-color: #f8f9fa;
+}
+
+.status-waiting {
+  background-color: #be40b8;
+}
+
+.status-pre-op {
+  background-color: #5097e9; 
+}
+
+.status-ready {
+  background-color: #57bd5c;
+}
+
+.status-in-or {
+  background-color: #f86c1b;
+}
+
+.status-pacu {
+  background-color: #6a5bbe;
+}
+
+.status-asu {
+  background-color: #fd3d3dc0;
 }
 
 

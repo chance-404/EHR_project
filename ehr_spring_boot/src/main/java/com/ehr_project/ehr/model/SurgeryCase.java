@@ -43,6 +43,9 @@ public class SurgeryCase implements Serializable{
   @Column 
   private Time endTime;
 
+  @Column
+  private String surgeryCaseStatus;
+
   
 
   public Long getSurgeryCaseId() {
@@ -113,6 +116,13 @@ public class SurgeryCase implements Serializable{
   }
   public void setEndTime(Time endTime) {
       this.endTime = endTime;
+  }
+
+  public String getSurgeryCaseStatus() {
+      return surgeryCaseStatus;
+  }
+  public void setSurgeryCaseStatus(String surgeryCaseStatus) {
+      this.surgeryCaseStatus = surgeryCaseStatus;
   }
 
 }

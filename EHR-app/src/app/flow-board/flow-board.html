@@ -17,7 +17,17 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="surgery-case-row" *ngFor="let surgeryCase of room1.surgeryCase" (click)="openSurgeryCaseModal(surgeryCase)">
+        <tr class="surgery-case-row" *ngFor="let surgeryCase of room1.surgeryCase" 
+            (click)="openSurgeryCaseModal(surgeryCase)"
+            [ngClass]="{
+              'status-not-here': surgeryCase.surgeryCaseStatus === 'Patient not here',
+              'status-waiting': surgeryCase.surgeryCaseStatus === 'Patient waiting',
+              'status-pre-op': surgeryCase.surgeryCaseStatus === 'Patient in pre-op',
+              'status-ready': surgeryCase.surgeryCaseStatus === 'Patient ready',
+              'status-in-or': surgeryCase.surgeryCaseStatus === 'Patient in OR',
+              'status-pacu': surgeryCase.surgeryCaseStatus === 'Patient in PACU',
+              'status-asu': surgeryCase.surgeryCaseStatus === 'Patient in ASU'
+            }">
           <td>{{ surgeryCase.startTime | timeFormat }}</td>
           <td>{{ surgeryCase.endTime | timeFormat }}</td>
           <td>{{ surgeryCase.patient }}</td>
@@ -47,7 +57,17 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="surgery-case-row" *ngFor="let surgeryCase of room2.surgeryCase" (click)="openSurgeryCaseModal(surgeryCase)">
+        <tr class="surgery-case-row" *ngFor="let surgeryCase of room2.surgeryCase" 
+            (click)="openSurgeryCaseModal(surgeryCase)"
+            [ngClass]="{
+              'status-not-here': surgeryCase.surgeryCaseStatus === 'Patient not here',
+              'status-waiting': surgeryCase.surgeryCaseStatus === 'Patient waiting',
+              'status-pre-op': surgeryCase.surgeryCaseStatus === 'Patient in pre-op',
+              'status-ready': surgeryCase.surgeryCaseStatus === 'Patient ready',
+              'status-in-or': surgeryCase.surgeryCaseStatus === 'Patient in OR',
+              'status-pacu': surgeryCase.surgeryCaseStatus === 'Patient in PACU',
+              'status-asu': surgeryCase.surgeryCaseStatus === 'Patient in ASU'
+            }">
           <td>{{ surgeryCase.startTime | timeFormat }}</td>
           <td>{{ surgeryCase.endTime | timeFormat }}</td>
           <td>{{ surgeryCase.patient }}</td>
@@ -77,7 +97,17 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="surgery-case-row" *ngFor="let surgeryCase of room3.surgeryCase" (click)="openSurgeryCaseModal(surgeryCase)">
+        <tr class="surgery-case-row" *ngFor="let surgeryCase of room3.surgeryCase" 
+            (click)="openSurgeryCaseModal(surgeryCase)"
+            [ngClass]="{
+              'status-not-here': surgeryCase.surgeryCaseStatus === 'Patient not here',
+              'status-waiting': surgeryCase.surgeryCaseStatus === 'Patient waiting',
+              'status-pre-op': surgeryCase.surgeryCaseStatus === 'Patient in pre-op',
+              'status-ready': surgeryCase.surgeryCaseStatus === 'Patient ready',
+              'status-in-or': surgeryCase.surgeryCaseStatus === 'Patient in OR',
+              'status-pacu': surgeryCase.surgeryCaseStatus === 'Patient in PACU',
+              'status-asu': surgeryCase.surgeryCaseStatus === 'Patient in ASU'
+            }">
           <td>{{ surgeryCase.startTime | timeFormat }}</td>
           <td>{{ surgeryCase.endTime | timeFormat }}</td>
           <td>{{ surgeryCase.patient }}</td>
@@ -107,7 +137,17 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="surgery-case-row" *ngFor="let surgeryCase of room4.surgeryCase" (click)="openSurgeryCaseModal(surgeryCase)">
+        <tr class="surgery-case-row" *ngFor="let surgeryCase of room4.surgeryCase" 
+            (click)="openSurgeryCaseModal(surgeryCase)"
+            [ngClass]="{
+              'status-not-here': surgeryCase.surgeryCaseStatus === 'Patient not here',
+              'status-waiting': surgeryCase.surgeryCaseStatus === 'Patient waiting',
+              'status-pre-op': surgeryCase.surgeryCaseStatus === 'Patient in pre-op',
+              'status-ready': surgeryCase.surgeryCaseStatus === 'Patient ready',
+              'status-in-or': surgeryCase.surgeryCaseStatus === 'Patient in OR',
+              'status-pacu': surgeryCase.surgeryCaseStatus === 'Patient in PACU',
+              'status-asu': surgeryCase.surgeryCaseStatus === 'Patient in ASU'
+            }">
           <td>{{ surgeryCase.startTime | timeFormat }}</td>
           <td>{{ surgeryCase.endTime | timeFormat }}</td>
           <td>{{ surgeryCase.patient }}</td>
@@ -137,7 +177,17 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="surgery-case-row" *ngFor="let surgeryCase of room5.surgeryCase" (click)="openSurgeryCaseModal(surgeryCase)">
+        <tr class="surgery-case-row" *ngFor="let surgeryCase of room5.surgeryCase" 
+            (click)="openSurgeryCaseModal(surgeryCase)"
+            [ngClass]="{
+              'status-not-here': surgeryCase.surgeryCaseStatus === 'Patient not here',
+              'status-waiting': surgeryCase.surgeryCaseStatus === 'Patient waiting',
+              'status-pre-op': surgeryCase.surgeryCaseStatus === 'Patient in pre-op',
+              'status-ready': surgeryCase.surgeryCaseStatus === 'Patient ready',
+              'status-in-or': surgeryCase.surgeryCaseStatus === 'Patient in OR',
+              'status-pacu': surgeryCase.surgeryCaseStatus === 'Patient in PACU',
+              'status-asu': surgeryCase.surgeryCaseStatus === 'Patient in ASU'
+            }">
           <td>{{ surgeryCase.startTime | timeFormat }}</td>
           <td>{{ surgeryCase.endTime | timeFormat }}</td>
           <td>{{ surgeryCase.patient }}</td>
@@ -167,7 +217,17 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="surgery-case-row" *ngFor="let surgeryCase of room6.surgeryCase" (click)="openSurgeryCaseModal(surgeryCase)">
+        <tr class="surgery-case-row" *ngFor="let surgeryCase of room6.surgeryCase" 
+            (click)="openSurgeryCaseModal(surgeryCase)"
+            [ngClass]="{
+              'status-not-here': surgeryCase.surgeryCaseStatus === 'Patient not here',
+              'status-waiting': surgeryCase.surgeryCaseStatus === 'Patient waiting',
+              'status-pre-op': surgeryCase.surgeryCaseStatus === 'Patient in pre-op',
+              'status-ready': surgeryCase.surgeryCaseStatus === 'Patient ready',
+              'status-in-or': surgeryCase.surgeryCaseStatus === 'Patient in OR',
+              'status-pacu': surgeryCase.surgeryCaseStatus === 'Patient in PACU',
+              'status-asu': surgeryCase.surgeryCaseStatus === 'Patient in ASU'
+            }">
           <td>{{ surgeryCase.startTime | timeFormat }}</td>
           <td>{{ surgeryCase.endTime | timeFormat }}</td>
           <td>{{ surgeryCase.patient }}</td>

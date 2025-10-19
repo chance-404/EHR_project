@@ -157,6 +157,7 @@ input[type="search"]:focus {
   background-color: #cbd5e0;
 }
 
+
 /* Scrollbar styling for modal content */
 .modal-content::-webkit-scrollbar {
   width: 8px;

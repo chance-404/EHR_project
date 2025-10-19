@@ -42,7 +42,8 @@ export class SurgeryCaseService {
       nurse: nurse,
       scrub: scrub,
       surgeryCaseId: this.makeRandomSurgeryCaseId(),
-      roomId: roomId
+      roomId: roomId,
+      surgeryCaseStatus: 'Patient not here yet'
     }
     return this.addSurgeryCase(surgeryCase).pipe(
           catchError(error => {

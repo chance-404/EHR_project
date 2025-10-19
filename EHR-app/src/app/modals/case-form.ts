@@ -38,7 +38,8 @@ export class SurgeryCaseComponent implements OnInit{
     anesthesia: new FormControl('', [Validators.required]),
     nurse: new FormControl(''),
     scrub: new FormControl(''),      
-    selectedRoom: new FormControl('')
+    selectedRoom: new FormControl(''),
+    surgeryCaseStatus: new FormControl('')
   });
 
   surgeonUsers$: Observable<User[]>;
@@ -82,7 +83,8 @@ export class SurgeryCaseComponent implements OnInit{
         anesthesia: this.currentSurgeryCase.anesthesia,
         nurse: this.currentSurgeryCase.nurse,
         scrub: this.currentSurgeryCase.scrub,
-        selectedRoom: 'room' + this.currentSurgeryCase.roomId.toString() 
+        selectedRoom: 'room' + this.currentSurgeryCase.roomId.toString(), 
+        surgeryCaseStatus: this.currentSurgeryCase.surgeryCaseStatus
       })
     }
   }
@@ -103,7 +105,8 @@ export class SurgeryCaseComponent implements OnInit{
         anesthesia: formValue.anesthesia!,
         nurse: formValue.nurse!,
         scrub: formValue.scrub!,
-        roomId: newRoomId!
+        roomId: newRoomId!,
+        surgeryCaseStatus: formValue.surgeryCaseStatus!
       }
 
       this.surgeryCaseService.updateSurgeryCase(updatedSurgeryCase).subscribe({
