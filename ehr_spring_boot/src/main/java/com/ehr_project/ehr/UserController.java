@@ -44,6 +44,12 @@ public class UserController {
     return new ResponseEntity<>(user, HttpStatus.OK);
   }
 
+  @PostMapping("/register")
+  public ResponseEntity<User> registerUser(@RequestBody User user) {
+    User newUser = userService.addUser(user);
+    return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+  }
+
   // calls public functions in Userservice.java to check userID and password in UserRepo
   @PostMapping("/login")
   public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
