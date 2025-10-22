@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { User } from './user';
+import { environment } from '../../environments/environment';
 
 
 export interface LoginRequest{
@@ -19,7 +20,7 @@ export interface LoginResponse {
 })
 export class UserService {
 
-  private apiServerUrl = "http://localhost:8080";
+  private apiServerUrl = environment.apiServerUrl;
 
   constructor(private http: HttpClient) { }
 

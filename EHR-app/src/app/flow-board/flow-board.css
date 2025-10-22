@@ -85,7 +85,7 @@ tbody td {
 }
 
 .status-waiting {
-  background-color: #be40b8;
+  background-color: #db66d5;
 }
 
 .status-pre-op {
@@ -101,11 +101,11 @@ tbody td {
 }
 
 .status-pacu {
-  background-color: #6a5bbe;
+  background-color: #7550a5;
 }
 
 .status-asu {
-  background-color: #fd3d3dc0;
+  background-color: #f53333ea;
 }
 
 
