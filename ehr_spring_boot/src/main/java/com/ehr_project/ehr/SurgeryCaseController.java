@@ -19,7 +19,7 @@ import com.ehr_project.ehr.service.SurgeryCaseService;
 
 @RestController
 @RequestMapping("/surgeryCases")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "${BACKEND_URL}")
 public class SurgeryCaseController {
     private final SurgeryCaseService surgeryCaseService;
 

@@ -19,7 +19,7 @@ export interface LoginResponse {
 })
 export class UserService {
 
-  private apiServerUrl = 'http://localhost:8080';
+  private apiServerUrl = "http://localhost:8080";
 
   constructor(private http: HttpClient) { }
 

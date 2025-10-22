@@ -30,7 +30,7 @@ export class AuthenticationService {
       return this.userService.login(loginRequest).pipe(
         map((response) => {
           console.log('Login successful:', response);
-          if (isPlatformBrowser(this.platformId)) { // the platformId check
+          if (isPlatformBrowser(this.platformId)) { // the platformId check, had to had this to get JWT to function
             sessionStorage.setItem('userId', response.userId);
             sessionStorage.setItem('token', response.token);
           }
@@ -58,7 +58,7 @@ export class AuthenticationService {
   
 
   isUserLoggedIn(): boolean {
-    if (isPlatformBrowser(this.platformId)) { // the platformId check
+    if (isPlatformBrowser(this.platformId)) { // the platformId check, had to had this to get JWT to function
       const user = sessionStorage.getItem('userId');
       return user !== null;
     }
@@ -66,7 +66,7 @@ export class AuthenticationService {
   }
 
   logout(): void {
-    if (isPlatformBrowser(this.platformId)) { // the platformId check
+    if (isPlatformBrowser(this.platformId)) { // the platformId check, had to had this to get JWT to function
       sessionStorage.removeItem('userId');
       sessionStorage.removeItem('token');
     }
