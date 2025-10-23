@@ -1,3 +1,4 @@
 export const environment = {
-  apiServerUrl: 'http://localhost:8080'
+  pruduction: true,
+  apiServerUrl: 'https://ehr-backend-v0-0-1.onrender.com'
 };

@@ -1,0 +1,11 @@
+{
+  "routes": {
+    "/": {},
+    "/dashboard": {},
+    "/flow-board": {},
+    "/login": {},
+    "/logout": {},
+    "/orders": {},
+    "/registration": {}
+  }
+}

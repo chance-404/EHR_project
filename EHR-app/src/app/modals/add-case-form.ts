@@ -81,8 +81,8 @@ export class AddCaseComponent {
       return;
     }
     
-    const startTime = this.convertToTime(this.addCaseForm.value.startTime);
-    const endTime = this.convertToTime(this.addCaseForm.value.endTime);
+    const startTime = this.addCaseForm.value.startTime;
+    const endTime = this.addCaseForm.value.endTime;
 
     // adds the case
     this.surgeryCaseService.addSurgeryCaseToSchedule(
@@ -110,10 +110,6 @@ export class AddCaseComponent {
     });
   }
 
-  private convertToTime(timeString: string): string {
-    const [hours, minutes] = timeString.split(':').map(Number);
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`;
-  }
 
   public closeModal() {
     this.dialogRef.close();

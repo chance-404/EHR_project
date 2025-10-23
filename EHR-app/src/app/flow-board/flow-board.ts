@@ -29,46 +29,15 @@ export class FlowBoard implements OnInit {
   private dialog = inject(Dialog);
   private patientService = inject(PatientService);
   public surgeryCases!: SurgeryCase[];
-  
 
-  room1: Room;
-  room2: Room;
-  room3: Room;
-  room4: Room;
-  room5: Room;
-  room6: Room;
+  rooms: Room[] = [];
 
   constructor() {
-    this.room1 = {
-      id: 1,
-      name: 'Room 1',
+    this.rooms = Array.from({ length:6 }, (_,i) => ({
+      id: i + 1,
+      name: `Room ${i + 1}`,
       surgeryCase: []
-    };
-    this.room2 = {
-      id: 2,
-      name: 'Room 2',
-      surgeryCase: []
-    };
-    this.room3 = {
-      id: 3,
-      name: 'Room 3',
-      surgeryCase: []
-    };
-    this.room4 = {
-      id: 4,
-      name: 'Room 4',
-      surgeryCase: []
-    };
-    this.room5 = {
-      id: 5,
-      name: 'Room 5',
-      surgeryCase: []
-    };
-    this.room6 = {
-      id: 6,
-      name: 'Room 6',
-      surgeryCase: []
-    };
+    }));
   }
 
   ngOnInit() {
@@ -97,13 +66,9 @@ export class FlowBoard implements OnInit {
   }
 
   private distributeCasesToRooms(): void { 
-    this.room1.surgeryCase = [];
-    this.room2.surgeryCase = [];
-    this.room3.surgeryCase = [];
-    this.room4.surgeryCase = [];
-    this.room5.surgeryCase = [];
-    this.room6.surgeryCase = [];
-
+    // clears cases in rooms
+    this.rooms.forEach(room => room.surgeryCase = []);
+    // assigns cases to rooms
     this.surgeryCases.forEach(surgeryCase => {
       const room = this.getRoomById(surgeryCase.roomId);
       if (room) {
@@ -167,16 +132,8 @@ export class FlowBoard implements OnInit {
   }
 
   public getRoomById(id: number): Room | null {
-    switch(id) {
-      case 1: return this.room1;
-      case 2: return this.room2;
-      case 3: return this.room3;
-      case 4: return this.room4;
-      case 5: return this.room5;
-      case 6: return this.room6;
-      default: return null;
+    return this.rooms.find(room => room.id === id) || null;
     }
-  }
 
 }
 

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -31,12 +32,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       @SuppressWarnings("null") HttpServletResponse response,
       @SuppressWarnings("null") FilterChain filterChain) throws ServletException, IOException {
 
-    // skip authentication for login endpoint
+    // skip authentication for login endpoint and all OPTIONS preflight requests
     String path = request.getRequestURI();
-    if (path.equals("/users/login")) {
-      filterChain.doFilter(request, response);
-      return;
-    }
+      if (path.equals("/users/login") || HttpMethod.OPTIONS.name().equalsIgnoreCase(request.getMethod())) {
+        filterChain.doFilter(request, response);
+        return;
+      }
 
     String authHeader = request.getHeader("Authorization");
 
