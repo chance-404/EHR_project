@@ -16,6 +16,7 @@ export class Login implements OnInit {
 
   private router = inject(Router);
   private authenticationService = inject(AuthenticationService);
+  isLoading: boolean = false;
 
   loginForm: FormGroup = new FormGroup({
     userId: new FormControl('', [Validators.required]),
@@ -32,11 +33,13 @@ export class Login implements OnInit {
   checkLogin() {
     // check if form is filled out
     if (this.loginForm.valid) {
+      this.isLoading = true;
       const userId = this.loginForm.value.userId;
       const password = this.loginForm.value.password;
       // call authenticate() function in authentication.service.ts, route to dashboard if userID and password valid
       this.authenticationService.authenticate(userId, password).subscribe({
         next: (success) => {
+          this.isLoading = false;
           if (success) {
             this.router.navigate(['/dashboard']);
             this.invalidLogin = false;
@@ -46,6 +49,7 @@ export class Login implements OnInit {
           }
         },
         error: (error) => {
+          this.isLoading = false;
           this.invalidLogin = true;
           this.errorMessage = "Login failed";
           console.log(error);
