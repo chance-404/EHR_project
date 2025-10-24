@@ -23,10 +23,10 @@ public class SecurityConfig {
   @Autowired
   private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-  @Value("${frontend.url}")
+  @Value("${FRONTEND_URL}")
   private String frontendUrl;
 
-  @Value("${backend.url}")
+  @Value("${BACKEND_URL}")
   private String backendUrl;
 
   @Bean

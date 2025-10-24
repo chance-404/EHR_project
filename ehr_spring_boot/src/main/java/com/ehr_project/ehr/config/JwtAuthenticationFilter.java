@@ -34,7 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     // skip authentication for login endpoint and all OPTIONS preflight requests
     String path = request.getRequestURI();
-      if (path.equals("/users/login") || HttpMethod.OPTIONS.name().equalsIgnoreCase(request.getMethod())) {
+      if (path.contains("/users/login") || HttpMethod.OPTIONS.name().equalsIgnoreCase(request.getMethod())) {
         filterChain.doFilter(request, response);
         return;
       }

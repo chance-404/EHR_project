@@ -11,7 +11,9 @@ body {
 }
 
 .room-card {
-  flex: 1 1 calc(33.333% - 20px);
+  flex: 1 1 calc(50% - 10px); /* Changed to 50% for 2 columns, minus half the gap */
+  min-width: calc(50% - 10px); /* Ensures equal width */
+  max-width: calc(50% - 10px); /* Prevents stretching */
   background: white;
   border: 1px solid #ccc;
   border-radius: 8px;

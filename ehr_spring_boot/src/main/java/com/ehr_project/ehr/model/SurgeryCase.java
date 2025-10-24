@@ -1,7 +1,7 @@
 package com.ehr_project.ehr.model;
 
 import java.io.Serializable;
-import java.sql.Time;
+import java.time.LocalTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,10 +38,10 @@ public class SurgeryCase implements Serializable{
   private Integer roomId;
 
   @Column
-  private Time startTime;
+  private LocalTime startTime;
 
   @Column 
-  private Time endTime;
+  private LocalTime endTime;
 
   @Column
   private String surgeryCaseStatus;
@@ -104,17 +104,17 @@ public class SurgeryCase implements Serializable{
       this.anesthesia = anesthesia;
   }
 
-  public Time getStartTime() {
+  public LocalTime getStartTime() {
       return startTime;
   }
-  public void setStartTime(Time startTime) {
+  public void setStartTime(LocalTime startTime) {
       this.startTime = startTime;
   }
 
-  public Time getEndTime() {
+  public LocalTime getEndTime() {
       return endTime;
   }
-  public void setEndTime(Time endTime) {
+  public void setEndTime(LocalTime endTime) {
       this.endTime = endTime;
   }
 
