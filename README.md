@@ -8,6 +8,7 @@ My first fullstack project. Working on an EHR (Electronic Health Record) that in
 
 # How to use
 - Go to [this site](https://ehr-app.netlify.app/login)
+- Note this is really not meant to be used on mobile.
 - Login with userID: nurse12 password: password
 
 # Next Steps
