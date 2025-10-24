@@ -7,7 +7,7 @@ My first fullstack project. Working on an EHR (Electronic Health Record) that in
 - **Data Storage**: PostgreSQL DB managed with pgAdmin4.
 
 # How to use
-- Go to [`https://ehr-app.netlify.app/login`]
+- Go to [this site](https://ehr-app.netlify.app/login)
 - Login with userID: nurse12 password: password
 
 # Next Steps
