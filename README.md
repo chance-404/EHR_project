@@ -4,12 +4,16 @@ My first fullstack project. Working on an EHR (Electronic Health Record) that in
 # Tech Stack
 - **Frontend**: Angular - TypeScript, HTML, CSS.
 - **Backend**: Spring Boot - Java.
-- **Data Storage**: For now, a locally hosted PostgreSQL DB managed with pgAdmin4.
+- **Data Storage**: PostgreSQL DB managed with pgAdmin4.
+
+# How to use
+- Go to [`https://ehr-app.netlify.app/login`]
+- Login with userID: nurse12 password: password
 
 # Next Steps
-- Implement role-based user autorization.
-- Add more data validation and error handling.
-- Add editable patient info pages with data stored in DB.
+- Implement role-based user authorization.
+- Add a backend and interactivity to patient info pages.
+- Add order entry/management system.
 
 # Contributing
 Contributions are welcome! It would be great to have other new developers involved.
