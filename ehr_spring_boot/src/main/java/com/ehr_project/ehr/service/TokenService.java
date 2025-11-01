@@ -26,22 +26,28 @@ public class TokenService {
       .subject(user.getUserId())
       .claim("firstName", user.getFirstName())
       .claim("lastName", user.getLastName())
+      .claim("roles", user.getUserRole())
       .issuedAt(new Date(System.currentTimeMillis()))
       .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 13)) // 13 hours
       .signWith(key)
       .compact();
   }
 
-  public String validateTokenAndGetUserId(String token) {
+  public Claims getAllClaimsFromToken(String token) {
     SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
     
-    Claims claims = Jwts.parser()
+    return Jwts.parser()
       .verifyWith(key)
       .build()
       .parseSignedClaims(token)
       .getPayload();
-    
-    return claims.getSubject();
   }
 
+  public String getUserIdFromToken(String token) {
+    return getAllClaimsFromToken(token).getSubject();
+  }
+
+  public String getRoleFromToken(String token) {
+    return getAllClaimsFromToken(token).get("roles", String.class);
+  }
 }

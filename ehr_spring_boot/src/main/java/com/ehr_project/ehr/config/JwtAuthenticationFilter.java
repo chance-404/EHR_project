@@ -2,10 +2,12 @@ package com.ehr_project.ehr.config;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -45,11 +47,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       String token = authHeader.substring(7);
 
       try {
-        String userId = tokenService.validateTokenAndGetUserId(token);
+        String userId = tokenService.getUserIdFromToken(token);
+        String role = tokenService.getRoleFromToken(token);
+
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        if (role != null && !role.isEmpty()) {
+          authorities.add(new SimpleGrantedAuthority(role));
+        }
 
         // Create authentication token and set in security context
         UsernamePasswordAuthenticationToken authentication = 
-          new UsernamePasswordAuthenticationToken(userId, null, new ArrayList<>());
+          new UsernamePasswordAuthenticationToken(userId, null, authorities);
         
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
