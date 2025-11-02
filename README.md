@@ -13,6 +13,8 @@ My first fullstack project. Working on an EHR (Electronic Health Record) that in
 - Go to [this site](https://ehr-app.netlify.app/login)
 - Note, this is really not meant to be used on mobile.
 - Login with userID: nurse12 password: password
+- Play around! Click around on the dashboard, add and edit cases on the flowboard, add a new 
+  patient in registration.
 
 # Next Steps
 - Add a backend and interactivity to patient info pages. It's static dummy data for now.
