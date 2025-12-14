@@ -2,7 +2,6 @@ package com.ehr_project.ehr.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ehr_project.ehr.model.SurgeryCase;
@@ -15,7 +14,6 @@ import jakarta.transaction.Transactional;
 public class SurgeryCaseService {
   private final SurgeryCaseRepo surgeryCaseRepo;  
 
-  @Autowired
   public SurgeryCaseService(SurgeryCaseRepo surgeryCaseRepo) {
     this.surgeryCaseRepo = surgeryCaseRepo;
   }

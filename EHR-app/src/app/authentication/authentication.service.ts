@@ -29,7 +29,7 @@ export class AuthenticationService {
       // sends login req to login() in user.service.ts, userId and JWT in response
       return this.userService.login(loginRequest).pipe(
         map((response) => {
-          console.log('Login successful:', response);
+          console.log('Login successful:');
           if (isPlatformBrowser(this.platformId)) { // the platformId check, had to had this to get JWT to function
             sessionStorage.setItem('userId', response.userId);
             sessionStorage.setItem('token', response.token);

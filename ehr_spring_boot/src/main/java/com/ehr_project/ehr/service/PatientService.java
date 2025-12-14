@@ -6,7 +6,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ehr_project.ehr.exceptions.UserNotFoundException;
@@ -17,7 +16,6 @@ import com.ehr_project.ehr.repo.PatientRepo;
 public class PatientService {
     private final PatientRepo patientRepo;
 
-    @Autowired
     public PatientService(PatientRepo patientRepo) {
         this.patientRepo = patientRepo;
     }
