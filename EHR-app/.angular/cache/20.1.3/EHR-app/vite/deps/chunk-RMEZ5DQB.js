@@ -1,8 +1,7 @@
-import { createRequire } from 'module';const require = createRequire(import.meta.url);
 import {
   Location,
   isPlatformBrowser
-} from "./chunk-7OMST4CY.js";
+} from "./chunk-I7P5IMQC.js";
 import {
   ANIMATION_MODULE_TYPE,
   APP_ID,
@@ -65,18 +64,39 @@ import {
   ɵɵqueryRefresh,
   ɵɵstyleProp,
   ɵɵviewQuery
-} from "./chunk-3SDP363E.js";
+} from "./chunk-ONJW5VE5.js";
 import {
-  require_cjs
-} from "./chunk-AIVA4SAL.js";
+  animationFrameScheduler,
+  asapScheduler,
+  isObservable
+} from "./chunk-G6ECYYJH.js";
 import {
-  require_operators
-} from "./chunk-QFGGP64A.js";
+  BehaviorSubject,
+  ConnectableObservable,
+  Observable,
+  Subject,
+  Subscription,
+  auditTime,
+  combineLatest,
+  concat,
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  of,
+  pairwise,
+  shareReplay,
+  skip,
+  startWith,
+  switchMap,
+  take,
+  takeUntil,
+  takeWhile
+} from "./chunk-RTGP7ALM.js";
 import {
   __spreadProps,
-  __spreadValues,
-  __toESM
-} from "./chunk-YHCV7DAQ.js";
+  __spreadValues
+} from "./chunk-WDMUDEB6.js";
 
 // node_modules/@angular/cdk/fesm2022/portal.mjs
 function throwNullPortalError() {
@@ -779,8 +799,6 @@ function coerceElement(elementOrRef) {
 }
 
 // node_modules/@angular/cdk/fesm2022/focus-monitor.mjs
-var import_rxjs = __toESM(require_cjs(), 1);
-var import_operators = __toESM(require_operators(), 1);
 var INPUT_MODALITY_DETECTOR_OPTIONS = new InjectionToken("cdk-input-modality-detector-options");
 var INPUT_MODALITY_DETECTOR_DEFAULT_OPTIONS = {
   ignoreKeys: [ALT, CONTROL, MAC_META, META, SHIFT]
@@ -807,7 +825,7 @@ var InputModalityDetector = class _InputModalityDetector {
    */
   _mostRecentTarget = null;
   /** The underlying BehaviorSubject that emits whenever an input modality is detected. */
-  _modality = new import_rxjs.BehaviorSubject(null);
+  _modality = new BehaviorSubject(null);
   /** Options for this InputModalityDetector. */
   _options;
   /**
@@ -857,8 +875,8 @@ var InputModalityDetector = class _InputModalityDetector {
       optional: true
     });
     this._options = __spreadValues(__spreadValues({}, INPUT_MODALITY_DETECTOR_DEFAULT_OPTIONS), options);
-    this.modalityDetected = this._modality.pipe((0, import_operators.skip)(1));
-    this.modalityChanged = this.modalityDetected.pipe((0, import_operators.distinctUntilChanged)());
+    this.modalityDetected = this._modality.pipe(skip(1));
+    this.modalityChanged = this.modalityDetected.pipe(distinctUntilChanged());
     if (this._platform.isBrowser) {
       const renderer = inject(RendererFactory2).createRenderer(null, null);
       this._listenerCleanups = ngZone.runOutsideAngular(() => {
@@ -943,7 +961,7 @@ var FocusMonitor = class _FocusMonitor {
   /** Used to reference correct document/window */
   _document = inject(DOCUMENT);
   /** Subject for stopping our InputModalityDetector subscription. */
-  _stopInputModalityDetector = new import_rxjs.Subject();
+  _stopInputModalityDetector = new Subject();
   constructor() {
     const options = inject(FOCUS_MONITOR_DEFAULT_OPTIONS, {
       optional: true
@@ -967,7 +985,7 @@ var FocusMonitor = class _FocusMonitor {
   monitor(element, checkChildren = false) {
     const nativeElement = coerceElement(element);
     if (!this._platform.isBrowser || nativeElement.nodeType !== 1) {
-      return (0, import_rxjs.of)();
+      return of();
     }
     const rootNode = _getShadowRoot(nativeElement) || this._document;
     const cachedInfo = this._elementInfo.get(nativeElement);
@@ -979,7 +997,7 @@ var FocusMonitor = class _FocusMonitor {
     }
     const info = {
       checkChildren,
-      subject: new import_rxjs.Subject(),
+      subject: new Subject(),
       rootNode
     };
     this._elementInfo.set(nativeElement, info);
@@ -1121,7 +1139,7 @@ var FocusMonitor = class _FocusMonitor {
         const window2 = this._getWindow();
         window2.addEventListener("focus", this._windowFocusListener);
       });
-      this._inputModalityDetector.modalityDetected.pipe((0, import_operators.takeUntil)(this._stopInputModalityDetector)).subscribe((modality) => {
+      this._inputModalityDetector.modalityDetected.pipe(takeUntil(this._stopInputModalityDetector)).subscribe((modality) => {
         this._setOrigin(
           modality,
           true
@@ -1346,8 +1364,6 @@ function coerceArray(value) {
 }
 
 // node_modules/@angular/cdk/fesm2022/breakpoints-observer.mjs
-var import_rxjs2 = __toESM(require_cjs(), 1);
-var import_operators2 = __toESM(require_operators(), 1);
 var mediaQueriesForWebkitCompatibility = /* @__PURE__ */ new Set();
 var mediaQueryStyleNode;
 var MediaMatcher = class _MediaMatcher {
@@ -1430,7 +1446,7 @@ var BreakpointObserver = class _BreakpointObserver {
   /**  A map of all media queries currently being listened for. */
   _queries = /* @__PURE__ */ new Map();
   /** A subject for all other observables to takeUntil based on. */
-  _destroySubject = new import_rxjs2.Subject();
+  _destroySubject = new Subject();
   constructor() {
   }
   /** Completes the active subject, signalling to all other observables to complete. */
@@ -1456,9 +1472,9 @@ var BreakpointObserver = class _BreakpointObserver {
   observe(value) {
     const queries = splitQueries(coerceArray(value));
     const observables = queries.map((query) => this._registerQuery(query).observable);
-    let stateObservable = (0, import_rxjs2.combineLatest)(observables);
-    stateObservable = (0, import_rxjs2.concat)(stateObservable.pipe((0, import_operators2.take)(1)), stateObservable.pipe((0, import_operators2.skip)(1), (0, import_operators2.debounceTime)(0)));
-    return stateObservable.pipe((0, import_operators2.map)((breakpointStates) => {
+    let stateObservable = combineLatest(observables);
+    stateObservable = concat(stateObservable.pipe(take(1)), stateObservable.pipe(skip(1), debounceTime(0)));
+    return stateObservable.pipe(map((breakpointStates) => {
       const response = {
         matches: false,
         breakpoints: {}
@@ -1479,18 +1495,18 @@ var BreakpointObserver = class _BreakpointObserver {
       return this._queries.get(query);
     }
     const mql = this._mediaMatcher.matchMedia(query);
-    const queryObservable = new import_rxjs2.Observable((observer) => {
+    const queryObservable = new Observable((observer) => {
       const handler = (e) => this._zone.run(() => observer.next(e));
       mql.addListener(handler);
       return () => {
         mql.removeListener(handler);
       };
-    }).pipe((0, import_operators2.startWith)(mql), (0, import_operators2.map)(({
+    }).pipe(startWith(mql), map(({
       matches
     }) => ({
       query,
       matches
-    })), (0, import_operators2.takeUntil)(this._destroySubject));
+    })), takeUntil(this._destroySubject));
     const output = {
       observable: queryObservable,
       mql
@@ -1520,8 +1536,6 @@ function splitQueries(queries) {
 }
 
 // node_modules/@angular/cdk/fesm2022/observers.mjs
-var import_rxjs3 = __toESM(require_cjs(), 1);
-var import_operators3 = __toESM(require_operators(), 1);
 function shouldIgnoreRecord(record) {
   if (record.type === "characterData" && record.target instanceof Comment) {
     return true;
@@ -1574,9 +1588,9 @@ var ContentObserver = class _ContentObserver {
   }
   observe(elementOrRef) {
     const element = coerceElement(elementOrRef);
-    return new import_rxjs3.Observable((observer) => {
+    return new Observable((observer) => {
       const stream = this._observeElement(element);
-      const subscription = stream.pipe((0, import_operators3.map)((records) => records.filter((record) => !shouldIgnoreRecord(record))), (0, import_operators3.filter)((records) => !!records.length)).subscribe((records) => {
+      const subscription = stream.pipe(map((records) => records.filter((record) => !shouldIgnoreRecord(record))), filter((records) => !!records.length)).subscribe((records) => {
         this._ngZone.run(() => {
           observer.next(records);
         });
@@ -1594,7 +1608,7 @@ var ContentObserver = class _ContentObserver {
   _observeElement(element) {
     return this._ngZone.runOutsideAngular(() => {
       if (!this._observedElements.has(element)) {
-        const stream = new import_rxjs3.Subject();
+        const stream = new Subject();
         const observer = this._mutationObserverFactory.create((mutations) => stream.next(mutations));
         if (observer) {
           observer.observe(element, {
@@ -1697,7 +1711,7 @@ var CdkObserveContent = class _CdkObserveContent {
   _subscribe() {
     this._unsubscribe();
     const stream = this._contentObserver.observe(this._elementRef);
-    this._currentSubscription = (this.debounce ? stream.pipe((0, import_operators3.debounceTime)(this.debounce)) : stream).subscribe(this.event);
+    this._currentSubscription = (this.debounce ? stream.pipe(debounceTime(this.debounce)) : stream).subscribe(this.event);
   }
   _unsubscribe() {
     this._currentSubscription?.unsubscribe();
@@ -2857,15 +2871,13 @@ var BidiModule = class _BidiModule {
 })();
 
 // node_modules/@angular/cdk/fesm2022/data-source.mjs
-var import_rxjs4 = __toESM(require_cjs(), 1);
 var DataSource = class {
 };
 function isDataSource(value) {
-  return value && typeof value.connect === "function" && !(value instanceof import_rxjs4.ConnectableObservable);
+  return value && typeof value.connect === "function" && !(value instanceof ConnectableObservable);
 }
 
 // node_modules/@angular/cdk/fesm2022/recycle-view-repeater-strategy.mjs
-var import_rxjs5 = __toESM(require_cjs(), 1);
 var ArrayDataSource = class extends DataSource {
   _data;
   constructor(_data) {
@@ -2873,7 +2885,7 @@ var ArrayDataSource = class extends DataSource {
     this._data = _data;
   }
   connect() {
-    return (0, import_rxjs5.isObservable)(this._data) ? this._data : (0, import_rxjs5.of)(this._data);
+    return isObservable(this._data) ? this._data : of(this._data);
   }
   disconnect() {
   }
@@ -2983,15 +2995,13 @@ var _RecycleViewRepeaterStrategy = class {
 };
 
 // node_modules/@angular/cdk/fesm2022/scrolling.mjs
-var import_rxjs6 = __toESM(require_cjs(), 1);
-var import_operators4 = __toESM(require_operators(), 1);
 var _c0 = ["contentWrapper"];
 var _c1 = ["*"];
 var VIRTUAL_SCROLL_STRATEGY = new InjectionToken("VIRTUAL_SCROLL_STRATEGY");
 var FixedSizeVirtualScrollStrategy = class {
-  _scrolledIndexChange = new import_rxjs6.Subject();
+  _scrolledIndexChange = new Subject();
   /** @docs-private Implemented as part of VirtualScrollStrategy. */
-  scrolledIndexChange = this._scrolledIndexChange.pipe((0, import_operators4.distinctUntilChanged)());
+  scrolledIndexChange = this._scrolledIndexChange.pipe(distinctUntilChanged());
   /** The attached viewport. */
   _viewport = null;
   /** The size of the items in the virtually scrolling list. */
@@ -3204,7 +3214,7 @@ var ScrollDispatcher = class _ScrollDispatcher {
   constructor() {
   }
   /** Subject for notifying that a registered scrollable reference element has been scrolled. */
-  _scrolled = new import_rxjs6.Subject();
+  _scrolled = new Subject();
   /** Keeps track of the amount of subscriptions to `scrolled`. Used for cleaning up afterwards. */
   _scrolledCount = 0;
   /**
@@ -3245,13 +3255,13 @@ var ScrollDispatcher = class _ScrollDispatcher {
    */
   scrolled(auditTimeInMs = DEFAULT_SCROLL_TIME) {
     if (!this._platform.isBrowser) {
-      return (0, import_rxjs6.of)();
+      return of();
     }
-    return new import_rxjs6.Observable((observer) => {
+    return new Observable((observer) => {
       if (!this._cleanupGlobalListener) {
         this._cleanupGlobalListener = this._ngZone.runOutsideAngular(() => this._renderer.listen("document", "scroll", () => this._scrolled.next()));
       }
-      const subscription = auditTimeInMs > 0 ? this._scrolled.pipe((0, import_operators4.auditTime)(auditTimeInMs)).subscribe(observer) : this._scrolled.subscribe(observer);
+      const subscription = auditTimeInMs > 0 ? this._scrolled.pipe(auditTime(auditTimeInMs)).subscribe(observer) : this._scrolled.subscribe(observer);
       this._scrolledCount++;
       return () => {
         subscription.unsubscribe();
@@ -3277,7 +3287,7 @@ var ScrollDispatcher = class _ScrollDispatcher {
    */
   ancestorScrolled(elementOrElementRef, auditTimeInMs) {
     const ancestors = this.getAncestorScrollContainers(elementOrElementRef);
-    return this.scrolled(auditTimeInMs).pipe((0, import_operators4.filter)((target) => !target || ancestors.indexOf(target) > -1));
+    return this.scrolled(auditTimeInMs).pipe(filter((target) => !target || ancestors.indexOf(target) > -1));
   }
   /** Returns all registered Scrollables that contain the provided element. */
   getAncestorScrollContainers(elementOrElementRef) {
@@ -3325,10 +3335,10 @@ var CdkScrollable = class _CdkScrollable {
     optional: true
   });
   _scrollElement = this.elementRef.nativeElement;
-  _destroyed = new import_rxjs6.Subject();
+  _destroyed = new Subject();
   _renderer = inject(Renderer2);
   _cleanupScroll;
-  _elementScrolled = new import_rxjs6.Subject();
+  _elementScrolled = new Subject();
   constructor() {
   }
   ngOnInit() {
@@ -3467,7 +3477,7 @@ var ViewportRuler = class _ViewportRuler {
   /** Cached viewport dimensions. */
   _viewportSize;
   /** Stream of viewport change events. */
-  _change = new import_rxjs6.Subject();
+  _change = new Subject();
   /** Used to reference correct document/window */
   _document = inject(DOCUMENT);
   constructor() {
@@ -3540,7 +3550,7 @@ var ViewportRuler = class _ViewportRuler {
    * @param throttleTime Time in milliseconds to throttle the stream.
    */
   change(throttleTime = DEFAULT_RESIZE_TIME) {
-    return throttleTime > 0 ? this._change.pipe((0, import_operators4.auditTime)(throttleTime)) : this._change;
+    return throttleTime > 0 ? this._change.pipe(auditTime(throttleTime)) : this._change;
   }
   /** Use defaultView of injected document if available or fallback to global window reference */
   _getWindow() {
@@ -3604,7 +3614,7 @@ var CdkVirtualScrollable = class _CdkVirtualScrollable extends CdkScrollable {
 function rangesEqual(r1, r2) {
   return r1.start == r2.start && r1.end == r2.end;
 }
-var SCROLL_SCHEDULER = typeof requestAnimationFrame !== "undefined" ? import_rxjs6.animationFrameScheduler : import_rxjs6.asapScheduler;
+var SCROLL_SCHEDULER = typeof requestAnimationFrame !== "undefined" ? animationFrameScheduler : asapScheduler;
 var CdkVirtualScrollViewport = class _CdkVirtualScrollViewport extends CdkVirtualScrollable {
   elementRef = inject(ElementRef);
   _changeDetectorRef = inject(ChangeDetectorRef);
@@ -3616,9 +3626,9 @@ var CdkVirtualScrollViewport = class _CdkVirtualScrollViewport extends CdkVirtua
   });
   _platform = inject(Platform);
   /** Emits when the viewport is detached from a CdkVirtualForOf. */
-  _detachedSubject = new import_rxjs6.Subject();
+  _detachedSubject = new Subject();
   /** Emits when the rendered range changes. */
-  _renderedRangeSubject = new import_rxjs6.Subject();
+  _renderedRangeSubject = new Subject();
   /** The direction the viewport scrolls. */
   get orientation() {
     return this._orientation;
@@ -3640,7 +3650,7 @@ var CdkVirtualScrollViewport = class _CdkVirtualScrollViewport extends CdkVirtua
   // depending on how the strategy calculates the scrolled index, it may come at a cost to
   // performance.
   /** Emits when the index of the first element visible in the viewport changes. */
-  scrolledIndexChange = new import_rxjs6.Observable((observer) => this._scrollStrategy.scrolledIndexChange.subscribe((index) => Promise.resolve().then(() => this.ngZone.run(() => observer.next(index)))));
+  scrolledIndexChange = new Observable((observer) => this._scrollStrategy.scrolledIndexChange.subscribe((index) => Promise.resolve().then(() => this.ngZone.run(() => observer.next(index)))));
   /** The element that wraps the rendered content. */
   _contentWrapper;
   /** A stream that emits whenever the rendered range changes. */
@@ -3686,7 +3696,7 @@ var CdkVirtualScrollViewport = class _CdkVirtualScrollViewport extends CdkVirtua
   /** A list of functions to run after the next change detection cycle. */
   _runAfterChangeDetection = [];
   /** Subscription to changes in the viewport size. */
-  _viewportChanges = import_rxjs6.Subscription.EMPTY;
+  _viewportChanges = Subscription.EMPTY;
   _injector = inject(Injector);
   _isDestroyed = false;
   constructor() {
@@ -3730,15 +3740,15 @@ var CdkVirtualScrollViewport = class _CdkVirtualScrollViewport extends CdkVirtua
       this._scrollStrategy.attach(this);
       this.scrollable.elementScrolled().pipe(
         // Start off with a fake scroll event so we properly detect our initial position.
-        (0, import_operators4.startWith)(null),
+        startWith(null),
         // Collect multiple events into one until the next animation frame. This way if
         // there are multiple scroll events in the same frame we only need to recheck
         // our layout once.
-        (0, import_operators4.auditTime)(0, SCROLL_SCHEDULER),
+        auditTime(0, SCROLL_SCHEDULER),
         // Usually `elementScrolled` is completed when the scrollable is destroyed, but
         // that may not be the case if a `CdkVirtualScrollableElement` is used so we have
         // to unsubscribe here just in case.
-        (0, import_operators4.takeUntil)(this._destroyed)
+        takeUntil(this._destroyed)
       ).subscribe(() => this._scrollStrategy.onContentScrolled());
       this._markChangeDetectionNeeded();
     }));
@@ -3759,7 +3769,7 @@ var CdkVirtualScrollViewport = class _CdkVirtualScrollViewport extends CdkVirtua
     }
     this.ngZone.runOutsideAngular(() => {
       this._forOf = forOf;
-      this._forOf.dataStream.pipe((0, import_operators4.takeUntil)(this._detachedSubject)).subscribe((data) => {
+      this._forOf.dataStream.pipe(takeUntil(this._detachedSubject)).subscribe((data) => {
         const newLength = data.length;
         if (newLength !== this._dataLength) {
           this._dataLength = newLength;
@@ -4096,9 +4106,9 @@ var CdkVirtualForOf = class _CdkVirtualForOf {
     skipSelf: true
   });
   /** Emits when the rendered view of the data changes. */
-  viewChange = new import_rxjs6.Subject();
+  viewChange = new Subject();
   /** Subject that emits when a new DataSource instance is given. */
-  _dataSourceChanges = new import_rxjs6.Subject();
+  _dataSourceChanges = new Subject();
   /** The DataSource to display. */
   get cdkVirtualForOf() {
     return this._cdkVirtualForOf;
@@ -4108,7 +4118,7 @@ var CdkVirtualForOf = class _CdkVirtualForOf {
     if (isDataSource(value)) {
       this._dataSourceChanges.next(value);
     } else {
-      this._dataSourceChanges.next(new ArrayDataSource((0, import_rxjs6.isObservable)(value) ? value : Array.from(value || [])));
+      this._dataSourceChanges.next(new ArrayDataSource(isObservable(value) ? value : Array.from(value || [])));
     }
   }
   _cdkVirtualForOf;
@@ -4144,15 +4154,15 @@ var CdkVirtualForOf = class _CdkVirtualForOf {
   /** Emits whenever the data in the current DataSource changes. */
   dataStream = this._dataSourceChanges.pipe(
     // Start off with null `DataSource`.
-    (0, import_operators4.startWith)(null),
+    startWith(null),
     // Bundle up the previous and current data sources so we can work with both.
-    (0, import_operators4.pairwise)(),
+    pairwise(),
     // Use `_changeDataSource` to disconnect from the previous data source and connect to the
     // new one, passing back a stream of data changes which we run through `switchMap` to give
     // us a data stream that emits the latest data from whatever the current `DataSource` is.
-    (0, import_operators4.switchMap)(([prev, cur]) => this._changeDataSource(prev, cur)),
+    switchMap(([prev, cur]) => this._changeDataSource(prev, cur)),
     // Replay the last emitted data when someone subscribes.
-    (0, import_operators4.shareReplay)(1)
+    shareReplay(1)
   );
   /** The differ used to calculate changes to the data. */
   _differ = null;
@@ -4164,14 +4174,14 @@ var CdkVirtualForOf = class _CdkVirtualForOf {
   _renderedRange;
   /** Whether the rendered data should be updated during the next ngDoCheck cycle. */
   _needsUpdate = false;
-  _destroyed = new import_rxjs6.Subject();
+  _destroyed = new Subject();
   constructor() {
     const ngZone = inject(NgZone);
     this.dataStream.subscribe((data) => {
       this._data = data;
       this._onRenderedDataChange();
     });
-    this._viewport.renderedRangeStream.pipe((0, import_operators4.takeUntil)(this._destroyed)).subscribe((range) => {
+    this._viewport.renderedRangeStream.pipe(takeUntil(this._destroyed)).subscribe((range) => {
       this._renderedRange = range;
       if (this.viewChange.observers.length) {
         ngZone.run(() => this.viewChange.next(this._renderedRange));
@@ -4251,7 +4261,7 @@ var CdkVirtualForOf = class _CdkVirtualForOf {
       oldDs.disconnect(this);
     }
     this._needsUpdate = true;
-    return newDs ? newDs.connect(this) : (0, import_rxjs6.of)();
+    return newDs ? newDs.connect(this) : of();
   }
   /** Update the `CdkVirtualForOfContext` for all views. */
   _updateContext() {
@@ -4500,8 +4510,6 @@ var _IdGenerator = class __IdGenerator {
 })();
 
 // node_modules/@angular/cdk/fesm2022/overlay-module.mjs
-var import_rxjs7 = __toESM(require_cjs(), 1);
-var import_operators5 = __toESM(require_operators(), 1);
 var scrollBehaviorSupported2 = supportsScrollBehavior();
 function createBlockScrollStrategy(injector) {
   return new BlockScrollStrategy(injector.get(ViewportRuler), injector.get(DOCUMENT));
@@ -4600,7 +4608,7 @@ var CloseScrollStrategy = class {
     if (this._scrollSubscription) {
       return;
     }
-    const stream = this._scrollDispatcher.scrolled(0).pipe((0, import_operators5.filter)((scrollable) => {
+    const stream = this._scrollDispatcher.scrolled(0).pipe(filter((scrollable) => {
       return !scrollable || !this._overlayRef.overlayElement.contains(scrollable.getElementRef().nativeElement);
     }));
     if (this._config && this._config.threshold && this._config.threshold > 1) {
@@ -5160,12 +5168,12 @@ var OverlayRef = class {
   _animationsDisabled;
   _injector;
   _renderer;
-  _backdropClick = new import_rxjs7.Subject();
-  _attachments = new import_rxjs7.Subject();
-  _detachments = new import_rxjs7.Subject();
+  _backdropClick = new Subject();
+  _attachments = new Subject();
+  _detachments = new Subject();
   _positionStrategy;
   _scrollStrategy;
-  _locationChanges = import_rxjs7.Subscription.EMPTY;
+  _locationChanges = Subscription.EMPTY;
   _backdropRef = null;
   _detachContentMutationObserver;
   _detachContentAfterRenderRef;
@@ -5175,9 +5183,9 @@ var OverlayRef = class {
    */
   _previousHostParent;
   /** Stream of keydown events dispatched to this overlay. */
-  _keydownEvents = new import_rxjs7.Subject();
+  _keydownEvents = new Subject();
   /** Stream of mouse outside events dispatched to this overlay. */
-  _outsidePointerEvents = new import_rxjs7.Subject();
+  _outsidePointerEvents = new Subject();
   /** Reference to the currently-running `afterNextRender` call. */
   _afterNextRenderRef;
   constructor(_portalOutlet, _host, _pane, _config, _ngZone, _keyboardDispatcher, _document, _location, _outsideClickDispatcher, _animationsDisabled = false, _injector, _renderer) {
@@ -5590,9 +5598,9 @@ var FlexibleConnectedPositionStrategy = class {
   /** The last calculated scroll visibility. Only tracked  */
   _lastScrollVisibility;
   /** Subject that emits whenever the position changes. */
-  _positionChanges = new import_rxjs7.Subject();
+  _positionChanges = new Subject();
   /** Subscription to viewport size changes. */
-  _resizeSubscription = import_rxjs7.Subscription.EMPTY;
+  _resizeSubscription = Subscription.EMPTY;
   /** Default offset for the overlay along the x axis. */
   _offsetX = 0;
   /** Default offset for the overlay along the y axis. */
@@ -6767,10 +6775,10 @@ var CdkConnectedOverlay = class _CdkConnectedOverlay {
   _injector = inject(Injector);
   _overlayRef;
   _templatePortal;
-  _backdropSubscription = import_rxjs7.Subscription.EMPTY;
-  _attachSubscription = import_rxjs7.Subscription.EMPTY;
-  _detachSubscription = import_rxjs7.Subscription.EMPTY;
-  _positionSubscription = import_rxjs7.Subscription.EMPTY;
+  _backdropSubscription = Subscription.EMPTY;
+  _attachSubscription = Subscription.EMPTY;
+  _detachSubscription = Subscription.EMPTY;
+  _positionSubscription = Subscription.EMPTY;
   _offsetX;
   _offsetY;
   _position;
@@ -7006,7 +7014,7 @@ var CdkConnectedOverlay = class _CdkConnectedOverlay {
     }
     this._positionSubscription.unsubscribe();
     if (this.positionChange.observers.length > 0) {
-      this._positionSubscription = this._position.positionChanges.pipe((0, import_operators5.takeWhile)(() => this.positionChange.observers.length > 0)).subscribe((position) => {
+      this._positionSubscription = this._position.positionChanges.pipe(takeWhile(() => this.positionChange.observers.length > 0)).subscribe((position) => {
         this._ngZone.run(() => this.positionChange.emit(position));
         if (this.positionChange.observers.length === 0) {
           this._positionSubscription.unsubscribe();
@@ -7275,4 +7283,4 @@ export {
   createOverlayRef,
   OverlayModule
 };
-//# sourceMappingURL=chunk-S2TRI7H5.js.map
+//# sourceMappingURL=chunk-RMEZ5DQB.js.map

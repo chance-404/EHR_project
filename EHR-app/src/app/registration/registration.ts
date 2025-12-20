@@ -11,30 +11,39 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './registration.html',
   styleUrl: './registration.css'
 })
+
 export class Registration {
   patientService = inject(PatientService);
   snackBar = inject(MatSnackBar);
 
   registerPatientForm = new FormGroup({
-    firstName: new FormControl('', [Validators.required]),
-    middleName: new FormControl(''),
-    lastName: new FormControl('', [Validators.required]),
+    firstName: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z\s\-]+$/)]),
+    middleName: new FormControl('', Validators.pattern(/^[a-zA-Z\s\-]+$/)),
+    lastName: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z]+$/)]),
     dateOfBirth: new FormControl<Date | null>(null),
     sex: new FormControl(''),
     age: new FormControl('')
   });
+
 
   registerPatient() {
     const dateOfBirthValue = this.registerPatientForm.value.dateOfBirth;
     const dateOfBirth = dateOfBirthValue ? new Date(dateOfBirthValue) : new Date();
     const age = Number(this.registerPatientForm.value.age) || 0;
     
+
+
     if (this.registerPatientForm.invalid) {
+
+      const hasPatternError = this.registerPatientForm.controls.firstName.hasError('pattern') ||
+                              this.registerPatientForm.controls.middleName.hasError('pattern') ||
+                              this.registerPatientForm.controls.lastName.hasError('pattern');
+
+      const message = hasPatternError
+        ? 'Names can only contain letters.'
+        : 'Must enter first and last name at a minimum.';
+
       console.log('Form is invalid');
-      this.snackBar.open('Must enter first and last name at minimum.', 'Close', {
-        duration: 5000,
-        panelClass: ['error-snackbar']
-      });
       return;
     }
 

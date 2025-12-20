@@ -1,7 +1,8 @@
+import { createRequire } from 'module';const require = createRequire(import.meta.url);
 import {
   Location,
   isPlatformBrowser
-} from "./chunk-I7P5IMQC.js";
+} from "./chunk-3J7NY7OU.js";
 import {
   ANIMATION_MODULE_TYPE,
   APP_ID,
@@ -64,39 +65,570 @@ import {
   ɵɵqueryRefresh,
   ɵɵstyleProp,
   ɵɵviewQuery
-} from "./chunk-ONJW5VE5.js";
+} from "./chunk-RGVQJ564.js";
 import {
-  animationFrameScheduler,
-  asapScheduler,
-  isObservable
-} from "./chunk-G6ECYYJH.js";
+  require_operators
+} from "./chunk-QFGGP64A.js";
 import {
-  BehaviorSubject,
-  ConnectableObservable,
-  Observable,
-  Subject,
-  Subscription,
-  auditTime,
-  combineLatest,
-  concat,
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  map,
-  of,
-  pairwise,
-  shareReplay,
-  skip,
-  startWith,
-  switchMap,
-  take,
-  takeUntil,
-  takeWhile
-} from "./chunk-RTGP7ALM.js";
+  require_cjs
+} from "./chunk-AIVA4SAL.js";
 import {
   __spreadProps,
-  __spreadValues
-} from "./chunk-WDMUDEB6.js";
+  __spreadValues,
+  __toESM
+} from "./chunk-YHCV7DAQ.js";
+
+// node_modules/@angular/cdk/fesm2022/portal.mjs
+function throwNullPortalError() {
+  throw Error("Must provide a portal to attach");
+}
+function throwPortalAlreadyAttachedError() {
+  throw Error("Host already has a portal attached");
+}
+function throwPortalOutletAlreadyDisposedError() {
+  throw Error("This PortalOutlet has already been disposed");
+}
+function throwUnknownPortalTypeError() {
+  throw Error("Attempting to attach an unknown Portal type. BasePortalOutlet accepts either a ComponentPortal or a TemplatePortal.");
+}
+function throwNullPortalOutletError() {
+  throw Error("Attempting to attach a portal to a null PortalOutlet");
+}
+function throwNoPortalAttachedError() {
+  throw Error("Attempting to detach a portal that is not attached to a host");
+}
+var Portal = class {
+  _attachedHost;
+  /** Attach this portal to a host. */
+  attach(host) {
+    if (typeof ngDevMode === "undefined" || ngDevMode) {
+      if (host == null) {
+        throwNullPortalOutletError();
+      }
+      if (host.hasAttached()) {
+        throwPortalAlreadyAttachedError();
+      }
+    }
+    this._attachedHost = host;
+    return host.attach(this);
+  }
+  /** Detach this portal from its host */
+  detach() {
+    let host = this._attachedHost;
+    if (host != null) {
+      this._attachedHost = null;
+      host.detach();
+    } else if (typeof ngDevMode === "undefined" || ngDevMode) {
+      throwNoPortalAttachedError();
+    }
+  }
+  /** Whether this portal is attached to a host. */
+  get isAttached() {
+    return this._attachedHost != null;
+  }
+  /**
+   * Sets the PortalOutlet reference without performing `attach()`. This is used directly by
+   * the PortalOutlet when it is performing an `attach()` or `detach()`.
+   */
+  setAttachedHost(host) {
+    this._attachedHost = host;
+  }
+};
+var ComponentPortal = class extends Portal {
+  /** The type of the component that will be instantiated for attachment. */
+  component;
+  /**
+   * Where the attached component should live in Angular's *logical* component tree.
+   * This is different from where the component *renders*, which is determined by the PortalOutlet.
+   * The origin is necessary when the host is outside of the Angular application context.
+   */
+  viewContainerRef;
+  /** Injector used for the instantiation of the component. */
+  injector;
+  /**
+   * List of DOM nodes that should be projected through `<ng-content>` of the attached component.
+   */
+  projectableNodes;
+  constructor(component, viewContainerRef, injector, projectableNodes) {
+    super();
+    this.component = component;
+    this.viewContainerRef = viewContainerRef;
+    this.injector = injector;
+    this.projectableNodes = projectableNodes;
+  }
+};
+var TemplatePortal = class extends Portal {
+  templateRef;
+  viewContainerRef;
+  context;
+  injector;
+  constructor(templateRef, viewContainerRef, context, injector) {
+    super();
+    this.templateRef = templateRef;
+    this.viewContainerRef = viewContainerRef;
+    this.context = context;
+    this.injector = injector;
+  }
+  get origin() {
+    return this.templateRef.elementRef;
+  }
+  /**
+   * Attach the portal to the provided `PortalOutlet`.
+   * When a context is provided it will override the `context` property of the `TemplatePortal`
+   * instance.
+   */
+  attach(host, context = this.context) {
+    this.context = context;
+    return super.attach(host);
+  }
+  detach() {
+    this.context = void 0;
+    return super.detach();
+  }
+};
+var DomPortal = class extends Portal {
+  /** DOM node hosting the portal's content. */
+  element;
+  constructor(element) {
+    super();
+    this.element = element instanceof ElementRef ? element.nativeElement : element;
+  }
+};
+var BasePortalOutlet = class {
+  /** The portal currently attached to the host. */
+  _attachedPortal;
+  /** A function that will permanently dispose this host. */
+  _disposeFn;
+  /** Whether this host has already been permanently disposed. */
+  _isDisposed = false;
+  /** Whether this host has an attached portal. */
+  hasAttached() {
+    return !!this._attachedPortal;
+  }
+  /** Attaches a portal. */
+  attach(portal) {
+    if (typeof ngDevMode === "undefined" || ngDevMode) {
+      if (!portal) {
+        throwNullPortalError();
+      }
+      if (this.hasAttached()) {
+        throwPortalAlreadyAttachedError();
+      }
+      if (this._isDisposed) {
+        throwPortalOutletAlreadyDisposedError();
+      }
+    }
+    if (portal instanceof ComponentPortal) {
+      this._attachedPortal = portal;
+      return this.attachComponentPortal(portal);
+    } else if (portal instanceof TemplatePortal) {
+      this._attachedPortal = portal;
+      return this.attachTemplatePortal(portal);
+    } else if (this.attachDomPortal && portal instanceof DomPortal) {
+      this._attachedPortal = portal;
+      return this.attachDomPortal(portal);
+    }
+    if (typeof ngDevMode === "undefined" || ngDevMode) {
+      throwUnknownPortalTypeError();
+    }
+  }
+  // @breaking-change 10.0.0 `attachDomPortal` to become a required abstract method.
+  attachDomPortal = null;
+  /** Detaches a previously attached portal. */
+  detach() {
+    if (this._attachedPortal) {
+      this._attachedPortal.setAttachedHost(null);
+      this._attachedPortal = null;
+    }
+    this._invokeDisposeFn();
+  }
+  /** Permanently dispose of this portal host. */
+  dispose() {
+    if (this.hasAttached()) {
+      this.detach();
+    }
+    this._invokeDisposeFn();
+    this._isDisposed = true;
+  }
+  /** @docs-private */
+  setDisposeFn(fn) {
+    this._disposeFn = fn;
+  }
+  _invokeDisposeFn() {
+    if (this._disposeFn) {
+      this._disposeFn();
+      this._disposeFn = null;
+    }
+  }
+};
+var DomPortalOutlet = class extends BasePortalOutlet {
+  outletElement;
+  _appRef;
+  _defaultInjector;
+  /**
+   * @param outletElement Element into which the content is projected.
+   * @param _appRef Reference to the application. Only used in component portals when there
+   *   is no `ViewContainerRef` available.
+   * @param _defaultInjector Injector to use as a fallback when the portal being attached doesn't
+   *   have one. Only used for component portals.
+   */
+  constructor(outletElement, _appRef, _defaultInjector) {
+    super();
+    this.outletElement = outletElement;
+    this._appRef = _appRef;
+    this._defaultInjector = _defaultInjector;
+  }
+  /**
+   * Attach the given ComponentPortal to DOM element.
+   * @param portal Portal to be attached
+   * @returns Reference to the created component.
+   */
+  attachComponentPortal(portal) {
+    let componentRef;
+    if (portal.viewContainerRef) {
+      const injector = portal.injector || portal.viewContainerRef.injector;
+      const ngModuleRef = injector.get(NgModuleRef$1, null, {
+        optional: true
+      }) || void 0;
+      componentRef = portal.viewContainerRef.createComponent(portal.component, {
+        index: portal.viewContainerRef.length,
+        injector,
+        ngModuleRef,
+        projectableNodes: portal.projectableNodes || void 0
+      });
+      this.setDisposeFn(() => componentRef.destroy());
+    } else {
+      if ((typeof ngDevMode === "undefined" || ngDevMode) && !this._appRef) {
+        throw Error("Cannot attach component portal to outlet without an ApplicationRef.");
+      }
+      const appRef = this._appRef;
+      const elementInjector = portal.injector || this._defaultInjector || Injector.NULL;
+      const environmentInjector = elementInjector.get(EnvironmentInjector, appRef.injector);
+      componentRef = createComponent(portal.component, {
+        elementInjector,
+        environmentInjector,
+        projectableNodes: portal.projectableNodes || void 0
+      });
+      appRef.attachView(componentRef.hostView);
+      this.setDisposeFn(() => {
+        if (appRef.viewCount > 0) {
+          appRef.detachView(componentRef.hostView);
+        }
+        componentRef.destroy();
+      });
+    }
+    this.outletElement.appendChild(this._getComponentRootNode(componentRef));
+    this._attachedPortal = portal;
+    return componentRef;
+  }
+  /**
+   * Attaches a template portal to the DOM as an embedded view.
+   * @param portal Portal to be attached.
+   * @returns Reference to the created embedded view.
+   */
+  attachTemplatePortal(portal) {
+    let viewContainer = portal.viewContainerRef;
+    let viewRef = viewContainer.createEmbeddedView(portal.templateRef, portal.context, {
+      injector: portal.injector
+    });
+    viewRef.rootNodes.forEach((rootNode) => this.outletElement.appendChild(rootNode));
+    viewRef.detectChanges();
+    this.setDisposeFn(() => {
+      let index = viewContainer.indexOf(viewRef);
+      if (index !== -1) {
+        viewContainer.remove(index);
+      }
+    });
+    this._attachedPortal = portal;
+    return viewRef;
+  }
+  /**
+   * Attaches a DOM portal by transferring its content into the outlet.
+   * @param portal Portal to be attached.
+   * @deprecated To be turned into a method.
+   * @breaking-change 10.0.0
+   */
+  attachDomPortal = (portal) => {
+    const element = portal.element;
+    if (!element.parentNode && (typeof ngDevMode === "undefined" || ngDevMode)) {
+      throw Error("DOM portal content must be attached to a parent node.");
+    }
+    const anchorNode = this.outletElement.ownerDocument.createComment("dom-portal");
+    element.parentNode.insertBefore(anchorNode, element);
+    this.outletElement.appendChild(element);
+    this._attachedPortal = portal;
+    super.setDisposeFn(() => {
+      if (anchorNode.parentNode) {
+        anchorNode.parentNode.replaceChild(element, anchorNode);
+      }
+    });
+  };
+  /**
+   * Clears out a portal from the DOM.
+   */
+  dispose() {
+    super.dispose();
+    this.outletElement.remove();
+  }
+  /** Gets the root HTMLElement for an instantiated component. */
+  _getComponentRootNode(componentRef) {
+    return componentRef.hostView.rootNodes[0];
+  }
+};
+var CdkPortal = class _CdkPortal extends TemplatePortal {
+  constructor() {
+    const templateRef = inject(TemplateRef);
+    const viewContainerRef = inject(ViewContainerRef);
+    super(templateRef, viewContainerRef);
+  }
+  static ɵfac = function CdkPortal_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _CdkPortal)();
+  };
+  static ɵdir = ɵɵdefineDirective({
+    type: _CdkPortal,
+    selectors: [["", "cdkPortal", ""]],
+    exportAs: ["cdkPortal"],
+    features: [ɵɵInheritDefinitionFeature]
+  });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(CdkPortal, [{
+    type: Directive,
+    args: [{
+      selector: "[cdkPortal]",
+      exportAs: "cdkPortal"
+    }]
+  }], () => [], null);
+})();
+var TemplatePortalDirective = class _TemplatePortalDirective extends CdkPortal {
+  static ɵfac = /* @__PURE__ */ (() => {
+    let ɵTemplatePortalDirective_BaseFactory;
+    return function TemplatePortalDirective_Factory(__ngFactoryType__) {
+      return (ɵTemplatePortalDirective_BaseFactory || (ɵTemplatePortalDirective_BaseFactory = ɵɵgetInheritedFactory(_TemplatePortalDirective)))(__ngFactoryType__ || _TemplatePortalDirective);
+    };
+  })();
+  static ɵdir = ɵɵdefineDirective({
+    type: _TemplatePortalDirective,
+    selectors: [["", "cdk-portal", ""], ["", "portal", ""]],
+    exportAs: ["cdkPortal"],
+    features: [ɵɵProvidersFeature([{
+      provide: CdkPortal,
+      useExisting: _TemplatePortalDirective
+    }]), ɵɵInheritDefinitionFeature]
+  });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(TemplatePortalDirective, [{
+    type: Directive,
+    args: [{
+      selector: "[cdk-portal], [portal]",
+      exportAs: "cdkPortal",
+      providers: [{
+        provide: CdkPortal,
+        useExisting: TemplatePortalDirective
+      }]
+    }]
+  }], null, null);
+})();
+var CdkPortalOutlet = class _CdkPortalOutlet extends BasePortalOutlet {
+  _moduleRef = inject(NgModuleRef$1, {
+    optional: true
+  });
+  _document = inject(DOCUMENT);
+  _viewContainerRef = inject(ViewContainerRef);
+  /** Whether the portal component is initialized. */
+  _isInitialized = false;
+  /** Reference to the currently-attached component/view ref. */
+  _attachedRef;
+  constructor() {
+    super();
+  }
+  /** Portal associated with the Portal outlet. */
+  get portal() {
+    return this._attachedPortal;
+  }
+  set portal(portal) {
+    if (this.hasAttached() && !portal && !this._isInitialized) {
+      return;
+    }
+    if (this.hasAttached()) {
+      super.detach();
+    }
+    if (portal) {
+      super.attach(portal);
+    }
+    this._attachedPortal = portal || null;
+  }
+  /** Emits when a portal is attached to the outlet. */
+  attached = new EventEmitter();
+  /** Component or view reference that is attached to the portal. */
+  get attachedRef() {
+    return this._attachedRef;
+  }
+  ngOnInit() {
+    this._isInitialized = true;
+  }
+  ngOnDestroy() {
+    super.dispose();
+    this._attachedRef = this._attachedPortal = null;
+  }
+  /**
+   * Attach the given ComponentPortal to this PortalOutlet.
+   *
+   * @param portal Portal to be attached to the portal outlet.
+   * @returns Reference to the created component.
+   */
+  attachComponentPortal(portal) {
+    portal.setAttachedHost(this);
+    const viewContainerRef = portal.viewContainerRef != null ? portal.viewContainerRef : this._viewContainerRef;
+    const ref = viewContainerRef.createComponent(portal.component, {
+      index: viewContainerRef.length,
+      injector: portal.injector || viewContainerRef.injector,
+      projectableNodes: portal.projectableNodes || void 0,
+      ngModuleRef: this._moduleRef || void 0
+    });
+    if (viewContainerRef !== this._viewContainerRef) {
+      this._getRootNode().appendChild(ref.hostView.rootNodes[0]);
+    }
+    super.setDisposeFn(() => ref.destroy());
+    this._attachedPortal = portal;
+    this._attachedRef = ref;
+    this.attached.emit(ref);
+    return ref;
+  }
+  /**
+   * Attach the given TemplatePortal to this PortalHost as an embedded View.
+   * @param portal Portal to be attached.
+   * @returns Reference to the created embedded view.
+   */
+  attachTemplatePortal(portal) {
+    portal.setAttachedHost(this);
+    const viewRef = this._viewContainerRef.createEmbeddedView(portal.templateRef, portal.context, {
+      injector: portal.injector
+    });
+    super.setDisposeFn(() => this._viewContainerRef.clear());
+    this._attachedPortal = portal;
+    this._attachedRef = viewRef;
+    this.attached.emit(viewRef);
+    return viewRef;
+  }
+  /**
+   * Attaches the given DomPortal to this PortalHost by moving all of the portal content into it.
+   * @param portal Portal to be attached.
+   * @deprecated To be turned into a method.
+   * @breaking-change 10.0.0
+   */
+  attachDomPortal = (portal) => {
+    const element = portal.element;
+    if (!element.parentNode && (typeof ngDevMode === "undefined" || ngDevMode)) {
+      throw Error("DOM portal content must be attached to a parent node.");
+    }
+    const anchorNode = this._document.createComment("dom-portal");
+    portal.setAttachedHost(this);
+    element.parentNode.insertBefore(anchorNode, element);
+    this._getRootNode().appendChild(element);
+    this._attachedPortal = portal;
+    super.setDisposeFn(() => {
+      if (anchorNode.parentNode) {
+        anchorNode.parentNode.replaceChild(element, anchorNode);
+      }
+    });
+  };
+  /** Gets the root node of the portal outlet. */
+  _getRootNode() {
+    const nativeElement = this._viewContainerRef.element.nativeElement;
+    return nativeElement.nodeType === nativeElement.ELEMENT_NODE ? nativeElement : nativeElement.parentNode;
+  }
+  static ɵfac = function CdkPortalOutlet_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _CdkPortalOutlet)();
+  };
+  static ɵdir = ɵɵdefineDirective({
+    type: _CdkPortalOutlet,
+    selectors: [["", "cdkPortalOutlet", ""]],
+    inputs: {
+      portal: [0, "cdkPortalOutlet", "portal"]
+    },
+    outputs: {
+      attached: "attached"
+    },
+    exportAs: ["cdkPortalOutlet"],
+    features: [ɵɵInheritDefinitionFeature]
+  });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(CdkPortalOutlet, [{
+    type: Directive,
+    args: [{
+      selector: "[cdkPortalOutlet]",
+      exportAs: "cdkPortalOutlet"
+    }]
+  }], () => [], {
+    portal: [{
+      type: Input,
+      args: ["cdkPortalOutlet"]
+    }],
+    attached: [{
+      type: Output
+    }]
+  });
+})();
+var PortalHostDirective = class _PortalHostDirective extends CdkPortalOutlet {
+  static ɵfac = /* @__PURE__ */ (() => {
+    let ɵPortalHostDirective_BaseFactory;
+    return function PortalHostDirective_Factory(__ngFactoryType__) {
+      return (ɵPortalHostDirective_BaseFactory || (ɵPortalHostDirective_BaseFactory = ɵɵgetInheritedFactory(_PortalHostDirective)))(__ngFactoryType__ || _PortalHostDirective);
+    };
+  })();
+  static ɵdir = ɵɵdefineDirective({
+    type: _PortalHostDirective,
+    selectors: [["", "cdkPortalHost", ""], ["", "portalHost", ""]],
+    inputs: {
+      portal: [0, "cdkPortalHost", "portal"]
+    },
+    exportAs: ["cdkPortalHost"],
+    features: [ɵɵProvidersFeature([{
+      provide: CdkPortalOutlet,
+      useExisting: _PortalHostDirective
+    }]), ɵɵInheritDefinitionFeature]
+  });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(PortalHostDirective, [{
+    type: Directive,
+    args: [{
+      selector: "[cdkPortalHost], [portalHost]",
+      exportAs: "cdkPortalHost",
+      inputs: [{
+        name: "portal",
+        alias: "cdkPortalHost"
+      }],
+      providers: [{
+        provide: CdkPortalOutlet,
+        useExisting: PortalHostDirective
+      }]
+    }]
+  }], null, null);
+})();
+var PortalModule = class _PortalModule {
+  static ɵfac = function PortalModule_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _PortalModule)();
+  };
+  static ɵmod = ɵɵdefineNgModule({
+    type: _PortalModule,
+    imports: [CdkPortal, CdkPortalOutlet, TemplatePortalDirective, PortalHostDirective],
+    exports: [CdkPortal, CdkPortalOutlet, TemplatePortalDirective, PortalHostDirective]
+  });
+  static ɵinj = ɵɵdefineInjector({});
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(PortalModule, [{
+    type: NgModule,
+    args: [{
+      imports: [CdkPortal, CdkPortalOutlet, TemplatePortalDirective, PortalHostDirective],
+      exports: [CdkPortal, CdkPortalOutlet, TemplatePortalDirective, PortalHostDirective]
+    }]
+  }], null, null);
+})();
 
 // node_modules/@angular/cdk/fesm2022/fake-event-detection.mjs
 function isFakeMousedownFromScreenReader(event) {
@@ -247,6 +779,8 @@ function coerceElement(elementOrRef) {
 }
 
 // node_modules/@angular/cdk/fesm2022/focus-monitor.mjs
+var import_rxjs = __toESM(require_cjs(), 1);
+var import_operators = __toESM(require_operators(), 1);
 var INPUT_MODALITY_DETECTOR_OPTIONS = new InjectionToken("cdk-input-modality-detector-options");
 var INPUT_MODALITY_DETECTOR_DEFAULT_OPTIONS = {
   ignoreKeys: [ALT, CONTROL, MAC_META, META, SHIFT]
@@ -273,7 +807,7 @@ var InputModalityDetector = class _InputModalityDetector {
    */
   _mostRecentTarget = null;
   /** The underlying BehaviorSubject that emits whenever an input modality is detected. */
-  _modality = new BehaviorSubject(null);
+  _modality = new import_rxjs.BehaviorSubject(null);
   /** Options for this InputModalityDetector. */
   _options;
   /**
@@ -323,8 +857,8 @@ var InputModalityDetector = class _InputModalityDetector {
       optional: true
     });
     this._options = __spreadValues(__spreadValues({}, INPUT_MODALITY_DETECTOR_DEFAULT_OPTIONS), options);
-    this.modalityDetected = this._modality.pipe(skip(1));
-    this.modalityChanged = this.modalityDetected.pipe(distinctUntilChanged());
+    this.modalityDetected = this._modality.pipe((0, import_operators.skip)(1));
+    this.modalityChanged = this.modalityDetected.pipe((0, import_operators.distinctUntilChanged)());
     if (this._platform.isBrowser) {
       const renderer = inject(RendererFactory2).createRenderer(null, null);
       this._listenerCleanups = ngZone.runOutsideAngular(() => {
@@ -409,7 +943,7 @@ var FocusMonitor = class _FocusMonitor {
   /** Used to reference correct document/window */
   _document = inject(DOCUMENT);
   /** Subject for stopping our InputModalityDetector subscription. */
-  _stopInputModalityDetector = new Subject();
+  _stopInputModalityDetector = new import_rxjs.Subject();
   constructor() {
     const options = inject(FOCUS_MONITOR_DEFAULT_OPTIONS, {
       optional: true
@@ -433,7 +967,7 @@ var FocusMonitor = class _FocusMonitor {
   monitor(element, checkChildren = false) {
     const nativeElement = coerceElement(element);
     if (!this._platform.isBrowser || nativeElement.nodeType !== 1) {
-      return of();
+      return (0, import_rxjs.of)();
     }
     const rootNode = _getShadowRoot(nativeElement) || this._document;
     const cachedInfo = this._elementInfo.get(nativeElement);
@@ -445,7 +979,7 @@ var FocusMonitor = class _FocusMonitor {
     }
     const info = {
       checkChildren,
-      subject: new Subject(),
+      subject: new import_rxjs.Subject(),
       rootNode
     };
     this._elementInfo.set(nativeElement, info);
@@ -587,7 +1121,7 @@ var FocusMonitor = class _FocusMonitor {
         const window2 = this._getWindow();
         window2.addEventListener("focus", this._windowFocusListener);
       });
-      this._inputModalityDetector.modalityDetected.pipe(takeUntil(this._stopInputModalityDetector)).subscribe((modality) => {
+      this._inputModalityDetector.modalityDetected.pipe((0, import_operators.takeUntil)(this._stopInputModalityDetector)).subscribe((modality) => {
         this._setOrigin(
           modality,
           true
@@ -812,6 +1346,8 @@ function coerceArray(value) {
 }
 
 // node_modules/@angular/cdk/fesm2022/breakpoints-observer.mjs
+var import_rxjs2 = __toESM(require_cjs(), 1);
+var import_operators2 = __toESM(require_operators(), 1);
 var mediaQueriesForWebkitCompatibility = /* @__PURE__ */ new Set();
 var mediaQueryStyleNode;
 var MediaMatcher = class _MediaMatcher {
@@ -894,7 +1430,7 @@ var BreakpointObserver = class _BreakpointObserver {
   /**  A map of all media queries currently being listened for. */
   _queries = /* @__PURE__ */ new Map();
   /** A subject for all other observables to takeUntil based on. */
-  _destroySubject = new Subject();
+  _destroySubject = new import_rxjs2.Subject();
   constructor() {
   }
   /** Completes the active subject, signalling to all other observables to complete. */
@@ -920,9 +1456,9 @@ var BreakpointObserver = class _BreakpointObserver {
   observe(value) {
     const queries = splitQueries(coerceArray(value));
     const observables = queries.map((query) => this._registerQuery(query).observable);
-    let stateObservable = combineLatest(observables);
-    stateObservable = concat(stateObservable.pipe(take(1)), stateObservable.pipe(skip(1), debounceTime(0)));
-    return stateObservable.pipe(map((breakpointStates) => {
+    let stateObservable = (0, import_rxjs2.combineLatest)(observables);
+    stateObservable = (0, import_rxjs2.concat)(stateObservable.pipe((0, import_operators2.take)(1)), stateObservable.pipe((0, import_operators2.skip)(1), (0, import_operators2.debounceTime)(0)));
+    return stateObservable.pipe((0, import_operators2.map)((breakpointStates) => {
       const response = {
         matches: false,
         breakpoints: {}
@@ -943,18 +1479,18 @@ var BreakpointObserver = class _BreakpointObserver {
       return this._queries.get(query);
     }
     const mql = this._mediaMatcher.matchMedia(query);
-    const queryObservable = new Observable((observer) => {
+    const queryObservable = new import_rxjs2.Observable((observer) => {
       const handler = (e) => this._zone.run(() => observer.next(e));
       mql.addListener(handler);
       return () => {
         mql.removeListener(handler);
       };
-    }).pipe(startWith(mql), map(({
+    }).pipe((0, import_operators2.startWith)(mql), (0, import_operators2.map)(({
       matches
     }) => ({
       query,
       matches
-    })), takeUntil(this._destroySubject));
+    })), (0, import_operators2.takeUntil)(this._destroySubject));
     const output = {
       observable: queryObservable,
       mql
@@ -984,6 +1520,8 @@ function splitQueries(queries) {
 }
 
 // node_modules/@angular/cdk/fesm2022/observers.mjs
+var import_rxjs3 = __toESM(require_cjs(), 1);
+var import_operators3 = __toESM(require_operators(), 1);
 function shouldIgnoreRecord(record) {
   if (record.type === "characterData" && record.target instanceof Comment) {
     return true;
@@ -1036,9 +1574,9 @@ var ContentObserver = class _ContentObserver {
   }
   observe(elementOrRef) {
     const element = coerceElement(elementOrRef);
-    return new Observable((observer) => {
+    return new import_rxjs3.Observable((observer) => {
       const stream = this._observeElement(element);
-      const subscription = stream.pipe(map((records) => records.filter((record) => !shouldIgnoreRecord(record))), filter((records) => !!records.length)).subscribe((records) => {
+      const subscription = stream.pipe((0, import_operators3.map)((records) => records.filter((record) => !shouldIgnoreRecord(record))), (0, import_operators3.filter)((records) => !!records.length)).subscribe((records) => {
         this._ngZone.run(() => {
           observer.next(records);
         });
@@ -1056,7 +1594,7 @@ var ContentObserver = class _ContentObserver {
   _observeElement(element) {
     return this._ngZone.runOutsideAngular(() => {
       if (!this._observedElements.has(element)) {
-        const stream = new Subject();
+        const stream = new import_rxjs3.Subject();
         const observer = this._mutationObserverFactory.create((mutations) => stream.next(mutations));
         if (observer) {
           observer.observe(element, {
@@ -1159,7 +1697,7 @@ var CdkObserveContent = class _CdkObserveContent {
   _subscribe() {
     this._unsubscribe();
     const stream = this._contentObserver.observe(this._elementRef);
-    this._currentSubscription = (this.debounce ? stream.pipe(debounceTime(this.debounce)) : stream).subscribe(this.event);
+    this._currentSubscription = (this.debounce ? stream.pipe((0, import_operators3.debounceTime)(this.debounce)) : stream).subscribe(this.event);
   }
   _unsubscribe() {
     this._currentSubscription?.unsubscribe();
@@ -2070,104 +2608,12 @@ var A11yModule = class _A11yModule {
   }], () => [], null);
 })();
 
-// node_modules/@angular/cdk/fesm2022/id-generator.mjs
-var counters = {};
-var _IdGenerator = class __IdGenerator {
-  _appId = inject(APP_ID);
-  /**
-   * Generates a unique ID with a specific prefix.
-   * @param prefix Prefix to add to the ID.
-   */
-  getId(prefix) {
-    if (this._appId !== "ng") {
-      prefix += this._appId;
-    }
-    if (!counters.hasOwnProperty(prefix)) {
-      counters[prefix] = 0;
-    }
-    return `${prefix}${counters[prefix]++}`;
-  }
-  static ɵfac = function _IdGenerator_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || __IdGenerator)();
-  };
-  static ɵprov = ɵɵdefineInjectable({
-    token: __IdGenerator,
-    factory: __IdGenerator.ɵfac,
-    providedIn: "root"
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(_IdGenerator, [{
-    type: Injectable,
-    args: [{
-      providedIn: "root"
-    }]
-  }], null, null);
-})();
-
 // node_modules/@angular/cdk/fesm2022/keycodes.mjs
 function hasModifierKey(event, ...modifiers) {
   if (modifiers.length) {
     return modifiers.some((modifier) => event[modifier]);
   }
   return event.altKey || event.shiftKey || event.ctrlKey || event.metaKey;
-}
-
-// node_modules/@angular/cdk/fesm2022/scrolling2.mjs
-var RtlScrollAxisType;
-(function(RtlScrollAxisType2) {
-  RtlScrollAxisType2[RtlScrollAxisType2["NORMAL"] = 0] = "NORMAL";
-  RtlScrollAxisType2[RtlScrollAxisType2["NEGATED"] = 1] = "NEGATED";
-  RtlScrollAxisType2[RtlScrollAxisType2["INVERTED"] = 2] = "INVERTED";
-})(RtlScrollAxisType || (RtlScrollAxisType = {}));
-var rtlScrollAxisType;
-var scrollBehaviorSupported;
-function supportsScrollBehavior() {
-  if (scrollBehaviorSupported == null) {
-    if (typeof document !== "object" || !document || typeof Element !== "function" || !Element) {
-      scrollBehaviorSupported = false;
-      return scrollBehaviorSupported;
-    }
-    if ("scrollBehavior" in document.documentElement.style) {
-      scrollBehaviorSupported = true;
-    } else {
-      const scrollToFunction = Element.prototype.scrollTo;
-      if (scrollToFunction) {
-        scrollBehaviorSupported = !/\{\s*\[native code\]\s*\}/.test(scrollToFunction.toString());
-      } else {
-        scrollBehaviorSupported = false;
-      }
-    }
-  }
-  return scrollBehaviorSupported;
-}
-function getRtlScrollAxisType() {
-  if (typeof document !== "object" || !document) {
-    return RtlScrollAxisType.NORMAL;
-  }
-  if (rtlScrollAxisType == null) {
-    const scrollContainer = document.createElement("div");
-    const containerStyle = scrollContainer.style;
-    scrollContainer.dir = "rtl";
-    containerStyle.width = "1px";
-    containerStyle.overflow = "auto";
-    containerStyle.visibility = "hidden";
-    containerStyle.pointerEvents = "none";
-    containerStyle.position = "absolute";
-    const content = document.createElement("div");
-    const contentStyle = content.style;
-    contentStyle.width = "2px";
-    contentStyle.height = "1px";
-    scrollContainer.appendChild(content);
-    document.body.appendChild(scrollContainer);
-    rtlScrollAxisType = RtlScrollAxisType.NORMAL;
-    if (scrollContainer.scrollLeft === 0) {
-      scrollContainer.scrollLeft = 1;
-      rtlScrollAxisType = scrollContainer.scrollLeft === 0 ? RtlScrollAxisType.NEGATED : RtlScrollAxisType.INVERTED;
-    }
-    scrollContainer.remove();
-  }
-  return rtlScrollAxisType;
 }
 
 // node_modules/@angular/cdk/fesm2022/test-environment.mjs
@@ -2248,6 +2694,63 @@ var Directionality = class _Directionality {
     }]
   }], () => [], null);
 })();
+
+// node_modules/@angular/cdk/fesm2022/scrolling2.mjs
+var RtlScrollAxisType;
+(function(RtlScrollAxisType2) {
+  RtlScrollAxisType2[RtlScrollAxisType2["NORMAL"] = 0] = "NORMAL";
+  RtlScrollAxisType2[RtlScrollAxisType2["NEGATED"] = 1] = "NEGATED";
+  RtlScrollAxisType2[RtlScrollAxisType2["INVERTED"] = 2] = "INVERTED";
+})(RtlScrollAxisType || (RtlScrollAxisType = {}));
+var rtlScrollAxisType;
+var scrollBehaviorSupported;
+function supportsScrollBehavior() {
+  if (scrollBehaviorSupported == null) {
+    if (typeof document !== "object" || !document || typeof Element !== "function" || !Element) {
+      scrollBehaviorSupported = false;
+      return scrollBehaviorSupported;
+    }
+    if ("scrollBehavior" in document.documentElement.style) {
+      scrollBehaviorSupported = true;
+    } else {
+      const scrollToFunction = Element.prototype.scrollTo;
+      if (scrollToFunction) {
+        scrollBehaviorSupported = !/\{\s*\[native code\]\s*\}/.test(scrollToFunction.toString());
+      } else {
+        scrollBehaviorSupported = false;
+      }
+    }
+  }
+  return scrollBehaviorSupported;
+}
+function getRtlScrollAxisType() {
+  if (typeof document !== "object" || !document) {
+    return RtlScrollAxisType.NORMAL;
+  }
+  if (rtlScrollAxisType == null) {
+    const scrollContainer = document.createElement("div");
+    const containerStyle = scrollContainer.style;
+    scrollContainer.dir = "rtl";
+    containerStyle.width = "1px";
+    containerStyle.overflow = "auto";
+    containerStyle.visibility = "hidden";
+    containerStyle.pointerEvents = "none";
+    containerStyle.position = "absolute";
+    const content = document.createElement("div");
+    const contentStyle = content.style;
+    contentStyle.width = "2px";
+    contentStyle.height = "1px";
+    scrollContainer.appendChild(content);
+    document.body.appendChild(scrollContainer);
+    rtlScrollAxisType = RtlScrollAxisType.NORMAL;
+    if (scrollContainer.scrollLeft === 0) {
+      scrollContainer.scrollLeft = 1;
+      rtlScrollAxisType = scrollContainer.scrollLeft === 0 ? RtlScrollAxisType.NEGATED : RtlScrollAxisType.INVERTED;
+    }
+    scrollContainer.remove();
+  }
+  return rtlScrollAxisType;
+}
 
 // node_modules/@angular/cdk/fesm2022/bidi.mjs
 var Dir = class _Dir {
@@ -2353,566 +2856,16 @@ var BidiModule = class _BidiModule {
   }], null, null);
 })();
 
-// node_modules/@angular/cdk/fesm2022/portal.mjs
-function throwNullPortalError() {
-  throw Error("Must provide a portal to attach");
-}
-function throwPortalAlreadyAttachedError() {
-  throw Error("Host already has a portal attached");
-}
-function throwPortalOutletAlreadyDisposedError() {
-  throw Error("This PortalOutlet has already been disposed");
-}
-function throwUnknownPortalTypeError() {
-  throw Error("Attempting to attach an unknown Portal type. BasePortalOutlet accepts either a ComponentPortal or a TemplatePortal.");
-}
-function throwNullPortalOutletError() {
-  throw Error("Attempting to attach a portal to a null PortalOutlet");
-}
-function throwNoPortalAttachedError() {
-  throw Error("Attempting to detach a portal that is not attached to a host");
-}
-var Portal = class {
-  _attachedHost;
-  /** Attach this portal to a host. */
-  attach(host) {
-    if (typeof ngDevMode === "undefined" || ngDevMode) {
-      if (host == null) {
-        throwNullPortalOutletError();
-      }
-      if (host.hasAttached()) {
-        throwPortalAlreadyAttachedError();
-      }
-    }
-    this._attachedHost = host;
-    return host.attach(this);
-  }
-  /** Detach this portal from its host */
-  detach() {
-    let host = this._attachedHost;
-    if (host != null) {
-      this._attachedHost = null;
-      host.detach();
-    } else if (typeof ngDevMode === "undefined" || ngDevMode) {
-      throwNoPortalAttachedError();
-    }
-  }
-  /** Whether this portal is attached to a host. */
-  get isAttached() {
-    return this._attachedHost != null;
-  }
-  /**
-   * Sets the PortalOutlet reference without performing `attach()`. This is used directly by
-   * the PortalOutlet when it is performing an `attach()` or `detach()`.
-   */
-  setAttachedHost(host) {
-    this._attachedHost = host;
-  }
-};
-var ComponentPortal = class extends Portal {
-  /** The type of the component that will be instantiated for attachment. */
-  component;
-  /**
-   * Where the attached component should live in Angular's *logical* component tree.
-   * This is different from where the component *renders*, which is determined by the PortalOutlet.
-   * The origin is necessary when the host is outside of the Angular application context.
-   */
-  viewContainerRef;
-  /** Injector used for the instantiation of the component. */
-  injector;
-  /**
-   * List of DOM nodes that should be projected through `<ng-content>` of the attached component.
-   */
-  projectableNodes;
-  constructor(component, viewContainerRef, injector, projectableNodes) {
-    super();
-    this.component = component;
-    this.viewContainerRef = viewContainerRef;
-    this.injector = injector;
-    this.projectableNodes = projectableNodes;
-  }
-};
-var TemplatePortal = class extends Portal {
-  templateRef;
-  viewContainerRef;
-  context;
-  injector;
-  constructor(templateRef, viewContainerRef, context, injector) {
-    super();
-    this.templateRef = templateRef;
-    this.viewContainerRef = viewContainerRef;
-    this.context = context;
-    this.injector = injector;
-  }
-  get origin() {
-    return this.templateRef.elementRef;
-  }
-  /**
-   * Attach the portal to the provided `PortalOutlet`.
-   * When a context is provided it will override the `context` property of the `TemplatePortal`
-   * instance.
-   */
-  attach(host, context = this.context) {
-    this.context = context;
-    return super.attach(host);
-  }
-  detach() {
-    this.context = void 0;
-    return super.detach();
-  }
-};
-var DomPortal = class extends Portal {
-  /** DOM node hosting the portal's content. */
-  element;
-  constructor(element) {
-    super();
-    this.element = element instanceof ElementRef ? element.nativeElement : element;
-  }
-};
-var BasePortalOutlet = class {
-  /** The portal currently attached to the host. */
-  _attachedPortal;
-  /** A function that will permanently dispose this host. */
-  _disposeFn;
-  /** Whether this host has already been permanently disposed. */
-  _isDisposed = false;
-  /** Whether this host has an attached portal. */
-  hasAttached() {
-    return !!this._attachedPortal;
-  }
-  /** Attaches a portal. */
-  attach(portal) {
-    if (typeof ngDevMode === "undefined" || ngDevMode) {
-      if (!portal) {
-        throwNullPortalError();
-      }
-      if (this.hasAttached()) {
-        throwPortalAlreadyAttachedError();
-      }
-      if (this._isDisposed) {
-        throwPortalOutletAlreadyDisposedError();
-      }
-    }
-    if (portal instanceof ComponentPortal) {
-      this._attachedPortal = portal;
-      return this.attachComponentPortal(portal);
-    } else if (portal instanceof TemplatePortal) {
-      this._attachedPortal = portal;
-      return this.attachTemplatePortal(portal);
-    } else if (this.attachDomPortal && portal instanceof DomPortal) {
-      this._attachedPortal = portal;
-      return this.attachDomPortal(portal);
-    }
-    if (typeof ngDevMode === "undefined" || ngDevMode) {
-      throwUnknownPortalTypeError();
-    }
-  }
-  // @breaking-change 10.0.0 `attachDomPortal` to become a required abstract method.
-  attachDomPortal = null;
-  /** Detaches a previously attached portal. */
-  detach() {
-    if (this._attachedPortal) {
-      this._attachedPortal.setAttachedHost(null);
-      this._attachedPortal = null;
-    }
-    this._invokeDisposeFn();
-  }
-  /** Permanently dispose of this portal host. */
-  dispose() {
-    if (this.hasAttached()) {
-      this.detach();
-    }
-    this._invokeDisposeFn();
-    this._isDisposed = true;
-  }
-  /** @docs-private */
-  setDisposeFn(fn) {
-    this._disposeFn = fn;
-  }
-  _invokeDisposeFn() {
-    if (this._disposeFn) {
-      this._disposeFn();
-      this._disposeFn = null;
-    }
-  }
-};
-var DomPortalOutlet = class extends BasePortalOutlet {
-  outletElement;
-  _appRef;
-  _defaultInjector;
-  /**
-   * @param outletElement Element into which the content is projected.
-   * @param _appRef Reference to the application. Only used in component portals when there
-   *   is no `ViewContainerRef` available.
-   * @param _defaultInjector Injector to use as a fallback when the portal being attached doesn't
-   *   have one. Only used for component portals.
-   */
-  constructor(outletElement, _appRef, _defaultInjector) {
-    super();
-    this.outletElement = outletElement;
-    this._appRef = _appRef;
-    this._defaultInjector = _defaultInjector;
-  }
-  /**
-   * Attach the given ComponentPortal to DOM element.
-   * @param portal Portal to be attached
-   * @returns Reference to the created component.
-   */
-  attachComponentPortal(portal) {
-    let componentRef;
-    if (portal.viewContainerRef) {
-      const injector = portal.injector || portal.viewContainerRef.injector;
-      const ngModuleRef = injector.get(NgModuleRef$1, null, {
-        optional: true
-      }) || void 0;
-      componentRef = portal.viewContainerRef.createComponent(portal.component, {
-        index: portal.viewContainerRef.length,
-        injector,
-        ngModuleRef,
-        projectableNodes: portal.projectableNodes || void 0
-      });
-      this.setDisposeFn(() => componentRef.destroy());
-    } else {
-      if ((typeof ngDevMode === "undefined" || ngDevMode) && !this._appRef) {
-        throw Error("Cannot attach component portal to outlet without an ApplicationRef.");
-      }
-      const appRef = this._appRef;
-      const elementInjector = portal.injector || this._defaultInjector || Injector.NULL;
-      const environmentInjector = elementInjector.get(EnvironmentInjector, appRef.injector);
-      componentRef = createComponent(portal.component, {
-        elementInjector,
-        environmentInjector,
-        projectableNodes: portal.projectableNodes || void 0
-      });
-      appRef.attachView(componentRef.hostView);
-      this.setDisposeFn(() => {
-        if (appRef.viewCount > 0) {
-          appRef.detachView(componentRef.hostView);
-        }
-        componentRef.destroy();
-      });
-    }
-    this.outletElement.appendChild(this._getComponentRootNode(componentRef));
-    this._attachedPortal = portal;
-    return componentRef;
-  }
-  /**
-   * Attaches a template portal to the DOM as an embedded view.
-   * @param portal Portal to be attached.
-   * @returns Reference to the created embedded view.
-   */
-  attachTemplatePortal(portal) {
-    let viewContainer = portal.viewContainerRef;
-    let viewRef = viewContainer.createEmbeddedView(portal.templateRef, portal.context, {
-      injector: portal.injector
-    });
-    viewRef.rootNodes.forEach((rootNode) => this.outletElement.appendChild(rootNode));
-    viewRef.detectChanges();
-    this.setDisposeFn(() => {
-      let index = viewContainer.indexOf(viewRef);
-      if (index !== -1) {
-        viewContainer.remove(index);
-      }
-    });
-    this._attachedPortal = portal;
-    return viewRef;
-  }
-  /**
-   * Attaches a DOM portal by transferring its content into the outlet.
-   * @param portal Portal to be attached.
-   * @deprecated To be turned into a method.
-   * @breaking-change 10.0.0
-   */
-  attachDomPortal = (portal) => {
-    const element = portal.element;
-    if (!element.parentNode && (typeof ngDevMode === "undefined" || ngDevMode)) {
-      throw Error("DOM portal content must be attached to a parent node.");
-    }
-    const anchorNode = this.outletElement.ownerDocument.createComment("dom-portal");
-    element.parentNode.insertBefore(anchorNode, element);
-    this.outletElement.appendChild(element);
-    this._attachedPortal = portal;
-    super.setDisposeFn(() => {
-      if (anchorNode.parentNode) {
-        anchorNode.parentNode.replaceChild(element, anchorNode);
-      }
-    });
-  };
-  /**
-   * Clears out a portal from the DOM.
-   */
-  dispose() {
-    super.dispose();
-    this.outletElement.remove();
-  }
-  /** Gets the root HTMLElement for an instantiated component. */
-  _getComponentRootNode(componentRef) {
-    return componentRef.hostView.rootNodes[0];
-  }
-};
-var CdkPortal = class _CdkPortal extends TemplatePortal {
-  constructor() {
-    const templateRef = inject(TemplateRef);
-    const viewContainerRef = inject(ViewContainerRef);
-    super(templateRef, viewContainerRef);
-  }
-  static ɵfac = function CdkPortal_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _CdkPortal)();
-  };
-  static ɵdir = ɵɵdefineDirective({
-    type: _CdkPortal,
-    selectors: [["", "cdkPortal", ""]],
-    exportAs: ["cdkPortal"],
-    features: [ɵɵInheritDefinitionFeature]
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(CdkPortal, [{
-    type: Directive,
-    args: [{
-      selector: "[cdkPortal]",
-      exportAs: "cdkPortal"
-    }]
-  }], () => [], null);
-})();
-var TemplatePortalDirective = class _TemplatePortalDirective extends CdkPortal {
-  static ɵfac = /* @__PURE__ */ (() => {
-    let ɵTemplatePortalDirective_BaseFactory;
-    return function TemplatePortalDirective_Factory(__ngFactoryType__) {
-      return (ɵTemplatePortalDirective_BaseFactory || (ɵTemplatePortalDirective_BaseFactory = ɵɵgetInheritedFactory(_TemplatePortalDirective)))(__ngFactoryType__ || _TemplatePortalDirective);
-    };
-  })();
-  static ɵdir = ɵɵdefineDirective({
-    type: _TemplatePortalDirective,
-    selectors: [["", "cdk-portal", ""], ["", "portal", ""]],
-    exportAs: ["cdkPortal"],
-    features: [ɵɵProvidersFeature([{
-      provide: CdkPortal,
-      useExisting: _TemplatePortalDirective
-    }]), ɵɵInheritDefinitionFeature]
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(TemplatePortalDirective, [{
-    type: Directive,
-    args: [{
-      selector: "[cdk-portal], [portal]",
-      exportAs: "cdkPortal",
-      providers: [{
-        provide: CdkPortal,
-        useExisting: TemplatePortalDirective
-      }]
-    }]
-  }], null, null);
-})();
-var CdkPortalOutlet = class _CdkPortalOutlet extends BasePortalOutlet {
-  _moduleRef = inject(NgModuleRef$1, {
-    optional: true
-  });
-  _document = inject(DOCUMENT);
-  _viewContainerRef = inject(ViewContainerRef);
-  /** Whether the portal component is initialized. */
-  _isInitialized = false;
-  /** Reference to the currently-attached component/view ref. */
-  _attachedRef;
-  constructor() {
-    super();
-  }
-  /** Portal associated with the Portal outlet. */
-  get portal() {
-    return this._attachedPortal;
-  }
-  set portal(portal) {
-    if (this.hasAttached() && !portal && !this._isInitialized) {
-      return;
-    }
-    if (this.hasAttached()) {
-      super.detach();
-    }
-    if (portal) {
-      super.attach(portal);
-    }
-    this._attachedPortal = portal || null;
-  }
-  /** Emits when a portal is attached to the outlet. */
-  attached = new EventEmitter();
-  /** Component or view reference that is attached to the portal. */
-  get attachedRef() {
-    return this._attachedRef;
-  }
-  ngOnInit() {
-    this._isInitialized = true;
-  }
-  ngOnDestroy() {
-    super.dispose();
-    this._attachedRef = this._attachedPortal = null;
-  }
-  /**
-   * Attach the given ComponentPortal to this PortalOutlet.
-   *
-   * @param portal Portal to be attached to the portal outlet.
-   * @returns Reference to the created component.
-   */
-  attachComponentPortal(portal) {
-    portal.setAttachedHost(this);
-    const viewContainerRef = portal.viewContainerRef != null ? portal.viewContainerRef : this._viewContainerRef;
-    const ref = viewContainerRef.createComponent(portal.component, {
-      index: viewContainerRef.length,
-      injector: portal.injector || viewContainerRef.injector,
-      projectableNodes: portal.projectableNodes || void 0,
-      ngModuleRef: this._moduleRef || void 0
-    });
-    if (viewContainerRef !== this._viewContainerRef) {
-      this._getRootNode().appendChild(ref.hostView.rootNodes[0]);
-    }
-    super.setDisposeFn(() => ref.destroy());
-    this._attachedPortal = portal;
-    this._attachedRef = ref;
-    this.attached.emit(ref);
-    return ref;
-  }
-  /**
-   * Attach the given TemplatePortal to this PortalHost as an embedded View.
-   * @param portal Portal to be attached.
-   * @returns Reference to the created embedded view.
-   */
-  attachTemplatePortal(portal) {
-    portal.setAttachedHost(this);
-    const viewRef = this._viewContainerRef.createEmbeddedView(portal.templateRef, portal.context, {
-      injector: portal.injector
-    });
-    super.setDisposeFn(() => this._viewContainerRef.clear());
-    this._attachedPortal = portal;
-    this._attachedRef = viewRef;
-    this.attached.emit(viewRef);
-    return viewRef;
-  }
-  /**
-   * Attaches the given DomPortal to this PortalHost by moving all of the portal content into it.
-   * @param portal Portal to be attached.
-   * @deprecated To be turned into a method.
-   * @breaking-change 10.0.0
-   */
-  attachDomPortal = (portal) => {
-    const element = portal.element;
-    if (!element.parentNode && (typeof ngDevMode === "undefined" || ngDevMode)) {
-      throw Error("DOM portal content must be attached to a parent node.");
-    }
-    const anchorNode = this._document.createComment("dom-portal");
-    portal.setAttachedHost(this);
-    element.parentNode.insertBefore(anchorNode, element);
-    this._getRootNode().appendChild(element);
-    this._attachedPortal = portal;
-    super.setDisposeFn(() => {
-      if (anchorNode.parentNode) {
-        anchorNode.parentNode.replaceChild(element, anchorNode);
-      }
-    });
-  };
-  /** Gets the root node of the portal outlet. */
-  _getRootNode() {
-    const nativeElement = this._viewContainerRef.element.nativeElement;
-    return nativeElement.nodeType === nativeElement.ELEMENT_NODE ? nativeElement : nativeElement.parentNode;
-  }
-  static ɵfac = function CdkPortalOutlet_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _CdkPortalOutlet)();
-  };
-  static ɵdir = ɵɵdefineDirective({
-    type: _CdkPortalOutlet,
-    selectors: [["", "cdkPortalOutlet", ""]],
-    inputs: {
-      portal: [0, "cdkPortalOutlet", "portal"]
-    },
-    outputs: {
-      attached: "attached"
-    },
-    exportAs: ["cdkPortalOutlet"],
-    features: [ɵɵInheritDefinitionFeature]
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(CdkPortalOutlet, [{
-    type: Directive,
-    args: [{
-      selector: "[cdkPortalOutlet]",
-      exportAs: "cdkPortalOutlet"
-    }]
-  }], () => [], {
-    portal: [{
-      type: Input,
-      args: ["cdkPortalOutlet"]
-    }],
-    attached: [{
-      type: Output
-    }]
-  });
-})();
-var PortalHostDirective = class _PortalHostDirective extends CdkPortalOutlet {
-  static ɵfac = /* @__PURE__ */ (() => {
-    let ɵPortalHostDirective_BaseFactory;
-    return function PortalHostDirective_Factory(__ngFactoryType__) {
-      return (ɵPortalHostDirective_BaseFactory || (ɵPortalHostDirective_BaseFactory = ɵɵgetInheritedFactory(_PortalHostDirective)))(__ngFactoryType__ || _PortalHostDirective);
-    };
-  })();
-  static ɵdir = ɵɵdefineDirective({
-    type: _PortalHostDirective,
-    selectors: [["", "cdkPortalHost", ""], ["", "portalHost", ""]],
-    inputs: {
-      portal: [0, "cdkPortalHost", "portal"]
-    },
-    exportAs: ["cdkPortalHost"],
-    features: [ɵɵProvidersFeature([{
-      provide: CdkPortalOutlet,
-      useExisting: _PortalHostDirective
-    }]), ɵɵInheritDefinitionFeature]
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(PortalHostDirective, [{
-    type: Directive,
-    args: [{
-      selector: "[cdkPortalHost], [portalHost]",
-      exportAs: "cdkPortalHost",
-      inputs: [{
-        name: "portal",
-        alias: "cdkPortalHost"
-      }],
-      providers: [{
-        provide: CdkPortalOutlet,
-        useExisting: PortalHostDirective
-      }]
-    }]
-  }], null, null);
-})();
-var PortalModule = class _PortalModule {
-  static ɵfac = function PortalModule_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _PortalModule)();
-  };
-  static ɵmod = ɵɵdefineNgModule({
-    type: _PortalModule,
-    imports: [CdkPortal, CdkPortalOutlet, TemplatePortalDirective, PortalHostDirective],
-    exports: [CdkPortal, CdkPortalOutlet, TemplatePortalDirective, PortalHostDirective]
-  });
-  static ɵinj = ɵɵdefineInjector({});
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(PortalModule, [{
-    type: NgModule,
-    args: [{
-      imports: [CdkPortal, CdkPortalOutlet, TemplatePortalDirective, PortalHostDirective],
-      exports: [CdkPortal, CdkPortalOutlet, TemplatePortalDirective, PortalHostDirective]
-    }]
-  }], null, null);
-})();
-
 // node_modules/@angular/cdk/fesm2022/data-source.mjs
+var import_rxjs4 = __toESM(require_cjs(), 1);
 var DataSource = class {
 };
 function isDataSource(value) {
-  return value && typeof value.connect === "function" && !(value instanceof ConnectableObservable);
+  return value && typeof value.connect === "function" && !(value instanceof import_rxjs4.ConnectableObservable);
 }
 
 // node_modules/@angular/cdk/fesm2022/recycle-view-repeater-strategy.mjs
+var import_rxjs5 = __toESM(require_cjs(), 1);
 var ArrayDataSource = class extends DataSource {
   _data;
   constructor(_data) {
@@ -2920,7 +2873,7 @@ var ArrayDataSource = class extends DataSource {
     this._data = _data;
   }
   connect() {
-    return isObservable(this._data) ? this._data : of(this._data);
+    return (0, import_rxjs5.isObservable)(this._data) ? this._data : (0, import_rxjs5.of)(this._data);
   }
   disconnect() {
   }
@@ -3030,13 +2983,15 @@ var _RecycleViewRepeaterStrategy = class {
 };
 
 // node_modules/@angular/cdk/fesm2022/scrolling.mjs
+var import_rxjs6 = __toESM(require_cjs(), 1);
+var import_operators4 = __toESM(require_operators(), 1);
 var _c0 = ["contentWrapper"];
 var _c1 = ["*"];
 var VIRTUAL_SCROLL_STRATEGY = new InjectionToken("VIRTUAL_SCROLL_STRATEGY");
 var FixedSizeVirtualScrollStrategy = class {
-  _scrolledIndexChange = new Subject();
+  _scrolledIndexChange = new import_rxjs6.Subject();
   /** @docs-private Implemented as part of VirtualScrollStrategy. */
-  scrolledIndexChange = this._scrolledIndexChange.pipe(distinctUntilChanged());
+  scrolledIndexChange = this._scrolledIndexChange.pipe((0, import_operators4.distinctUntilChanged)());
   /** The attached viewport. */
   _viewport = null;
   /** The size of the items in the virtually scrolling list. */
@@ -3249,7 +3204,7 @@ var ScrollDispatcher = class _ScrollDispatcher {
   constructor() {
   }
   /** Subject for notifying that a registered scrollable reference element has been scrolled. */
-  _scrolled = new Subject();
+  _scrolled = new import_rxjs6.Subject();
   /** Keeps track of the amount of subscriptions to `scrolled`. Used for cleaning up afterwards. */
   _scrolledCount = 0;
   /**
@@ -3290,13 +3245,13 @@ var ScrollDispatcher = class _ScrollDispatcher {
    */
   scrolled(auditTimeInMs = DEFAULT_SCROLL_TIME) {
     if (!this._platform.isBrowser) {
-      return of();
+      return (0, import_rxjs6.of)();
     }
-    return new Observable((observer) => {
+    return new import_rxjs6.Observable((observer) => {
       if (!this._cleanupGlobalListener) {
         this._cleanupGlobalListener = this._ngZone.runOutsideAngular(() => this._renderer.listen("document", "scroll", () => this._scrolled.next()));
       }
-      const subscription = auditTimeInMs > 0 ? this._scrolled.pipe(auditTime(auditTimeInMs)).subscribe(observer) : this._scrolled.subscribe(observer);
+      const subscription = auditTimeInMs > 0 ? this._scrolled.pipe((0, import_operators4.auditTime)(auditTimeInMs)).subscribe(observer) : this._scrolled.subscribe(observer);
       this._scrolledCount++;
       return () => {
         subscription.unsubscribe();
@@ -3322,7 +3277,7 @@ var ScrollDispatcher = class _ScrollDispatcher {
    */
   ancestorScrolled(elementOrElementRef, auditTimeInMs) {
     const ancestors = this.getAncestorScrollContainers(elementOrElementRef);
-    return this.scrolled(auditTimeInMs).pipe(filter((target) => !target || ancestors.indexOf(target) > -1));
+    return this.scrolled(auditTimeInMs).pipe((0, import_operators4.filter)((target) => !target || ancestors.indexOf(target) > -1));
   }
   /** Returns all registered Scrollables that contain the provided element. */
   getAncestorScrollContainers(elementOrElementRef) {
@@ -3370,10 +3325,10 @@ var CdkScrollable = class _CdkScrollable {
     optional: true
   });
   _scrollElement = this.elementRef.nativeElement;
-  _destroyed = new Subject();
+  _destroyed = new import_rxjs6.Subject();
   _renderer = inject(Renderer2);
   _cleanupScroll;
-  _elementScrolled = new Subject();
+  _elementScrolled = new import_rxjs6.Subject();
   constructor() {
   }
   ngOnInit() {
@@ -3512,7 +3467,7 @@ var ViewportRuler = class _ViewportRuler {
   /** Cached viewport dimensions. */
   _viewportSize;
   /** Stream of viewport change events. */
-  _change = new Subject();
+  _change = new import_rxjs6.Subject();
   /** Used to reference correct document/window */
   _document = inject(DOCUMENT);
   constructor() {
@@ -3585,7 +3540,7 @@ var ViewportRuler = class _ViewportRuler {
    * @param throttleTime Time in milliseconds to throttle the stream.
    */
   change(throttleTime = DEFAULT_RESIZE_TIME) {
-    return throttleTime > 0 ? this._change.pipe(auditTime(throttleTime)) : this._change;
+    return throttleTime > 0 ? this._change.pipe((0, import_operators4.auditTime)(throttleTime)) : this._change;
   }
   /** Use defaultView of injected document if available or fallback to global window reference */
   _getWindow() {
@@ -3649,7 +3604,7 @@ var CdkVirtualScrollable = class _CdkVirtualScrollable extends CdkScrollable {
 function rangesEqual(r1, r2) {
   return r1.start == r2.start && r1.end == r2.end;
 }
-var SCROLL_SCHEDULER = typeof requestAnimationFrame !== "undefined" ? animationFrameScheduler : asapScheduler;
+var SCROLL_SCHEDULER = typeof requestAnimationFrame !== "undefined" ? import_rxjs6.animationFrameScheduler : import_rxjs6.asapScheduler;
 var CdkVirtualScrollViewport = class _CdkVirtualScrollViewport extends CdkVirtualScrollable {
   elementRef = inject(ElementRef);
   _changeDetectorRef = inject(ChangeDetectorRef);
@@ -3661,9 +3616,9 @@ var CdkVirtualScrollViewport = class _CdkVirtualScrollViewport extends CdkVirtua
   });
   _platform = inject(Platform);
   /** Emits when the viewport is detached from a CdkVirtualForOf. */
-  _detachedSubject = new Subject();
+  _detachedSubject = new import_rxjs6.Subject();
   /** Emits when the rendered range changes. */
-  _renderedRangeSubject = new Subject();
+  _renderedRangeSubject = new import_rxjs6.Subject();
   /** The direction the viewport scrolls. */
   get orientation() {
     return this._orientation;
@@ -3685,7 +3640,7 @@ var CdkVirtualScrollViewport = class _CdkVirtualScrollViewport extends CdkVirtua
   // depending on how the strategy calculates the scrolled index, it may come at a cost to
   // performance.
   /** Emits when the index of the first element visible in the viewport changes. */
-  scrolledIndexChange = new Observable((observer) => this._scrollStrategy.scrolledIndexChange.subscribe((index) => Promise.resolve().then(() => this.ngZone.run(() => observer.next(index)))));
+  scrolledIndexChange = new import_rxjs6.Observable((observer) => this._scrollStrategy.scrolledIndexChange.subscribe((index) => Promise.resolve().then(() => this.ngZone.run(() => observer.next(index)))));
   /** The element that wraps the rendered content. */
   _contentWrapper;
   /** A stream that emits whenever the rendered range changes. */
@@ -3731,7 +3686,7 @@ var CdkVirtualScrollViewport = class _CdkVirtualScrollViewport extends CdkVirtua
   /** A list of functions to run after the next change detection cycle. */
   _runAfterChangeDetection = [];
   /** Subscription to changes in the viewport size. */
-  _viewportChanges = Subscription.EMPTY;
+  _viewportChanges = import_rxjs6.Subscription.EMPTY;
   _injector = inject(Injector);
   _isDestroyed = false;
   constructor() {
@@ -3775,15 +3730,15 @@ var CdkVirtualScrollViewport = class _CdkVirtualScrollViewport extends CdkVirtua
       this._scrollStrategy.attach(this);
       this.scrollable.elementScrolled().pipe(
         // Start off with a fake scroll event so we properly detect our initial position.
-        startWith(null),
+        (0, import_operators4.startWith)(null),
         // Collect multiple events into one until the next animation frame. This way if
         // there are multiple scroll events in the same frame we only need to recheck
         // our layout once.
-        auditTime(0, SCROLL_SCHEDULER),
+        (0, import_operators4.auditTime)(0, SCROLL_SCHEDULER),
         // Usually `elementScrolled` is completed when the scrollable is destroyed, but
         // that may not be the case if a `CdkVirtualScrollableElement` is used so we have
         // to unsubscribe here just in case.
-        takeUntil(this._destroyed)
+        (0, import_operators4.takeUntil)(this._destroyed)
       ).subscribe(() => this._scrollStrategy.onContentScrolled());
       this._markChangeDetectionNeeded();
     }));
@@ -3804,7 +3759,7 @@ var CdkVirtualScrollViewport = class _CdkVirtualScrollViewport extends CdkVirtua
     }
     this.ngZone.runOutsideAngular(() => {
       this._forOf = forOf;
-      this._forOf.dataStream.pipe(takeUntil(this._detachedSubject)).subscribe((data) => {
+      this._forOf.dataStream.pipe((0, import_operators4.takeUntil)(this._detachedSubject)).subscribe((data) => {
         const newLength = data.length;
         if (newLength !== this._dataLength) {
           this._dataLength = newLength;
@@ -4141,9 +4096,9 @@ var CdkVirtualForOf = class _CdkVirtualForOf {
     skipSelf: true
   });
   /** Emits when the rendered view of the data changes. */
-  viewChange = new Subject();
+  viewChange = new import_rxjs6.Subject();
   /** Subject that emits when a new DataSource instance is given. */
-  _dataSourceChanges = new Subject();
+  _dataSourceChanges = new import_rxjs6.Subject();
   /** The DataSource to display. */
   get cdkVirtualForOf() {
     return this._cdkVirtualForOf;
@@ -4153,7 +4108,7 @@ var CdkVirtualForOf = class _CdkVirtualForOf {
     if (isDataSource(value)) {
       this._dataSourceChanges.next(value);
     } else {
-      this._dataSourceChanges.next(new ArrayDataSource(isObservable(value) ? value : Array.from(value || [])));
+      this._dataSourceChanges.next(new ArrayDataSource((0, import_rxjs6.isObservable)(value) ? value : Array.from(value || [])));
     }
   }
   _cdkVirtualForOf;
@@ -4189,15 +4144,15 @@ var CdkVirtualForOf = class _CdkVirtualForOf {
   /** Emits whenever the data in the current DataSource changes. */
   dataStream = this._dataSourceChanges.pipe(
     // Start off with null `DataSource`.
-    startWith(null),
+    (0, import_operators4.startWith)(null),
     // Bundle up the previous and current data sources so we can work with both.
-    pairwise(),
+    (0, import_operators4.pairwise)(),
     // Use `_changeDataSource` to disconnect from the previous data source and connect to the
     // new one, passing back a stream of data changes which we run through `switchMap` to give
     // us a data stream that emits the latest data from whatever the current `DataSource` is.
-    switchMap(([prev, cur]) => this._changeDataSource(prev, cur)),
+    (0, import_operators4.switchMap)(([prev, cur]) => this._changeDataSource(prev, cur)),
     // Replay the last emitted data when someone subscribes.
-    shareReplay(1)
+    (0, import_operators4.shareReplay)(1)
   );
   /** The differ used to calculate changes to the data. */
   _differ = null;
@@ -4209,14 +4164,14 @@ var CdkVirtualForOf = class _CdkVirtualForOf {
   _renderedRange;
   /** Whether the rendered data should be updated during the next ngDoCheck cycle. */
   _needsUpdate = false;
-  _destroyed = new Subject();
+  _destroyed = new import_rxjs6.Subject();
   constructor() {
     const ngZone = inject(NgZone);
     this.dataStream.subscribe((data) => {
       this._data = data;
       this._onRenderedDataChange();
     });
-    this._viewport.renderedRangeStream.pipe(takeUntil(this._destroyed)).subscribe((range) => {
+    this._viewport.renderedRangeStream.pipe((0, import_operators4.takeUntil)(this._destroyed)).subscribe((range) => {
       this._renderedRange = range;
       if (this.viewChange.observers.length) {
         ngZone.run(() => this.viewChange.next(this._renderedRange));
@@ -4296,7 +4251,7 @@ var CdkVirtualForOf = class _CdkVirtualForOf {
       oldDs.disconnect(this);
     }
     this._needsUpdate = true;
-    return newDs ? newDs.connect(this) : of();
+    return newDs ? newDs.connect(this) : (0, import_rxjs6.of)();
   }
   /** Update the `CdkVirtualForOfContext` for all views. */
   _updateContext() {
@@ -4509,7 +4464,44 @@ var ScrollingModule = class _ScrollingModule {
   }], null, null);
 })();
 
+// node_modules/@angular/cdk/fesm2022/id-generator.mjs
+var counters = {};
+var _IdGenerator = class __IdGenerator {
+  _appId = inject(APP_ID);
+  /**
+   * Generates a unique ID with a specific prefix.
+   * @param prefix Prefix to add to the ID.
+   */
+  getId(prefix) {
+    if (this._appId !== "ng") {
+      prefix += this._appId;
+    }
+    if (!counters.hasOwnProperty(prefix)) {
+      counters[prefix] = 0;
+    }
+    return `${prefix}${counters[prefix]++}`;
+  }
+  static ɵfac = function _IdGenerator_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || __IdGenerator)();
+  };
+  static ɵprov = ɵɵdefineInjectable({
+    token: __IdGenerator,
+    factory: __IdGenerator.ɵfac,
+    providedIn: "root"
+  });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(_IdGenerator, [{
+    type: Injectable,
+    args: [{
+      providedIn: "root"
+    }]
+  }], null, null);
+})();
+
 // node_modules/@angular/cdk/fesm2022/overlay-module.mjs
+var import_rxjs7 = __toESM(require_cjs(), 1);
+var import_operators5 = __toESM(require_operators(), 1);
 var scrollBehaviorSupported2 = supportsScrollBehavior();
 function createBlockScrollStrategy(injector) {
   return new BlockScrollStrategy(injector.get(ViewportRuler), injector.get(DOCUMENT));
@@ -4608,7 +4600,7 @@ var CloseScrollStrategy = class {
     if (this._scrollSubscription) {
       return;
     }
-    const stream = this._scrollDispatcher.scrolled(0).pipe(filter((scrollable) => {
+    const stream = this._scrollDispatcher.scrolled(0).pipe((0, import_operators5.filter)((scrollable) => {
       return !scrollable || !this._overlayRef.overlayElement.contains(scrollable.getElementRef().nativeElement);
     }));
     if (this._config && this._config.threshold && this._config.threshold > 1) {
@@ -5168,12 +5160,12 @@ var OverlayRef = class {
   _animationsDisabled;
   _injector;
   _renderer;
-  _backdropClick = new Subject();
-  _attachments = new Subject();
-  _detachments = new Subject();
+  _backdropClick = new import_rxjs7.Subject();
+  _attachments = new import_rxjs7.Subject();
+  _detachments = new import_rxjs7.Subject();
   _positionStrategy;
   _scrollStrategy;
-  _locationChanges = Subscription.EMPTY;
+  _locationChanges = import_rxjs7.Subscription.EMPTY;
   _backdropRef = null;
   _detachContentMutationObserver;
   _detachContentAfterRenderRef;
@@ -5183,9 +5175,9 @@ var OverlayRef = class {
    */
   _previousHostParent;
   /** Stream of keydown events dispatched to this overlay. */
-  _keydownEvents = new Subject();
+  _keydownEvents = new import_rxjs7.Subject();
   /** Stream of mouse outside events dispatched to this overlay. */
-  _outsidePointerEvents = new Subject();
+  _outsidePointerEvents = new import_rxjs7.Subject();
   /** Reference to the currently-running `afterNextRender` call. */
   _afterNextRenderRef;
   constructor(_portalOutlet, _host, _pane, _config, _ngZone, _keyboardDispatcher, _document, _location, _outsideClickDispatcher, _animationsDisabled = false, _injector, _renderer) {
@@ -5598,9 +5590,9 @@ var FlexibleConnectedPositionStrategy = class {
   /** The last calculated scroll visibility. Only tracked  */
   _lastScrollVisibility;
   /** Subject that emits whenever the position changes. */
-  _positionChanges = new Subject();
+  _positionChanges = new import_rxjs7.Subject();
   /** Subscription to viewport size changes. */
-  _resizeSubscription = Subscription.EMPTY;
+  _resizeSubscription = import_rxjs7.Subscription.EMPTY;
   /** Default offset for the overlay along the x axis. */
   _offsetX = 0;
   /** Default offset for the overlay along the y axis. */
@@ -6775,10 +6767,10 @@ var CdkConnectedOverlay = class _CdkConnectedOverlay {
   _injector = inject(Injector);
   _overlayRef;
   _templatePortal;
-  _backdropSubscription = Subscription.EMPTY;
-  _attachSubscription = Subscription.EMPTY;
-  _detachSubscription = Subscription.EMPTY;
-  _positionSubscription = Subscription.EMPTY;
+  _backdropSubscription = import_rxjs7.Subscription.EMPTY;
+  _attachSubscription = import_rxjs7.Subscription.EMPTY;
+  _detachSubscription = import_rxjs7.Subscription.EMPTY;
+  _positionSubscription = import_rxjs7.Subscription.EMPTY;
   _offsetX;
   _offsetY;
   _position;
@@ -7014,7 +7006,7 @@ var CdkConnectedOverlay = class _CdkConnectedOverlay {
     }
     this._positionSubscription.unsubscribe();
     if (this.positionChange.observers.length > 0) {
-      this._positionSubscription = this._position.positionChanges.pipe(takeWhile(() => this.positionChange.observers.length > 0)).subscribe((position) => {
+      this._positionSubscription = this._position.positionChanges.pipe((0, import_operators5.takeWhile)(() => this.positionChange.observers.length > 0)).subscribe((position) => {
         this._ngZone.run(() => this.positionChange.emit(position));
         if (this.positionChange.observers.length === 0) {
           this._positionSubscription.unsubscribe();
@@ -7240,6 +7232,14 @@ var OverlayModule = class _OverlayModule {
 })();
 
 export {
+  ComponentPortal,
+  TemplatePortal,
+  BasePortalOutlet,
+  CdkPortal,
+  TemplatePortalDirective,
+  CdkPortalOutlet,
+  PortalHostDirective,
+  PortalModule,
   isFakeMousedownFromScreenReader,
   isFakeTouchstartFromScreenReader,
   ESCAPE,
@@ -7263,18 +7263,10 @@ export {
   LiveAnnouncer,
   HighContrastModeDetector,
   A11yModule,
-  _IdGenerator,
   hasModifierKey,
   Directionality,
   BidiModule,
-  ComponentPortal,
-  TemplatePortal,
-  BasePortalOutlet,
-  CdkPortal,
-  TemplatePortalDirective,
-  CdkPortalOutlet,
-  PortalHostDirective,
-  PortalModule,
+  _IdGenerator,
   createBlockScrollStrategy,
   OverlayConfig,
   OverlayContainer,
@@ -7283,4 +7275,4 @@ export {
   createOverlayRef,
   OverlayModule
 };
-//# sourceMappingURL=chunk-SJWTVB4N.js.map
+//# sourceMappingURL=chunk-PG6X75CE.js.map

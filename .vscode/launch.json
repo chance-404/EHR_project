@@ -4,8 +4,22 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
-    
+    {
+      "type": "java",
+      "name": "EhrApplication",
+      "request": "launch",
+      "mainClass": "com.ehr_project.ehr.EhrApplication",
+      "projectName": "ehr-backend",
+      "env": {
+        "DATASOURCE_URL": "jdbc:postgresql://localhost:5432/EHR",
+        "DATASOURCE_USER": "postgres",
+        "DATASOURCE_PASSWORD": "",
 
+        "JWT_SECRET": "aSuperLongSecret1234aSuperLongSecret1234aSuperLongSecret1234aSuperLongSecret1234",
+        "FRONTEND_URL": "http://localhost:4200",
+        "BACKEND_URL": "http://localhost:8080"
+      }
+    },
     {
       "type": "java",
       "name": "Current File",

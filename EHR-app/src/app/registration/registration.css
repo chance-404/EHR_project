@@ -45,3 +45,26 @@ form select {
  #registration-button:hover {
   background-color: #233975;
 }
+
+#registration-button:disabled {
+  background-color: #d32f2f;
+  cursor: not-allowed;
+}
+
+.form-field {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.invalid-input {
+  border: 2px solid #d32f2f !important;
+  background-color: #fff8f8;
+}
+
+.error-text {
+  color: #d32f2f;
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
+
