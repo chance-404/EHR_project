@@ -3,7 +3,9 @@ package com.ehr_project.ehr;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,15 +57,24 @@ public class UserController {
   public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
     try {
       User user = userService.findUserByUserId(loginRequest.getUserId());
-            
+      
+      // authenticate user and generate JWT
       if (userService.verifyPassword(loginRequest.getPassword(), user.getPassword())) {
         String jwtToken = tokenService.generateToken(user);
 
-        LoginResponse response = new LoginResponse(
-          user.getUserId(),
-          jwtToken
-        );
-        return ResponseEntity.ok(response);
+        // build cookie
+        ResponseCookie cookie = ResponseCookie.from("token", jwtToken)
+          .httpOnly(true) // no JS access
+          .secure(true) // only sends over HTTPS
+          .path("/")
+          .maxAge(60 * 60 *12) // 12hrs
+          .sameSite("Strict")
+          .build();
+
+        return ResponseEntity.ok()
+          .header(HttpHeaders.SET_COOKIE, cookie.toString())
+          .body(new LoginResponse(loginRequest.getUserId())); // nothing secret in body
+        
     } else {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
         .body(Map.of("error", "Invalid credentials"));
@@ -109,9 +120,8 @@ public class UserController {
       private String userId;
       private String token;
 
-      public LoginResponse(String userId, String token) {
+      public LoginResponse(String userId) {
         this.userId = userId;
-        this.token = token;
       }
 
         public String getUserId() {

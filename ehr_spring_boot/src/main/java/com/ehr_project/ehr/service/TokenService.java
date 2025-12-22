@@ -28,7 +28,7 @@ public class TokenService {
       .claim("lastName", user.getLastName())
       .claim("roles", user.getUserRole())
       .issuedAt(new Date(System.currentTimeMillis()))
-      .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 13)) // 13 hours
+      .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30)) // 30min
       .signWith(key)
       .compact();
   }

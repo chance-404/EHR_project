@@ -30,9 +30,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   @Override
   protected void doFilterInternal(
-      @SuppressWarnings("null") HttpServletRequest request,
-      @SuppressWarnings("null") HttpServletResponse response,
-      @SuppressWarnings("null") FilterChain filterChain) throws ServletException, IOException {
+    HttpServletRequest request,
+    HttpServletResponse response,
+    FilterChain filterChain) throws ServletException, IOException {
 
     // skip authentication for login endpoint and all OPTIONS preflight requests
     String path = request.getRequestURI();
@@ -41,11 +41,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return;
       }
 
-    String authHeader = request.getHeader("Authorization");
+    String token = null;
 
-    if (authHeader != null && authHeader.startsWith("Bearer ")) {
-      String token = authHeader.substring(7);
+    if (request.getCookies() != null) {
+      for (jakarta.servlet.http.Cookie cookie : request.getCookies()) {
+        if ("token".equals(cookie.getName())) {
+          token = cookie.getValue();
+          break;
+        }
+      }
+    }
 
+    if (token != null) {
       try {
         String userId = tokenService.getUserIdFromToken(token);
         String role = tokenService.getRoleFromToken(token);
@@ -55,7 +62,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
           authorities.add(new SimpleGrantedAuthority(role));
         }
 
-        // Create authentication token and set in security context
+        // create token and set in security context
         UsernamePasswordAuthenticationToken authentication = 
           new UsernamePasswordAuthenticationToken(userId, null, authorities);
         
@@ -75,7 +82,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return;
       }
     } else {
-      // No token provided
+      // if no token provided
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
       response.getWriter().write("{\"error\": \"No authentication token provided\"}");
       return;
@@ -83,4 +90,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     filterChain.doFilter(request, response);
   }
+
 }

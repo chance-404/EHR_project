@@ -1,6 +1,6 @@
 *.env
 *.log
 target/
-.vscode
-.idea
+.vscode/
+.idea/
 dist/
