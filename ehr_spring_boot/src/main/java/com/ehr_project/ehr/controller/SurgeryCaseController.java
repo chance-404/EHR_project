@@ -1,4 +1,4 @@
-package com.ehr_project.ehr;
+package com.ehr_project.ehr.controller;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ import com.ehr_project.ehr.service.SurgeryCaseService;
 
 @RestController
 @RequestMapping("/surgeryCases")
-@CrossOrigin(origins = "${BACKEND_URL}")
+@CrossOrigin(origins = "${FRONTEND_URL}")
 public class SurgeryCaseController {
     private final SurgeryCaseService surgeryCaseService;
 

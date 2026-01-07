@@ -1,4 +1,4 @@
-package com.ehr_project.ehr;
+package com.ehr_project.ehr.controller;
 
 import java.util.List;
 import java.util.Map;
