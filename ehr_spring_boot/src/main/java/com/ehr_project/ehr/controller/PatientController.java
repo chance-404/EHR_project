@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +40,9 @@ public class PatientController {
         return new ResponseEntity<>(patient, HttpStatus.OK);
     }
 
+    // only admin login can add patients, just to prevent shenanigans in live
     @PostMapping("/add")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<Patient> addPatient(@RequestBody Patient patient) {
         Patient newPatient = patientService.addPatient(patient);
         return new ResponseEntity<>(newPatient, HttpStatus.CREATED);
