@@ -21,7 +21,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 public class SecurityConfig {
   
   @Autowired
@@ -69,6 +69,7 @@ public class SecurityConfig {
             .anyRequest().authenticated()
         )
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        
     return http.build();
   }
 
@@ -91,3 +92,4 @@ public class SecurityConfig {
     }
     
 }
+    

@@ -40,7 +40,7 @@ public class PatientController {
         return new ResponseEntity<>(patient, HttpStatus.OK);
     }
 
-    // only admin login can add patients, just to prevent shenanigans in live demo
+    // only admin login can add patients, just to prevent shenanigans in live
     @PostMapping("/add")
     @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<Patient> addPatient(@RequestBody Patient patient) {

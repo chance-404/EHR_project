@@ -33,7 +33,7 @@ public class User {
       this.firstName = firstName;
       this.lastName = lastName;
       this.userRole = userRole;
-    }
+    } 
 
   public String getUserId() {
       return userId;
