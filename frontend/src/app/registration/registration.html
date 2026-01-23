@@ -1,60 +1,64 @@
 <app-header></app-header>
 
 
-<div class= "registration-container">
-  <h4 class= "heading">Register a patient</h4>
-  <form id= "registerPatientForm" [formGroup]= "registerPatientForm">
-    
-    <div class= "form-column">
-      <div class= "form-field">
-        <label for= "first-name">First Name:</label>
-        <input id= "first-name" type= "text" formControlName= "firstName"
-          [class.invalid-input]="registerPatientForm.get('firstName')?.invalid && registerPatientForm.get('firstName')?.touched">
+<div class="registration-container">
+	<h4 class="heading">Register a patient</h4>
+	<form id="registerPatientForm" [formGroup]="registerPatientForm">
 
-        <div class="error-container" *ngIf="registerPatientForm.get('firstName')?.touched">
-          <small class="error-text" *ngIf="registerPatientForm.get('firstName')?.hasError('required')">First name is required.</small>
-          <small class="error-text" *ngIf="registerPatientForm.get('firstName')?.hasError('pattern')">Letters only, please.</small>
-        </div>
-      </div>  
+		<div class="form-column">
+			<div class="form-field">
+				<label for="first-name">First Name:</label>
+				<input id="first-name" type="text" formControlName="firstName"
+					placeholder="Cannot add patients in demo mode"
+					[class.invalid-input]="registerPatientForm.get('firstName')?.invalid && registerPatientForm.get('firstName')?.touched">
 
-      <div class= "form-field">
-        <label for= "middle-name">Middle Name:</label>
-        <input id= "middle-name" type= "text" formControlName= "middleName"
-          [class.invalid-input]="registerPatientForm.get('middleName')?.invalid && registerPatientForm.get('middleName')?.touched">
-          <small class="error-text" *ngIf="registerPatientForm.get('middleName')?.hasError ('pattern') && registerPatientForm.get('middleName')?.touched">
-            Letters only, please.
-          </small>
-      </div>
+				<div class="error-container" *ngIf="registerPatientForm.get('firstName')?.touched">
+					<small class="error-text" *ngIf="registerPatientForm.get('firstName')?.hasError('required')">First
+						name is required.</small>
+					<small class="error-text" *ngIf="registerPatientForm.get('firstName')?.hasError('pattern')">Letters
+						only, please.</small>
+				</div>
+			</div>
 
-      <div class= "form-field">
-        <label for= "last-name">Last Name:</label>
-        <input id= "last-name" type= "text" formControlName= "lastName"
-          [class.invalid-input]="registerPatientForm.get('lastName')?.invalid && registerPatientForm.get('lastName')?.touched">
-      
-          <div class="error-container" *ngIf="registerPatientForm.get('lastName')?.touched">
-            <small class="error-text" *ngIf="registerPatientForm.get('lastName')?.hasError('required')">Last name is required.</small>
-            <small class="error-text" *ngIf="registerPatientForm.get('lastName')?.hasError('pattern')">Letters only, please.</small>
-          </div>
-      </div>
+			<div class="form-field">
+				<label for="middle-name">Middle Name:</label>
+				<input id="middle-name" type="text" formControlName="middleName"
+					[class.invalid-input]="registerPatientForm.get('middleName')?.invalid && registerPatientForm.get('middleName')?.touched">
+				<small class="error-text"
+					*ngIf="registerPatientForm.get('middleName')?.hasError ('pattern') && registerPatientForm.get('middleName')?.touched">
+					Letters only, please.
+				</small>
+			</div>
 
-      <div class= "form-field">
-        <label for= "sex">Sex:</label>
-        <select id= "sex" type= "text" formControlName= "sex">
-          <option value= "female">Female</option>
-          <option value= "male">Male</option>
-        </select>
-      </div>
+			<div class="form-field">
+				<label for="last-name">Last Name:</label>
+				<input id="last-name" type="text" formControlName="lastName"
+					[class.invalid-input]="registerPatientForm.get('lastName')?.invalid && registerPatientForm.get('lastName')?.touched">
 
-      <div class= "form-field">
-        <label for= "date-of-birth">Date of Birth:</label>
-        <input id= "date-of-birth" type= "date" formControlName= "dateOfBirth">
-      </div>
-    </div>
-    <button class="registration-button" 
-            id="registration-button" 
-            [disabled]= "registerPatientForm.invalid"
-            (click)="registerPatient()">
-            Register patient
-    </button>
-  </form>
+				<div class="error-container" *ngIf="registerPatientForm.get('lastName')?.touched">
+					<small class="error-text" *ngIf="registerPatientForm.get('lastName')?.hasError('required')">Last
+						name is required.</small>
+					<small class="error-text" *ngIf="registerPatientForm.get('lastName')?.hasError('pattern')">Letters
+						only, please.</small>
+				</div>
+			</div>
+
+			<div class="form-field">
+				<label for="sex">Sex:</label>
+				<select id="sex" type="text" formControlName="sex">
+					<option value="female">Female</option>
+					<option value="male">Male</option>
+				</select>
+			</div>
+
+			<div class="form-field">
+				<label for="date-of-birth">Date of Birth:</label>
+				<input id="date-of-birth" type="date" formControlName="dateOfBirth">
+			</div>
+		</div>
+		<button class="registration-button" id="registration-button" [disabled]="registerPatientForm.invalid"
+			(click)="registerPatient()">
+			Register patient
+		</button>
+	</form>
 </div>

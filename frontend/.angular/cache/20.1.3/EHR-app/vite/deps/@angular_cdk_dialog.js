@@ -58,10 +58,10 @@ import {
   ɵɵtemplate,
   ɵɵviewQuery
 } from "./chunk-ONJW5VE5.js";
+import "./chunk-YVXMBCE5.js";
 import {
   defer
 } from "./chunk-G6ECYYJH.js";
-import "./chunk-YVXMBCE5.js";
 import {
   Subject,
   startWith,
