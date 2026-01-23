@@ -1,16 +1,16 @@
 import { CommonModule } from "@angular/common";
-import { Component, EventEmitter, inject, Inject, Output } from "@angular/core";
+import { Component, EventEmitter, inject, Inject } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { SurgeryCase } from "../surgery case/surgery-case";
+import { SurgeryCase } from "../../surgery-case/surgery-case";
 import { DIALOG_DATA, DialogModule, DialogRef } from "@angular/cdk/dialog";
-import { SurgeryCaseService } from "../surgery case/surgery-case.service";
-import { PatientService } from "../patient/patient.service";
-import { Patient } from "../patient/patient";
+import { SurgeryCaseService } from "../../surgery-case/surgery-case.service";
+import { PatientService } from "../../patient/patient.service";
+import { Patient } from "../../patient/patient";
 import { HttpErrorResponse } from "@angular/common/http";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { map, Observable } from "rxjs";
-import { User } from "../user/user";
-import { UserService } from "../user/user.service";
+import { User } from "../../user/user";
+import { UserService } from "../../user/user.service";
 
 @Component({
   selector: 'app-add-case',

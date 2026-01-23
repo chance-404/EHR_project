@@ -3,11 +3,11 @@ import { Header } from "../header/header";
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Dialog, DialogModule } from '@angular/cdk/dialog';
-import { SurgeryCase } from '../surgery case/surgery-case';
-import { SurgeryCaseService } from '../surgery case/surgery-case.service';
-import { AddCaseComponent } from '../modals/add-case-form';
+import { SurgeryCase } from '../surgery-case/surgery-case';
+import { SurgeryCaseService } from '../surgery-case/surgery-case.service';
+import { AddCaseComponent } from '../modals/add-case/add-case-form'
 import { TimeFormatPipe } from '../pipes/time-format.pipe';
-import { SurgeryCaseComponent } from '../modals/case-form';
+import { SurgeryCaseComponent } from '../modals/case-form/case-form';
 import { PatientService } from '../patient/patient.service';
 
 
