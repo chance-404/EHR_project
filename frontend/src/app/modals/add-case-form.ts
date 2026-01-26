@@ -142,7 +142,7 @@ export class AddCaseComponent {
     const searchTermLower = searchTerm.toLowerCase();
     this.filteredPatients = this.patients.filter(patient => 
       patient.lastName.toLowerCase().includes(searchTermLower) ||
-      patient.mrn.toString().includes(searchTermLower)
+      patient.mrn?.includes(searchTermLower)
     ).slice(0, 10); // Limits to 10 results
   }
 

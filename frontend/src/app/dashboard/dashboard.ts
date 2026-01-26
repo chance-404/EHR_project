@@ -34,7 +34,7 @@ export class Dashboard implements OnInit {
   }
 
   public getPatients(): void {
-    this.patientService.getPatients().subscribe({
+    this.patientService.getPatientListForDashboard().subscribe({
       next: (response: Patient[]) => {
         this.patients = response;
         this.allPatients = [...response]; // Keep a copy of all patients
@@ -98,7 +98,7 @@ export class Dashboard implements OnInit {
       patient.lastName.toLowerCase().includes(searchKey) ||
       patient.firstName.toLowerCase().includes(searchKey) ||
       patient.middleName.toLowerCase().includes(searchKey) || // Need to keep middleName as search parameter?
-      patient.mrn.toString().includes(searchKey) ||
+      patient.mrn?.includes(searchKey) ||
       patient.dateOfBirth.toString().includes(searchKey)
     );
   }

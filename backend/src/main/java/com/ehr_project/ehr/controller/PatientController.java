@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ehr_project.ehr.dto.DashboardDTO;
 import com.ehr_project.ehr.model.Patient;
 import com.ehr_project.ehr.service.PatientService;
 
@@ -34,6 +35,12 @@ public class PatientController {
         List<Patient> patients = patientService.findAllPatients();
         return new ResponseEntity<>(patients, HttpStatus.OK);
     }
+
+	@GetMapping("/all-dashboard")
+	public ResponseEntity<List<DashboardDTO>> getAllPatientsForDashboard() {
+		List<DashboardDTO> patients = patientService.getPatientListForDashboard();
+		return new ResponseEntity<>(patients, HttpStatus.OK);
+	}
 
     @GetMapping("/find/{mrn}")
     public ResponseEntity<Patient> getPatientByMrn (@PathVariable("mrn") UUID mrn) {    

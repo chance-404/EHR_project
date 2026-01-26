@@ -12,50 +12,49 @@ import { PatientService } from '../patient/patient.service';
 
 
 export interface Room {
-  id: number;
-  name: string;
-  surgeryCase: SurgeryCase[];
+  	id: number;
+  	name: string;
+  	surgeryCase: SurgeryCase[];
 }
 
 @Component({
-  selector: 'app-flow-board',
-  standalone: true,
-  imports: [Header, RouterModule, CommonModule, DialogModule, TimeFormatPipe],
-  templateUrl: './flow-board.html',
-  styleUrl: './flow-board.css'
+  	selector: 'app-flow-board',
+  	standalone: true,
+  	imports: [Header, RouterModule, CommonModule, DialogModule, TimeFormatPipe],
+  	templateUrl: './flow-board.html',
+  	styleUrl: './flow-board.css'
 })
 export class FlowBoard implements OnInit {
-  private surgeryCaseService = inject(SurgeryCaseService);
-  private dialog = inject(Dialog);
-  private patientService = inject(PatientService);
-  public surgeryCases!: SurgeryCase[];
+  	private surgeryCaseService = inject(SurgeryCaseService);
+  	private dialog = inject(Dialog);
+  	private patientService = inject(PatientService);
+  	public surgeryCases!: SurgeryCase[];
 
-  rooms: Room[] = [];
+  	rooms: Room[] = [];
 
-  constructor() {
-    this.rooms = Array.from({ length:6 }, (_,i) => ({
-      id: i + 1,
-      name: `Room ${i + 1}`,
-      surgeryCase: []
-    }));
-  }
+  	constructor() {
+    	this.rooms = Array.from({ length:6 }, (_,i) => ({
+      	id: i + 1,
+      	name: `Room ${i + 1}`,
+      	surgeryCase: []
+    	}));
+  	}
 
-  ngOnInit() {
-    this.loadFlowboardData();
-  }
+  	ngOnInit() {
+    	this.loadFlowboardData();
+  	}
 
-  public loadFlowboardData(): void {
-    this.surgeryCaseService.getSurgeryCases().subscribe(cases => {
-      this.patientService.getPatients().subscribe(patients => {
-        // map to lookup patients by MRN
-        const patientMap = new Map(patients.map(p => [p.mrn, p]));
-        // link each case to the full patient object
-        cases.forEach(surgeryCase => {
-          const mrn = this.extractMrnFromString(surgeryCase.patient);
-          if (mrn) {
-            surgeryCase.fullPatient = patientMap.get(mrn);
-          }
-        });
+  	public loadFlowboardData(): void {
+    	this.surgeryCaseService.getSurgeryCases().subscribe(cases => {
+      	this.patientService.getPatients().subscribe(patients => {
+        	// map to lookup patients by MRN
+        	const patientMap = new Map(patients.map(p => [p.mrn, p]));
+        	// link each case to the full patient object
+        	cases.forEach(surgeryCase => {
+          		if (surgeryCase.patient) {
+            		surgeryCase.fullPatient = patientMap.get(surgeryCase.patient);
+          		}
+        	});
 
         // sort cases by start time
         cases.sort((a, b) => a.startTime.localeCompare(b.startTime));
@@ -66,8 +65,8 @@ export class FlowBoard implements OnInit {
   }
 
   private distributeCasesToRooms(): void { 
-    // clears cases in rooms
-    this.rooms.forEach(room => room.surgeryCase = []);
+	// clears cases in rooms
+	this.rooms.forEach(room => room.surgeryCase = []);
     // assigns cases to rooms
     this.surgeryCases.forEach(surgeryCase => {
       const room = this.getRoomById(surgeryCase.roomId);
@@ -77,10 +76,7 @@ export class FlowBoard implements OnInit {
     });
   }    
 
-  private extractMrnFromString(patientString: string): number | undefined {
-    const match = patientString.match(/\((\d+)\)/);
-    return match ? parseInt(match[1], 10) : undefined;
-  }
+  
     
 
   public openModal(roomId: number): void {

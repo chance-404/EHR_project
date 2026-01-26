@@ -6,15 +6,18 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.ehr_project.ehr.dto.DashboardDTO;
 import com.ehr_project.ehr.exceptions.UserNotFoundException;
 import com.ehr_project.ehr.model.Patient;
 import com.ehr_project.ehr.repo.PatientRepo;
 
 @Service
 public class PatientService {
+
     private final PatientRepo patientRepo;
 
     public PatientService(PatientRepo patientRepo) {
@@ -89,6 +92,20 @@ public class PatientService {
 	public UUID setPatientMrn(Patient patient) {
 		UUID newPatientMrn = UUID.randomUUID();
 		return newPatientMrn;
+	}
+
+	public List<DashboardDTO> getPatientListForDashboard() {
+		return patientRepo.findAll().stream()
+			.map(patient -> new DashboardDTO(
+				patient.getMrn(),
+				patient.getFirstName(),
+				patient.getMiddleName(),
+				patient.getLastName(),
+				patient.getDateOfBirth(),
+				patient.getSex(),
+				patient.getAge()
+			))
+			.collect(Collectors.toList());
 	}
 
 }
