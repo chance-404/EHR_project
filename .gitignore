@@ -4,3 +4,7 @@ target/
 .vscode/
 .idea/
 dist/
+.angular/
+.mvn/
+.factorypath
+*.class

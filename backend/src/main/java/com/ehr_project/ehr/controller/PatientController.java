@@ -1,6 +1,7 @@
 package com.ehr_project.ehr.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,7 @@ public class PatientController {
     }
 
     @GetMapping("/find/{mrn}")
-    public ResponseEntity<Patient> getPatientByMrn (@PathVariable("mrn") Long mrn) {    
+    public ResponseEntity<Patient> getPatientByMrn (@PathVariable("mrn") UUID mrn) {    
         Patient patient = patientService.findPatientByMrn(mrn);
         return new ResponseEntity<>(patient, HttpStatus.OK);
     }
@@ -55,7 +56,7 @@ public class PatientController {
     }
 
     @DeleteMapping("/delete/{mrn}")
-    public ResponseEntity<?> deletePatient(@PathVariable("mrn") Long mrn) {
+    public ResponseEntity<?> deletePatient(@PathVariable("mrn") UUID mrn) {
         patientService.deletePatient(mrn);
         return new ResponseEntity<>(HttpStatus.OK);
     }

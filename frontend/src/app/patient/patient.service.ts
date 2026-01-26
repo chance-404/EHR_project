@@ -41,7 +41,6 @@ export class PatientService {
       dateOfBirth: dateOfBirth,
       sex: sex,
       age: age,
-      mrn: this.makeRandomMRN()
     };
 
     if (!firstName || !lastName || !dateOfBirth) {
@@ -56,9 +55,6 @@ export class PatientService {
     );
   }
 
-  private makeRandomMRN(): number {
-    return Math.floor(Math.random() * 1000000);
-  }
 
 
 }

@@ -5,6 +5,7 @@ import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ public class PatientService {
     }
 
     public Patient addPatient(Patient patient){
+		setPatientMrn(patient);
         return patientRepo.save(patient);
     }
 
@@ -35,7 +37,7 @@ public class PatientService {
         return patientRepo.save(patient);
     }
 
-    public Patient findPatientByMrn(Long mrn) {
+    public Patient findPatientByMrn(UUID mrn) {
         Optional<Patient> patientOptional = patientRepo.findPatientByMrn(mrn);
         
         if (patientOptional.isEmpty()) {
@@ -48,7 +50,7 @@ public class PatientService {
         return patient;
     }
 
-    public void deletePatient(Long mrn) {
+    public void deletePatient(UUID mrn) {
         patientRepo.deletePatientByMrn(mrn);
     }
 
@@ -84,5 +86,9 @@ public class PatientService {
         return "Future DOB";
     }
 
+	public UUID setPatientMrn(Patient patient) {
+		UUID newPatientMrn = UUID.randomUUID();
+		return newPatientMrn;
+	}
 
 }

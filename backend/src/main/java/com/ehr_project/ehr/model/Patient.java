@@ -2,32 +2,65 @@ package com.ehr_project.ehr.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.Data;
 
 @Entity
-@Table(name = "patients")
+@Table(name = "staging_patients")
 @Data
 public class Patient implements Serializable{
     @Id
-    @Column(nullable = false)
-    private Long mrn = null;
+    @Column(name = "id", nullable = false, unique = true)
+    private UUID mrn = null;
 
-    @Column(nullable = false)
-    private String lastName;
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
     
+	@Column(name = "middle_name")
     private String middleName;
 
-    @Column(nullable = false)
-    private String firstName;
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
 
-    @Column(nullable = false)
+    @Column(name = "birthdate", nullable = false)
     private LocalDate dateOfBirth;
+
+	@Column(name = "gender", nullable = false)
+    private String sex;
+
+	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
+	private List<Medication> medications;
+
+	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
+	private List<Allergy> allergies;
+
+	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
+	private List<Encounter> encounters;
+
+	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
+	private List<ImagingStudy> imagingStudies;
+
+	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
+	private List<Procedure> procedures;
+
+	@ManyToMany(mappedBy = "patients", fetch = FetchType.LAZY)
+	private List<Provider> providers;
+
+	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
+	private List<Observation> observations;
+
+	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
+	private List<Condition> conditions;
 
     @Transient // this annotation tells DB to ignore it, age will change frequently
     private Integer age;
@@ -38,9 +71,6 @@ public class Patient implements Serializable{
         }
         return LocalDate.now().getYear() - dateOfBirth.getYear();
     }
-
-    @Column(nullable = false)
-    private String sex;
 
     @Transient // this annotation tells DB to ignore it, age will change frequently
     private String ageString;
