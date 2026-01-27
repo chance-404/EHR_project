@@ -27,7 +27,7 @@ public class Allergy {
 	private String description;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "patient", referencedColumnName = "id")
+	@JoinColumn(name = "patient_id", referencedColumnName = "id")
 	private Patient patient;
 
 	private String category;

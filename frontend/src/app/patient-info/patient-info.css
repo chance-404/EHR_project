@@ -178,4 +178,15 @@
     font-weight: 600;
 }
 
+.critical-row {
+    background-color: #fff0f0; /* Soft red background for nursing alerts */
+    border-left: 4px solid #b71c1c;
+    font-weight: bold;
+}
+
+.abnormal-text {
+    color: #d32f2f;
+    font-weight: 600;
+}
+
 

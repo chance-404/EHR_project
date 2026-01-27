@@ -34,6 +34,9 @@ export class AuthenticationService {
 
             // nothing secret stored locally
             sessionStorage.setItem('userId', response.userId);
+
+			// need this?
+			if (response.token) { sessionStorage.setItem('token', 	response.token); }
           }
           this.isAuthenticatedSubject.next(true);
           return true;

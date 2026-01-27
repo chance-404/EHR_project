@@ -29,7 +29,7 @@ public class Condition {
 	private LocalDate stopDate;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "patient", referencedColumnName = "id")
+	@JoinColumn(name = "patient_id", referencedColumnName = "id")
 	private Patient patient;
 
 	@ManyToOne(fetch = FetchType.LAZY)

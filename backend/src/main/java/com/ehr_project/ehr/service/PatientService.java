@@ -24,12 +24,9 @@ import com.ehr_project.ehr.repo.MedicationRepo;
 import com.ehr_project.ehr.repo.ObservationRepo;
 import com.ehr_project.ehr.repo.PatientRepo;
 import com.ehr_project.ehr.repo.ProcedureRepo;
-import com.ehr_project.ehr.repo.ProviderRepo;
 
 @Service
 public class PatientService {
-
-    private final ProviderRepo providerRepo;
 
     private final ImagingStudyRepo imagingStudyRepo;
 
@@ -47,7 +44,7 @@ public class PatientService {
 
     private final PatientRepo patientRepo;
 
-    public PatientService(PatientRepo patientRepo, AllergyRepo allergyRepo, MedicationRepo medicationRepo, ConditionRepo conditionRepo, ObservationRepo observationRepo, EncounterRepo encounterRepo, ProcedureRepo procedureRepo, ImagingStudyRepo imagingStudyRepo, ProviderRepo providerRepo) {
+    public PatientService(PatientRepo patientRepo, AllergyRepo allergyRepo, MedicationRepo medicationRepo, ConditionRepo conditionRepo, ObservationRepo observationRepo, EncounterRepo encounterRepo, ProcedureRepo procedureRepo, ImagingStudyRepo imagingStudyRepo) {
         this.patientRepo = patientRepo;
         this.allergyRepo = allergyRepo;
         this.medicationRepo = medicationRepo;
@@ -56,7 +53,6 @@ public class PatientService {
         this.encounterRepo = encounterRepo;
         this.procedureRepo = procedureRepo;
         this.imagingStudyRepo = imagingStudyRepo;
-        this.providerRepo = providerRepo;
     }
 
 
@@ -140,13 +136,15 @@ public class PatientService {
 
 
 	public Map<String, Object> getClinicalView(UUID mrn) {
+
+		Patient patient = findPatientByMrn(mrn);
 		Map<String, Object> record = new HashMap<>();
 
-		record.put("patient", patientRepo.findPatientByMrn(mrn));
+		record.put("patient", patient);
 		record.put("allergies", allergyRepo.findByPatientMrn(mrn));
 		record.put("medications", medicationRepo.findActiveByPatientMrn(mrn));
 		record.put("conditions", conditionRepo.findActiveConditions(mrn));
-		record.put("observations", observationRepo.findByPatientMrn(mrn, null));
+		record.put("observations", observationRepo.findByPatientMrn(mrn, PageRequest.of(0, 100)));
 		record.put("encounters", encounterRepo.findEncounterByPatientMrn(mrn, PageRequest.of(0, 20)));
 		record.put("procedures", procedureRepo.findByPatientMrn(mrn, PageRequest.of(0, 20)));
 		record.put("imagingStudies", imagingStudyRepo.findImagingStudyByPatientMrn(mrn, PageRequest.of(0, 20)));

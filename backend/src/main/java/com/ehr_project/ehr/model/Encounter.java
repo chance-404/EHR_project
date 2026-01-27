@@ -27,7 +27,7 @@ public class Encounter {
 	private LocalDateTime stopTime;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "patent", referencedColumnName = "id")
+	@JoinColumn(name = "patient_id", referencedColumnName = "id")
 	private Patient patient;
 
 	@Column(name = "provider_id")

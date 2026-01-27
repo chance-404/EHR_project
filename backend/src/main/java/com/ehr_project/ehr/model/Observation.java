@@ -25,11 +25,11 @@ public class Observation {
 	private LocalDateTime date;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "patient", referencedColumnName = "id")
+	@JoinColumn(name = "patient_id", referencedColumnName = "id")
 	private Patient patient;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "enconter", referencedColumnName = "id")
+	@JoinColumn(name = "encounter", referencedColumnName = "id")
 	private Encounter encounter;
 
 	private String category;

@@ -63,7 +63,7 @@ export class PatientInfo implements OnInit {
 				this.medications = data.medications.map((m: any) => m.description);
 				this.conditions = data.conditions.map((c: any) => ({
 					label: c.description,
-					datOfDx: c.startDate
+					dateOfDx: c.startDate
 				}));
 
 				// extract vitals and labs from observations list using LOINC codes
@@ -80,43 +80,43 @@ export class PatientInfo implements OnInit {
 				];
 
 				this.cbc = [
-					{ label: 'WBC', value: this.findLab(data.observations, '6690-2') },
-					{ label: 'RBC', value: this.findLab(data.observations, '789-8') },
-					{ label: 'Hemoglobin', value: this.findLab(data.observations, '718-7') },
-					{ label: 'Hematocrit', value: this.findLab(data.observations, '4544-3') },
-					{ label: 'MCV', value: this.findLab(data.observations, '787-2') },
-					{ label: 'MCH', value: this.findLab(data.observations, '785-6') },
-					{ label: 'MCHC', value: this.findLab(data.observations, '786-4') },
-					{ label: 'RDW', value: this.findLab(data.observations, '788-0') },
-					{ label: 'Platelets', value: this.findLab(data.observations, '777-3') }
+					this.findLab(data.observations, '6690-2'),
+					this.findLab(data.observations, '789-8'),
+					this.findLab(data.observations, '718-7'),
+					this.findLab(data.observations, '4544-3'),
+					this.findLab(data.observations, '787-2'),
+					this.findLab(data.observations, '785-6'),
+					this.findLab(data.observations, '786-4'),
+					this.findLab(data.observations, '788-0'),
+					this.findLab(data.observations, '777-3')
 				];
 
 				this.cmp = [
-					{ label: 'Glucose', value: this.findLab(data.observations, '2345-7') },
-					{ label: 'BUN', value: this.findLab(data.observations, '3094-0') },
-					{ label: 'Creatinine', value: this.findLab(data.observations, '2160-0') },
-					{ label: 'Sodium', value: this.findLab(data.observations, '2951-2') },
-					{ label: 'Potassium', value: this.findLab(data.observations, '2823-3') },
-					{ label: 'Chloride', value: this.findLab(data.observations, '2075-0') },
-					{ label: 'CO2', value: this.findLab(data.observations, '2028-9') },
-					{ label: 'Calcium', value: this.findLab(data.observations, '17861-6') },
-					{ label: 'Albumin', value: this.findLab(data.observations, '1751-7') },
-					{ label: 'Total Protein', value: this.findLab(data.observations, '2885-2') },
-					{ label: 'ALT', value: this.findLab(data.observations, '1742-6') },
-					{ label: 'AST', value: this.findLab(data.observations, '1920-8') },
-					{ label: 'ALP', value: this.findLab(data.observations, '6768-6') },
-					{ label: 'Total Bilirubin', value: this.findLab(data.observations, '1975-2') }
+					this.findLab(data.observations, '2345-7'),
+					this.findLab(data.observations, '3094-0'),
+					this.findLab(data.observations, '2160-0'),
+					this.findLab(data.observations, '2951-2'),
+					this.findLab(data.observations, '2823-3'),
+					this.findLab(data.observations, '2075-0'),
+					this.findLab(data.observations, '2028-9'),
+					this.findLab(data.observations, '17861-6'),
+					this.findLab(data.observations, '1751-7'),
+					this.findLab(data.observations, '2885-2'),
+					this.findLab(data.observations, '1742-6'),
+					this.findLab(data.observations, '1920-8'),
+					this.findLab(data.observations, '6768-6'),
+					this.findLab(data.observations, '1975-2')
 				];
 
 				this.lipids = [
-					{ label: 'Total Cholesterol', value: this.findLab(data.observations, '2093-3') },
-					{ label: 'HDL', value: this.findLab(data.observations, '2085-9') },
-					{ label: 'LDL', value: this.findLab(data.observations, '18262-6') },
-					{ label: 'Triglycerides', value: this.findLab(data.observations, '2571-8') }
+					this.findLab(data.observations, '2093-3'),
+					this.findLab(data.observations, '2085-9'),
+					this.findLab(data.observations, '18262-6'),
+					this.findLab(data.observations, '2571-8')
 				];
 
 				this.hgba1c = [
-					{ label: 'Hemoglobin A1c', value: this.findLab(data.observations, '4548-4') }
+					this.findLab(data.observations, '4548-4')
 				];
 
 				this.encounters = data.encounters.map((e: any) => e.description);

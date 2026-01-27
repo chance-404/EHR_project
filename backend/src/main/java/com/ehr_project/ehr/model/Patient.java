@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -18,6 +20,18 @@ import lombok.Data;
 @Entity
 @Table(name = "staging_patients")
 @Data
+@JsonIgnoreProperties({
+    "medications",
+    "allergies",
+    "encounters",
+    "imagingStudies",
+    "procedures",
+    "providers",
+    "observations",
+    "conditions",
+    "hibernateLazyInitializer",
+    "handler"
+})
 public class Patient implements Serializable{
     @Id
     @Column(name = "id", nullable = false, unique = true)
