@@ -40,4 +40,6 @@ public class Observation {
 	private String value;
 
 	private String units;
+
+	private String code;
 }

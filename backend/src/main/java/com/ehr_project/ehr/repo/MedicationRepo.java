@@ -17,5 +17,6 @@ public interface MedicationRepo extends JpaRepository<Medication, Long> {
 
 	// finds only active medications
 	@Query("SELECT m FROM Medication m WHERE m.patient.id = :mrn AND m.stopDate IS NULL")
-	List<Medication> findActiveByPatientMrn(@Param("patientMrn") UUID mrn);
+	List<Medication> findActiveByPatientMrn(@Param("mrn") UUID mrn);
+
 }

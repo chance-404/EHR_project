@@ -21,7 +21,11 @@ export class PatientService {
 		return this.http.get<Patient[]>(`${this.apiServerUrl}/patients/all-dashboard`)
 	}
 
-  	public getPatientByMrn(mrn: number): Observable<Patient> {
+	public getClinicalView(mrn: string): Observable<Map<String, Object>> {
+		return this.http.get<Map<String, Object>>(`${this.apiServerUrl}/patients/clinical-view/${mrn}`);
+	}
+
+  	public getPatientByMrn(mrn: string): Observable<Patient> {
     	return this.http.get<Patient>(`${this.apiServerUrl}/patients/find/${mrn}`);
   	}
 
@@ -58,6 +62,7 @@ export class PatientService {
 			})
 		);
   	}
+
 
 
 }

@@ -32,12 +32,14 @@
 .main-grid-container {
   display: grid;
   /* Two columns for most of the content */
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   /* Defines the layout areas */
   grid-template-areas: 
-    "allergies-meds history"
-    "vitals labs"
-    "imaging imaging";
+    "allergies-meds" 
+	"conditions"
+    "vitals" 
+	"labs"
+    "imaging";
   gap: 20px;
   padding: 20px;
   max-width: 1200px;
@@ -46,14 +48,14 @@
 
 /* Assign areas to cards */
 .allergies-meds-card { grid-area: allergies-meds; }
-.history-card { grid-area: history; }
+.conditions-card { grid-area: conditions; }
 .vitals-card { grid-area: vitals; }
 .labs-card { grid-area: labs; }
 .imaging-card { grid-area: imaging; }
 
 
 /* Card Styling */
-.grid-card {
+.clinical-card {
   background-color: #ffffff;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
@@ -101,13 +103,13 @@
   align-items: center;
 }
 
-/* Medical History Table */
-.history-table {
+/* Medical Conditions Table */
+.conditions-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.history-table thead th {
+.conditions-table thead th {
   background-color: #f5f5f5;
   padding: 8px;
   text-align: left;
@@ -115,12 +117,12 @@
   color: #555;
 }
 
-.history-table tbody td {
+.conditions-table tbody td {
   padding: 6px;
   border-bottom: 1px solid #f0f0f0;
 }
 
-.history-table tbody tr:nth-child(even) {
+.conditions-table tbody tr:nth-child(even) {
   background-color: #f3f3f3;
 }
 
@@ -141,6 +143,16 @@
   font-weight: bold;
   color: #555;
   flex-grow: 1;
+}
+
+/* .lab-group {
+
+} */
+
+.lab-table {
+	font-weight: bold;
+  	color: #555;
+  	flex-grow: 1;
 }
 
 .lab-value {

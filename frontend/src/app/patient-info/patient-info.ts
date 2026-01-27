@@ -5,128 +5,160 @@ import { Router } from '@angular/router';
 import { Patient } from '../patient/patient';
 import { PatientService } from '../patient/patient.service';
 import { CommonModule } from '@angular/common';
+import { LAB_CONFIG } from '../lab-config/lab-config';
 
 @Component({
-  selector: 'app-patient-info',
-  standalone: true,
-  imports: [Header, CommonModule],
-  templateUrl: './patient-info.html',
-  styleUrl: './patient-info.css'
+  	selector: 'app-patient-info',
+  	standalone: true,
+  	imports: [Header, CommonModule],
+  	templateUrl: './patient-info.html',
+  	styleUrl: './patient-info.css'
 })
+
 export class PatientInfo implements OnInit {
-  patientMrn!: number;
-  patient?: Patient;
+  	patientMrn!: string;
+  	patient?: Patient;
+	allergies: any;
+	medications: any;
+	conditions: any;
+	vitals: any;
+	encounters: any;
+	procedures: any;
+	imagingStudies: any;
+	cbc: any;
+	cmp: any;
+	lipids: any;
+	hgba1c: any;
 
-  // dummy allergies and meds
-  allergies: string[] = ['Penicillin', 'Latex'];
-  medications: string[] = ['Lisinopril 10mg QD', 'Metformin 500mg BID', 'Aspirin 81mg QD'];
-  history = [
-    { label: 'Diabetes Mellitus type2', dateOfDx: '12/05/2019'},
-    { label: 'Hypertension', dateOfDx: '05/12/2015'},
-    { label: 'Atrial Fribrillation', dateOfDx: '06/15/2020'},
-  ];
-  // dummy vitals
-  vitals = [
-    { label: 'Temp', value: '37.0°C' },
-    { label: 'HR', value: '95 bpm' },
-    { label: 'BP', value: '135/85 mmHg' },
-    { label: 'RR', value: '16 rpm' },
-    { label: 'SpO2', value: '98%' }
-  ];
+	constructor(
+		private route: ActivatedRoute,
+		private router: Router,
+		private patientService: PatientService
+	) {}
 
-  // dummy labs
-  // Dummy Lab Data: Complete Blood Count (CBC)
-  cbc = [
-    // --- White Blood Cell Series ---
-    { label: 'WBC', value: '12.5', units: 'x10^9/L', reference: '4.5-11.0', abnormal: true }, // High (Infection)
-    { label: 'Neutrophils', value: '70', units: '%', reference: '40-60', abnormal: true }, // High
-    { label: 'Lymphocytes', value: '23', units: '%', reference: '20-40', abnormal: false },
-    { label: 'Monocytes', value: '5', units: '%', reference: '2-8', abnormal: false },
-    { label: 'Eosinophils', value: '1', units: '%', reference: '1-4', abnormal: false },
-    { label: 'Basophils', value: '1', units: '%', reference: '0.5-1', abnormal: false },
+	ngOnInit(): void {
+		this.route.paramMap.subscribe({
+			next: (params) => {
+				const mrnParam = params.get('mrn');
+				if (!mrnParam) {
+					console.error('No MRN provided in URL');
+					this.router.navigate(['/dashboard']);
+					return;
+				}
+				this.patientMrn = mrnParam;
+				this.loadPatientData(this.patientMrn);
+			},
+			error: (error) => {
+				console.error('Error getting patient MRN:', error);
+				this.router.navigate(['/dashboard']);
+			}
+			});
+  	}
 
-    // --- Red Blood Cell Series ---
-    { label: 'RBC', value: '4.8', units: 'x10^12/L', reference: '4.2-6.1', abnormal: false },
-    { label: 'Hgb', value: '14.0', units: 'g/dL', reference: '12.1-17.2', abnormal: false },
-    { label: 'Hct', value: '42.0', units: '%', reference: '36-55', abnormal: false },
-    { label: 'MCV', value: '78', units: 'fL', reference: '80-100', abnormal: true }, // Low (Microcytic)
-    { label: 'MCH', value: '28.5', units: 'pg', reference: '27-34', abnormal: false },
-    { label: 'MCHC', value: '33.8', units: 'g/dL', reference: '32-36', abnormal: false },
-    { label: 'RDW', value: '13.5', units: '%', reference: '11.5-15.0', abnormal: false },
+  	private loadPatientData(mrn: string): void {
+    	this.patientService.getClinicalView(mrn).subscribe({
+			next: (data: any) => {
+				this.patient = data.patient;
+				this.allergies = data.allergies.map((a: any) => a.description);
+				this.medications = data.medications.map((m: any) => m.description);
+				this.conditions = data.conditions.map((c: any) => ({
+					label: c.description,
+					datOfDx: c.startDate
+				}));
 
-    // --- Platelets ---
-    { label: 'Plt', value: '250', units: 'x10^9/L', reference: '150-450', abnormal: false }
-  ];
+				// extract vitals and labs from observations list using LOINC codes
+				this.vitals = [
+					{ label: 'Systolic', value: this.findObs(data.observations, '8480-6') },
+					{ label: 'Diastolic', value: this.findObs(data.observations, '8462-4') },
+					{ label: 'HR', value: this.findObs(data.observations, '8867-4') },
+					{ label: 'Temp', value: this.findObs(data.observations, '8310-5') },
+					{ label: 'Resp Rate', value: this.findObs(data.observations, '9279-1') },
+					{ label: 'Pain', value: this.findObs(data.observations, '72514-3') },
+					{ label: 'Height', value: this.findObs(data.observations, '8302-2') },
+					{ label: 'Weight', value: this.findObs(data.observations, '29463-7') },
+					{ label: 'BMI', value: this.findObs(data.observations, '39156-5') },
+				];
 
-  // Dummy Lab Data: Comprehensive Metabolic Panel (CMP)
-  cmp = [
-    // --- Electrolytes & Glucose ---
-    { label: 'Glucose', value: '115', units: 'mg/dL', reference: '70-100', abnormal: true }, // High
-    { label: 'Ca', value: '9.2', units: 'mg/dL', reference: '8.5-10.2', abnormal: false },
-    { label: 'Na', value: '138', units: 'mEq/L', reference: '135-145', abnormal: false },
-    { label: 'K', value: '3.1', units: 'mEq/L', reference: '3.5-5.2', abnormal: true }, // Low (Hypokalemia)
-    { label: 'Cl', value: '101', units: 'mEq/L', reference: '96-106', abnormal: false },
-    { label: 'HCO3', value: '25', units: 'mEq/L', reference: '22-29', abnormal: false },
+				this.cbc = [
+					{ label: 'WBC', value: this.findLab(data.observations, '6690-2') },
+					{ label: 'RBC', value: this.findLab(data.observations, '789-8') },
+					{ label: 'Hemoglobin', value: this.findLab(data.observations, '718-7') },
+					{ label: 'Hematocrit', value: this.findLab(data.observations, '4544-3') },
+					{ label: 'MCV', value: this.findLab(data.observations, '787-2') },
+					{ label: 'MCH', value: this.findLab(data.observations, '785-6') },
+					{ label: 'MCHC', value: this.findLab(data.observations, '786-4') },
+					{ label: 'RDW', value: this.findLab(data.observations, '788-0') },
+					{ label: 'Platelets', value: this.findLab(data.observations, '777-3') }
+				];
 
-    // --- Kidney Function ---
-    { label: 'BUN', value: '28', units: 'mg/dL', reference: '6-20', abnormal: true }, // High
-    { label: 'Creat', value: '1.4', units: 'mg/dL', reference: '0.6-1.3', abnormal: true }, // High
-    
-    // --- Protein/Albumin ---
-    { label: 'Total Protein', value: '7.1', units: 'g/dL', reference: '6.0-8.3', abnormal: false },
-    { label: 'Albumin', value: '4.2', units: 'g/dL', reference: '3.4-5.4', abnormal: false },
+				this.cmp = [
+					{ label: 'Glucose', value: this.findLab(data.observations, '2345-7') },
+					{ label: 'BUN', value: this.findLab(data.observations, '3094-0') },
+					{ label: 'Creatinine', value: this.findLab(data.observations, '2160-0') },
+					{ label: 'Sodium', value: this.findLab(data.observations, '2951-2') },
+					{ label: 'Potassium', value: this.findLab(data.observations, '2823-3') },
+					{ label: 'Chloride', value: this.findLab(data.observations, '2075-0') },
+					{ label: 'CO2', value: this.findLab(data.observations, '2028-9') },
+					{ label: 'Calcium', value: this.findLab(data.observations, '17861-6') },
+					{ label: 'Albumin', value: this.findLab(data.observations, '1751-7') },
+					{ label: 'Total Protein', value: this.findLab(data.observations, '2885-2') },
+					{ label: 'ALT', value: this.findLab(data.observations, '1742-6') },
+					{ label: 'AST', value: this.findLab(data.observations, '1920-8') },
+					{ label: 'ALP', value: this.findLab(data.observations, '6768-6') },
+					{ label: 'Total Bilirubin', value: this.findLab(data.observations, '1975-2') }
+				];
 
-    // --- Liver Function Tests (LFTs) ---
-    { label: 'Tbili', value: '0.5', units: 'mg/dL', reference: '0.1-1.2', abnormal: false },
-    { label: 'ALP', value: '85', units: 'U/L', reference: '20-130', abnormal: false },
-    { label: 'ALT', value: '45', units: 'U/L', reference: '4-36', abnormal: true }, // High
-    { label: 'AST', value: '30', units: 'U/L', reference: '8-33', abnormal: false }
-  ];
-  
-  imagingResults: string[] = ['03/17/2025 - CXR: No acute cardiopulmonary process.', '03/17/2025 - Abdominal CT: Stable diverticulosis.'];
+				this.lipids = [
+					{ label: 'Total Cholesterol', value: this.findLab(data.observations, '2093-3') },
+					{ label: 'HDL', value: this.findLab(data.observations, '2085-9') },
+					{ label: 'LDL', value: this.findLab(data.observations, '18262-6') },
+					{ label: 'Triglycerides', value: this.findLab(data.observations, '2571-8') }
+				];
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private patientService: PatientService
-  ) {}
+				this.hgba1c = [
+					{ label: 'Hemoglobin A1c', value: this.findLab(data.observations, '4548-4') }
+				];
 
-  ngOnInit(): void {
-    this.route.paramMap.subscribe({
-      next: (params) => {
-        const mrnParam = params.get('mrn');
-        if (mrnParam === null) {
-          console.error('No MRN provided in URL');
-          this.router.navigate(['/dashboard']);
-          return;
-        }
-        this.patientMrn = +mrnParam;
-        if (isNaN(this.patientMrn)) {
-          console.error('Invalid MRN format');
-          this.router.navigate(['/dashboard']);
-          return;
-        }
+				this.encounters = data.encounters.map((e: any) => e.description);
+				this.procedures = data.procedures.map((p: any) => p.description);
+				this.imagingStudies = data.imagingStudies.map((i: any) => i.description);
+			},
 
-        this.loadPatient(this.patientMrn);
+			error: (error: any) => {
+				console.error('Error loading patient data:', error);
+				this.router.navigate(['/dashboard']);
+			} 
+			});
+  	}
 
-      },
-      error: (error) => {
-        console.error('Error getting patient MRN:', error);
-        this.router.navigate(['/dashboard']);
-      }
-    });
-  }
+	private findObs(observations: any[], code: string): string {
+		const match = observations.find(obs => obs.code === code);
+		return match ? `${match.value} ${match.units}` : 'N/A';
+	}
 
-  private loadPatient(mrn: number): void {
-    this.patientService.getPatientByMrn(mrn).subscribe({
-      next: (patient: Patient | undefined) => {
-        this.patient = patient;
-      },
-      error: (error: any) => {
-        console.error('Error loading patient:', error);
-        this.router.navigate(['/dashboard']);
-      } 
-    });
-  }
+	private findLab(observations: any[], code: string) {
+		const match = observations.find(obs => obs.code === code);
+		const config = LAB_CONFIG[code];
+
+		if (!match || !config) {
+			return { label: config?.label || 'N/A', value: '--', 
+					abnormal: false, critical: false 
+			};
+		}
+
+		const val = parseFloat(match.value);
+		const isAbnormal = val < config.min || val > config.max;
+		const isCritical = (config.criticalMin && val <= config.criticalMin) ||
+							(config.criticalMax && val >= config.criticalMax);
+
+		return {
+			label: config.label,
+			value: val,
+			units: match.units,
+			reference: `${config.min} - ${config.max}`,
+			abnormal: isAbnormal,
+			critical: isCritical
+		};
+	}
 
 }
