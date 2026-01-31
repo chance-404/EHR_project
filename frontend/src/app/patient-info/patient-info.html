@@ -30,18 +30,25 @@
 	<div class="clinical-card allergies-meds-card">
 		<h3 class="card-title">Allergies & Medications</h3>
 
-		<div class="allergies-section">
-			<h6>Allergies:</h6>
-			<ul>
-				<li *ngFor="let allergy of allergies" class="abnormal-list-item">{{ allergy }}</li>
-				<li *ngIf="allergies.length === 0">NKA</li>
-			</ul>
-		</div>
-
+		<table class="allergies-table">
+			<thead>
+				<tr>
+					<th>Allergen</th>
+					<th>Reaction</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let allergy of allergies">
+					<td style="width:80%" class="abnormal-list-item">{{ allergy.substance }}</td>
+					<td style="width:20%">{{ allergy.reaction }}</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
 		<div class="med-list">
 			<h5>Current Medications:</h5>
 			<ul>
-				<li *ngFor="let med of medications">{{ med }}</li>
+				<li *ngFor="let med of medications">{{ med.medication }}</li>
 			</ul>
 		</div>
 	</div>

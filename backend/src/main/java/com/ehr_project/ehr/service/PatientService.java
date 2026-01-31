@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.ehr_project.ehr.dto.DashboardDTO;
 import com.ehr_project.ehr.exceptions.UserNotFoundException;
+import com.ehr_project.ehr.model.Allergy;
 import com.ehr_project.ehr.model.Patient;
 import com.ehr_project.ehr.repo.AllergyRepo;
 import com.ehr_project.ehr.repo.ConditionRepo;
@@ -140,10 +141,31 @@ public class PatientService {
 		Patient patient = findPatientByMrn(mrn);
 		Map<String, Object> record = new HashMap<>();
 
+		String removeTextInParentheses = "\\s*\\([^)]*\\)";
+
+		List<Allergy> rawAllergies = allergyRepo.findByPatientMrn(mrn);
+		rawAllergies.removeIf(a -> a.getSubstance() != null &&
+									a.getSubstance().toLowerCase().contains("disposition"));
+		rawAllergies.forEach(a -> {
+			if (a.getSubstance() != null) {
+				a.setSubstance(a.getSubstance().replaceAll(removeTextInParentheses, "").trim());
+			}
+			if (a.getDescription() != null) {
+				a.setDescription(a.getDescription().replaceAll(removeTextInParentheses, "").toLowerCase().trim());
+			}
+		});
+
+		List<com.ehr_project.ehr.model.Condition> rawConditions = conditionRepo.findActiveConditions(mrn);
+		rawConditions.forEach(c -> {
+			if (c.getDescription() != null) {
+				c.setDescription(c.getDescription().replaceAll(removeTextInParentheses, "").trim());
+			}
+		});
+
 		record.put("patient", patient);
-		record.put("allergies", allergyRepo.findByPatientMrn(mrn));
+		record.put("allergies", rawAllergies);
 		record.put("medications", medicationRepo.findActiveByPatientMrn(mrn));
-		record.put("conditions", conditionRepo.findActiveConditions(mrn));
+		record.put("conditions", rawConditions);
 		record.put("observations", observationRepo.findByPatientMrn(mrn, PageRequest.of(0, 100)));
 		record.put("encounters", encounterRepo.findEncounterByPatientMrn(mrn, PageRequest.of(0, 20)));
 		record.put("procedures", procedureRepo.findByPatientMrn(mrn, PageRequest.of(0, 20)));

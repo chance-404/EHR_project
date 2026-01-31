@@ -80,6 +80,11 @@
 
 /* --- List and Specific Section Styling --- */
 
+/* Allergies List */
+.allergies-table tbody tr:nth-child(even) {
+  background-color: #f3f3f3;
+}
+
 /* Meds List */
 .med-list h5 {
   color: #3f51b5;

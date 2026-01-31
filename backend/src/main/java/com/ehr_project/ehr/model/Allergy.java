@@ -31,4 +31,5 @@ public class Allergy {
 	private Patient patient;
 
 	private String category;
+
 }

@@ -59,12 +59,21 @@ export class PatientInfo implements OnInit {
     	this.patientService.getClinicalView(mrn).subscribe({
 			next: (data: any) => {
 				this.patient = data.patient;
-				this.allergies = data.allergies.map((a: any) => a.description);
-				this.medications = data.medications.map((m: any) => m.description);
+				this.allergies = data.allergies.map((a: any) => ({
+					substance: a.substance, 
+					reaction: a.description
+				}));
+				this.medications = data.medications.map((m: any) => ({
+					medication: m.medication,
+					reason: m.reason
+				}));
 				this.conditions = data.conditions.map((c: any) => ({
 					label: c.description,
 					dateOfDx: c.startDate
 				}));
+
+				console.log(this.allergies);
+				console.log(this.medications);
 
 				// extract vitals and labs from observations list using LOINC codes
 				this.vitals = [
