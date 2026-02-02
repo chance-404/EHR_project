@@ -10,6 +10,7 @@ An Electronic Health Record (EHR) web application that includes an operating roo
 >    This is meant for desktop use only. Mobile just doesn't make a lot of sense for this application.
 
 # Updates
+**2/2/26**- Backend now pulls synthetic patient data from a Postgres database populated with data from Synthea. This adds 100 patients with more realistic data. Parsing and cleaning all this was a chore. I also made some UI changes after some feedback from a test user.
 **12/14/25**- Moved front-end to my VPS.
 
 **11/1/25**- Migrated backend from the free tier on Render to self-hosting on a VPS. The free tier took 2+min to spin up when logging into my app. This took a lot of configuration and troubleshooting, but I learned a lot. More hands-on with SSH, nginx, DNS, CloudFlare, SSL. $5/month for a VPS seems worth the education.
@@ -26,7 +27,7 @@ An Electronic Health Record (EHR) web application that includes an operating roo
 - Searchable, sortable patient list (Dashboard)
 
 # Next Steps
-- Add a back-end and interactivity to patient info pages. It's static dummy data for now.
+- Add interactivity to patient clinical view.
 - Add order entry/management system.
 
 # License
