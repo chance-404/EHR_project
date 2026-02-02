@@ -18,7 +18,7 @@ export class PatientService {
   	}
 
 	public getPatientListForDashboard(): Observable<Patient[]> {
-		return this.http.get<Patient[]>(`${this.apiServerUrl}/patients/all-dashboard`)
+		return this.http.get<Patient[]>(`${this.apiServerUrl}/patients/full-patient-list`)
 	}
 
 	public getClinicalView(mrn: string): Observable<Map<String, Object>> {

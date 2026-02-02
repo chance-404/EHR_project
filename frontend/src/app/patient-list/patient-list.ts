@@ -9,13 +9,13 @@ import { AuthenticationService } from '../authentication/authentication.service'
 
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-patient-list',
   imports: [CommonModule, FormsModule, RouterModule],
-  templateUrl: './dashboard.html',
-  styleUrl: './dashboard.css'
+  templateUrl: './patient-list.html',
+  styleUrl: './patient-list.css'
 })
 
-export class Dashboard implements OnInit {
+export class PatientList implements OnInit {
 
   constructor(private patientService: PatientService, 
               public authenticationService: AuthenticationService) {}
@@ -97,7 +97,6 @@ export class Dashboard implements OnInit {
     this.patients = this.allPatients.filter(patient => 
       patient.lastName.toLowerCase().includes(searchKey) ||
       patient.firstName.toLowerCase().includes(searchKey) ||
-      patient.middleName.toLowerCase().includes(searchKey) || // Need to keep middleName as search parameter?
       patient.mrn?.includes(searchKey) ||
       patient.dateOfBirth.toString().includes(searchKey)
     );

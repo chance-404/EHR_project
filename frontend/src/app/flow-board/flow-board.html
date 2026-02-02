@@ -1,26 +1,25 @@
 <app-header></app-header>
 
 <div class="grid-container">
-  <div class="room-card" *ngFor="let room of rooms; let i = index">
-    <h2>Room {{ i + 1 }}</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Start Time</th>
-          <th>End Time</th>
-          <th>Status</th>
-          <th>Patient</th>
-          <th>Procedure</th>
-          <th>Surgeon</th>
-          <th>Anesthesia</th>
-          <th>Nurse</th>
-          <th>Scrub</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="surgery-case-row" *ngFor="let surgeryCase of room.surgeryCase" 
-            (click)="openSurgeryCaseModal(surgeryCase)"
-            [ngClass]="{
+	<div class="room-card" *ngFor="let room of rooms; let i = index">
+		<h2>Room {{ i + 1 }}</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Start Time</th>
+					<th>End Time</th>
+					<th>Status</th>
+					<th>Patient</th>
+					<th>Procedure</th>
+					<th>Surgeon</th>
+					<th>Anesthesia</th>
+					<th>Nurse</th>
+					<th>Scrub</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="surgery-case-row" *ngFor="let surgeryCase of room.surgeryCase"
+					(click)="openSurgeryCaseModal(surgeryCase)" [ngClass]="{
               'status-not-here': surgeryCase.surgeryCaseStatus === 'Patient not here',
               'status-waiting': surgeryCase.surgeryCaseStatus === 'Patient waiting',
               'status-pre-op': surgeryCase.surgeryCaseStatus === 'Patient in pre-op',
@@ -29,21 +28,21 @@
               'status-pacu': surgeryCase.surgeryCaseStatus === 'Patient in PACU',
               'status-asu': surgeryCase.surgeryCaseStatus === 'Patient in ASU'
             }">
-          <td>{{ surgeryCase.startTime | timeFormat }}</td>
-          <td>{{ surgeryCase.endTime | timeFormat }}</td>
-          <td>{{ surgeryCase.surgeryCaseStatus }}</td>
-          <td>{{ surgeryCase.fullPatient?.lastName }}, {{ surgeryCase.fullPatient?.firstName }} 
-              {{ surgeryCase.fullPatient?.dateOfBirth | date:'MM/dd/yyyy' }} 
-              ({{ surgeryCase.fullPatient?.mrn }})
-          </td>
-          <td>{{ surgeryCase.procedure }}</td>
-          <td>{{ surgeryCase.surgeon }}</td>
-          <td>{{ surgeryCase.anesthesia }}</td>
-          <td>{{ surgeryCase.nurse }}</td>
-          <td>{{ surgeryCase.scrub }}</td>
-        </tr>
-      </tbody>
-    </table>
-    <button class="add-surgeryCase-btn" (click)="openModal(i + 1)">Add Case</button>
-  </div>
+					<td>{{ surgeryCase.startTime | timeFormat }}</td>
+					<td>{{ surgeryCase.endTime | timeFormat }}</td>
+					<td>{{ surgeryCase.surgeryCaseStatus }}</td>
+					<td>{{ surgeryCase.fullPatient?.lastName }}, {{ surgeryCase.fullPatient?.firstName }}
+						{{ surgeryCase.fullPatient?.dateOfBirth | date:'MM/dd/yyyy' }}
+						({{ surgeryCase.fullPatient?.mrn }})
+					</td>
+					<td>{{ surgeryCase.procedure }}</td>
+					<td>{{ surgeryCase.surgeon }}</td>
+					<td>{{ surgeryCase.anesthesia }}</td>
+					<td>{{ surgeryCase.nurse }}</td>
+					<td>{{ surgeryCase.scrub }}</td>
+				</tr>
+			</tbody>
+		</table>
+		<button class="add-surgeryCase-btn" (click)="openModal(i + 1)">Add Case</button>
+	</div>
 </div>

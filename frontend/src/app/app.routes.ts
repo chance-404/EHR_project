@@ -1,5 +1,5 @@
 import { RouterModule, Routes } from '@angular/router';
-import { Dashboard } from './dashboard/dashboard';
+import { PatientList } from './patient-list/patient-list';
 import { Registration } from './registration/registration';
 import { Orders } from './orders/orders';
 import { FlowBoard } from './flow-board/flow-board';
@@ -11,7 +11,7 @@ import { PatientInfo } from './patient-info/patient-info';
 
 
 export const routes: Routes = [
-    {path: 'dashboard', component: Dashboard,
+    {path: 'patient-list', component: PatientList,
       canActivate: [AuthGuard]
     },
 

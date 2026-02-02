@@ -30,7 +30,7 @@
 	<div class="clinical-card allergies-meds-card">
 		<h3 class="card-title">Allergies & Medications</h3>
 
-		<table class="allergies-table">
+		<table class="allergies-table" *ngIf="allergies.length > 0">
 			<thead>
 				<tr>
 					<th>Allergen</th>
@@ -44,6 +44,9 @@
 				</tr>
 			</tbody>
 		</table>
+		<div *ngIf="allergies?.length === 0" style="padding: 5px">
+			No Known Allergies (NKA)
+		</div>
 		<br>
 		<div class="med-list">
 			<h5>Current Medications:</h5>
@@ -51,11 +54,14 @@
 				<li *ngFor="let med of medications">{{ med.medication }}</li>
 			</ul>
 		</div>
+		<div *ngIf="medications?.length === 0" style="padding: 5px">
+			No current medications
+		</div>
 	</div>
 
 	<div class="grid-card conditions-card">
 		<h3 class="card-title">Medical History</h3>
-		<table class="conditions-table">
+		<table class="conditions-table" *ngIf="conditions.length > 0">
 			<thead>
 				<tr>
 					<th>Diagnosis</th>
@@ -69,64 +75,153 @@
 				</tr>
 			</tbody>
 		</table>
+		<div *ngIf="conditions?.length === 0" style="padding: 5px">
+			No current diagnoses
+		</div>
 	</div>
 
 	<div class="grid-card vitals-card">
 		<h3 class="card-title">Vital Signs</h3>
-		<ul class="vitals-list">
-			<li *ngFor="let vital of vitals">
-				<span class="vital-label">{{ vital.label }}:</span>
-				<span class="vital-value">{{ vital.value }}</span>
-			</li>
-		</ul>
-	</div>
-
-	<div class="clinical-card">
-		<h3>Laboratory Results</h3>
-
-		<div class="lab-group">
-			<h4>CBC</h4>
-			<table class="lab-table">
+		<div class="vitals-table-container">
+			<table class="vitals-table">
 				<thead>
 					<tr>
-						<th>Test</th>
-						<th>Result</th>
-						<th>Ref Range</th>
+						<th class="sticky-col">Vital</th>
+						<th *ngFor="let set of vitalSets">
+							{{ set.date | date: 'MM/dd/yy' }}<br>
+							<small>{{ set.date | date: 'HH:mm' }}</small>
+						</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr *ngFor="let item of cbc" [class.critical-row]="item.critical">
-						<td>{{ item.label }}</td>
-						<td [class.abnormal-text]="item.abnormal">
-							{{ item.value }} <small>{{ item.units }}</small>
-							<span *ngIf="item.critical"> ⚠️</span>
+					<tr *ngFor="let vDef of vitalLabels">
+						<td class="sticky-col"><strong>{{ vDef.label }}</strong></td>
+						<td *ngFor="let set of vitalSets">
+							{{ set.values[vDef.code] || '--' }}
 						</td>
-						<td class="ref-range">{{ item.reference }}</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-
-		<div class="lab-group">
-			<h4>CMP</h4>
-			<table class="lab-table">
-				<tbody>
-					<tr *ngFor="let item of cmp" [class.critical-row]="item.critical">
-						<td style="width: 40%;">{{ item.label }}</td>
-						<td [class.abnormal-text]="item.abnormal" style="width: 30%;">
-							{{ item.value }}
-						</td>
-						<td class="ref-range" style="width: 30%;">{{ item.reference }}</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 	</div>
-</div>
 
-<div class="grid-card imaging-card">
-	<h3 class="card-title">Imaging Results</h3>
-	<ul>
-		<li *ngFor="let result of imagingStudies">{{ result }}</li>
-	</ul>
-</div>
+	<div class="clinical-card labs-card">
+		<h3 class="card-title">Laboratory Results</h3>
+
+		<div class="lab-group">
+			<h5>CBC</h5>
+			<div class="table-scroll-container">
+				<table class="horizontal-lab-table" *ngIf="cbcSets.length > 0">
+					<thead>
+						<tr>
+							<th class="sticky-col">Component</th>
+							<th *ngFor="let set of cbcSets">
+								{{ set.date | date: 'MM/dd/yy' }}<br>
+								<small>{{ set.date | date: 'HH:mm' }}</small>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let row of cbcLabels">
+							<td class="sticky-col">{{ row.label }}</td>
+							<td *ngFor="let set of cbcSets" [class.critical-row]="set.values[row.code].critical">
+								<span [class.abnormal-text]="set.values[row.code].abnormal">
+									{{ set.values[row.code].value }}
+								</span>
+								<small *ngIf="set.values[row.code].value !== '--'">
+									{{ set.values[row.code].units }}
+								</small>
+								<span *ngIf="set.values[row.code].critical"> ⚠️</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div *ngIf="cbcSets.length === 0" style="padding: 5px">
+				No CBC results found
+			</div>
+		</div>
+
+		<div class="lab-group">
+			<h5>Comprehensive Metabolic Panel (CMP)</h5>
+			<div class="table-scroll-container">
+				<table class="horizontal-lab-table" *ngIf="cmpSets.length > 0">
+					<thead>
+						<tr>
+							<th class="sticky-col">Component</th>
+							<th *ngFor="let set of cmpSets">
+								{{ set.date | date: 'MM/dd/yy' }}<br>
+								<small>{{ set.date | date: 'HH:mm' }}</small>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let row of cmpLabels">
+							<td class="sticky-col"><strong>{{ row.label }}</strong></td>
+							<td *ngFor="let set of cmpSets" [class.critical-row]="set.values[row.code].critical">
+								<span [class.abnormal-text]="set.values[row.code].abnormal">
+									{{ set.values[row.code].value }}
+								</span>
+								<span *ngIf="set.values[row.code].critical"> ⚠️</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div *ngIf="cmpSets.length === 0" style="padding: 5px">
+				No CMP results found
+			</div>
+		</div>
+
+		<div class="lab-group">
+			<h5>Lipids & Endocrine</h5>
+			<div class="table-scroll-container">
+				<table class="horizontal-lab-table" *ngIf="lipidSets.length > 0">
+					<thead>
+						<tr>
+							<th class="sticky-col">Component</th>
+							<th *ngFor="let set of lipidSets">
+								{{ set.date | date: 'MM/dd/yy' }}
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let row of lipidLabels">
+							<td class="sticky-col">{{ row.label }}</td>
+							<td *ngFor="let set of lipidSets">
+								<span [class.abnormal-text]="set.values[row.code].abnormal">
+									{{ set.values[row.code].value }}
+								</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div *ngIf="lipidSets.length === 0" style="padding: 5px">
+				No results found
+			</div>
+		</div>
+	</div>
+
+	<div class="grid-card imaging-card">
+		<h3 class="card-title">Imaging Results</h3>
+		<table class="imagingStudies-table" *ngIf="imagingStudies.length > 0">
+			<thead>
+				<tr>
+					<th>Date</th>
+					<th>Study Type</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let image of imagingStudies">
+					<td style="width:10%">{{ image.date | date: 'MM/dd/yyyy' }}</td>
+					<td style="width:20%">{{ image.studyDescription }}</td>
+					<td style="width:70%">{{ image.siteOnBody }}</td>
+				</tr>
+			</tbody>
+		</table>
+		<div *ngIf="imagingStudies.length === 0" style="padding: 5px;">
+			No imaging results found.
+		</div>
+	</div>

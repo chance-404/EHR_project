@@ -113,7 +113,7 @@ export class SurgeryCaseComponent implements OnInit{
         next: (response: any) => {
           console.log('Surgery case updated successfully:', response);
           this.dialogRef.close();
-          this.snackBar.open('Case updated successfully!', 'Close', { 
+          this.snackBar.open('Case updated', 'Close', { 
             duration: 5000,
             panelClass: ['success-snackbar']
           });

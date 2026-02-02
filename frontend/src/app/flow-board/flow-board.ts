@@ -9,6 +9,7 @@ import { AddCaseComponent } from '../modals/add-case-form';
 import { TimeFormatPipe } from '../pipes/time-format.pipe';
 import { SurgeryCaseComponent } from '../modals/case-form';
 import { PatientService } from '../patient/patient.service';
+import { forkJoin } from 'rxjs';
 
 
 export interface Room {
@@ -24,6 +25,7 @@ export interface Room {
   	templateUrl: './flow-board.html',
   	styleUrl: './flow-board.css'
 })
+
 export class FlowBoard implements OnInit {
   	private surgeryCaseService = inject(SurgeryCaseService);
   	private dialog = inject(Dialog);
@@ -44,25 +46,32 @@ export class FlowBoard implements OnInit {
     	this.loadFlowboardData();
   	}
 
-  	public loadFlowboardData(): void {
-    	this.surgeryCaseService.getSurgeryCases().subscribe(cases => {
-      	this.patientService.getPatients().subscribe(patients => {
-        	// map to lookup patients by MRN
-        	const patientMap = new Map(patients.map(p => [p.mrn, p]));
-        	// link each case to the full patient object
-        	cases.forEach(surgeryCase => {
-          		if (surgeryCase.patient) {
-            		surgeryCase.fullPatient = patientMap.get(surgeryCase.patient);
-          		}
-        	});
+	public loadFlowboardData(): void {
+		// forkJoin ensures both requests finish before processing
+		forkJoin({
+			cases: this.surgeryCaseService.getSurgeryCases(),
+			patients: this.patientService.getPatients()
+		}).subscribe({
+			next: ({ cases, patients }) => {
+				const patientMap = new Map(patients.map(p => [String(p.mrn), p]));
 
-        // sort cases by start time
-        cases.sort((a, b) => a.startTime.localeCompare(b.startTime));
-        this.surgeryCases = cases;
-        this.distributeCasesToRooms();
-      });
-    });
-  }
+				cases.forEach(surgeryCase => {
+					if (surgeryCase.patient) {
+						const mrnMatch = surgeryCase.patient.match(/\(([^)]+)\)/);
+						const extractedMrn = mrnMatch ? mrnMatch[1] : surgeryCase.patient;
+						surgeryCase.fullPatient = patientMap.get(String(extractedMrn));
+					}
+				});
+				// sort and distribut cases to rooms
+				cases.sort((a, b) => a.startTime.localeCompare(b.startTime));
+				this.surgeryCases = cases;
+				this.distributeCasesToRooms();
+			},
+			error: (err) => console.error('Error loadin flowboard data:', err)
+		});
+	}
+
+
 
   private distributeCasesToRooms(): void { 
 	// clears cases in rooms
@@ -77,7 +86,6 @@ export class FlowBoard implements OnInit {
   }    
 
   
-    
 
   public openModal(roomId: number): void {
     console.log('Opening modal for room:', roomId);

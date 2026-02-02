@@ -36,9 +36,9 @@ public class PatientController {
         return new ResponseEntity<>(patients, HttpStatus.OK);
     }
 
-	@GetMapping("/all-dashboard")
-	public ResponseEntity<List<DashboardDTO>> getAllPatientsForDashboard() {
-		List<DashboardDTO> patients = patientService.getPatientListForDashboard();
+	@GetMapping("/full-patient-list")
+	public ResponseEntity<List<DashboardDTO>> getAllPatientsForList() {
+		List<DashboardDTO> patients = patientService.getFullPatientList();
 		return new ResponseEntity<>(patients, HttpStatus.OK);
 	}
 

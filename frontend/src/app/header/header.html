@@ -1,37 +1,41 @@
-<nav class= "navbar navbar-expand-lg navbar-dark bg-dark">
-  <a (click)="unauthorizedClick($event)" routerLink= "/dashboard" routerLinkActive="activebutton" ariaCurrentWhenActive="page"
-    class= "navbar-brand" style= "color:#fff; text-decoration: none; padding: 8px 12px; border-radius: 4px;" 
-    onmouseover= "this.style.backgroundColor= 'rgba(255,255,255,0.1)'" 
-    onmouseout= "this.style.backgroundColor= 'transparent'">Dashboard
-  </a>
-    <ul class= "nav utility bar">
-      <li style= "padding: 0 15px;">
-        <a (click)="unauthorizedClick($event)" routerLink= "/flow-board" routerLinkActive="activebutton" ariaCurrentWhenActive="page"
-          style= "color: #fff; text-decoration: none; padding: 8px 12px; border-radius: 4px;" 
-          onmouseover= "this.style.backgroundColor= 'rgba(255,255,255,0.1)'" 
-          onmouseout= "this.style.backgroundColor= 'transparent'">Flow Board
-        </a>
-      </li>
-        <li style= "padding: 0 15px;">
-          <a (click)="unauthorizedClick($event)" routerLink= "/registration" routerLinkActive="activebutton" ariaCurrentWhenActive="page" 
-            style= "color: #fff; text-decoration: none; padding: 8px 12px; border-radius: 4px;"
-            onmouseover= "this.style.backgroundColor= 'rgba(255,255,255,0.1)'" 
-            onmouseout= "this.style.backgroundColor= 'transparent'">Registration
-          </a>
-        </li>
-        <li style= "padding: 0 15px;">
-          <a (click)="unauthorizedClick($event)" routerLink= "/orders" routerLinkActive="activebutton" ariaCurrentWhenActive="page" 
-            style="color: #fff; text-decoration: none; padding: 8px 12px; border-radius: 4px;"
-            onmouseover= "this.style.backgroundColor= 'rgba(255,255,255,0.1)'" 
-            onmouseout= "this.style.backgroundColor= 'transparent'">Orders
-          </a>
-        </li>
-        <li style= "padding: 0 15px;">
-          <a routerLink= "/logout" routerLinkActive="activebutton" ariaCurrentWhenActive="page" 
-            style="color: #fff; text-decoration: none; padding: 8px 12px; border-radius: 4px;"
-            onmouseover= "this.style.backgroundColor= 'rgba(255,255,255,0.1)'" 
-            onmouseout= "this.style.backgroundColor= 'transparent'">Logout
-          </a>
-        </li>
-      </ul>    
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	<a (click)="unauthorizedClick($event)" routerLink="/flow-board" routerLinkActive="activebutton"
+		ariaCurrentWhenActive="page" class="navbar-brand"
+		style="color:#fff; text-decoration: none; padding: 8px 12px; border-radius: 4px;"
+		onmouseover="this.style.backgroundColor= 'rgba(255,255,255,0.1)'"
+		onmouseout="this.style.backgroundColor= 'transparent'">O.R. Flow Board
+	</a>
+	<ul class="nav utility bar">
+		<li style="padding: 0 15px;">
+			<a (click)="unauthorizedClick($event)" routerLink="/patient-list" routerLinkActive="activebutton"
+				ariaCurrentWhenActive="page"
+				style="color: #fff; text-decoration: none; padding: 8px 12px; border-radius: 4px;"
+				onmouseover="this.style.backgroundColor= 'rgba(255,255,255,0.1)'"
+				onmouseout="this.style.backgroundColor= 'transparent'">Patient List
+			</a>
+		</li>
+		<li style="padding: 0 15px;">
+			<a (click)="unauthorizedClick($event)" routerLink="/registration" routerLinkActive="activebutton"
+				ariaCurrentWhenActive="page"
+				style="color: #fff; text-decoration: none; padding: 8px 12px; border-radius: 4px;"
+				onmouseover="this.style.backgroundColor= 'rgba(255,255,255,0.1)'"
+				onmouseout="this.style.backgroundColor= 'transparent'">Registration
+			</a>
+		</li>
+		<li style="padding: 0 15px;">
+			<a (click)="unauthorizedClick($event)" routerLink="/orders" routerLinkActive="activebutton"
+				ariaCurrentWhenActive="page"
+				style="color: #fff; text-decoration: none; padding: 8px 12px; border-radius: 4px;"
+				onmouseover="this.style.backgroundColor= 'rgba(255,255,255,0.1)'"
+				onmouseout="this.style.backgroundColor= 'transparent'">Orders
+			</a>
+		</li>
+		<li style="padding: 0 15px;">
+			<a routerLink="/logout" routerLinkActive="activebutton" ariaCurrentWhenActive="page"
+				style="color: #fff; text-decoration: none; padding: 8px 12px; border-radius: 4px;"
+				onmouseover="this.style.backgroundColor= 'rgba(255,255,255,0.1)'"
+				onmouseout="this.style.backgroundColor= 'transparent'">Logout
+			</a>
+		</li>
+	</ul>
 </nav>

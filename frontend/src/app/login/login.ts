@@ -36,12 +36,12 @@ export class Login implements OnInit {
       this.isLoading = true;
       const userId = this.loginForm.value.userId;
       const password = this.loginForm.value.password;
-      // call authenticate() function in authentication.service.ts, route to dashboard if userID and password valid
+      // call authenticate() function in authentication.service.ts, route to patient list if userID and password valid
       this.authenticationService.authenticate(userId, password).subscribe({
         next: (success) => {
           this.isLoading = false;
           if (success) {
-            this.router.navigate(['/dashboard']);
+            this.router.navigate(['/flow-board']);
             this.invalidLogin = false;
           } else {
             this.invalidLogin = true;

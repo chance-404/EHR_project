@@ -121,7 +121,7 @@ public class PatientService {
     }
 
 
-	public List<DashboardDTO> getPatientListForDashboard() {
+	public List<DashboardDTO> getFullPatientList() {
 		return patientRepo.findAll().stream()
 			.map(patient -> new DashboardDTO(
 				patient.getMrn(),
@@ -156,6 +156,8 @@ public class PatientService {
 		});
 
 		List<com.ehr_project.ehr.model.Condition> rawConditions = conditionRepo.findActiveConditions(mrn);
+		rawConditions.removeIf(c -> c.getDescription() != null &&
+								c.getDescription().toLowerCase().matches(".*(education|employment|unemployed|crime|criminal|military|housing|homeless|refugee|victim|activity|social|force|transport|medication).*"));
 		rawConditions.forEach(c -> {
 			if (c.getDescription() != null) {
 				c.setDescription(c.getDescription().replaceAll(removeTextInParentheses, "").trim());
