@@ -18,27 +18,29 @@ public class SurgeryCaseService {
     this.surgeryCaseRepo = surgeryCaseRepo;
   }
 
-  public SurgeryCase addSurgeryCase(SurgeryCase surgeryCase) {
+@SuppressWarnings("null")
+public SurgeryCase addSurgeryCase(SurgeryCase surgeryCase) {
     return surgeryCaseRepo.save(surgeryCase);
   }
 
-  public List<SurgeryCase> findAllSurgeryCases() {
+public List<SurgeryCase> findAllSurgeryCases() {
     return surgeryCaseRepo.findAll();
   }
 
-  public SurgeryCase updateSurgeryCase(SurgeryCase surgeryCase) {
+@SuppressWarnings("null")
+public SurgeryCase updateSurgeryCase(SurgeryCase surgeryCase) {
     return surgeryCaseRepo.save(surgeryCase);
   }
 
-  // @Transactional will automatically rollback if a RuntimeException is thrown and will
-  // automatically commit to the DB at the end of the function (no need for repo.save(entity)).
-  // I was getting a 403 error when the "Delete Case" button was clicked without adding this.
-  @Transactional
-  public void deleteSurgeryCase(Long surgeryCaseId) {
+// @Transactional will automatically rollback if a RuntimeException is thrown and will
+// automatically commit to the DB at the end of the function (no need for repo.save(entity)).
+// I was getting a 403 error when the "Delete Case" button was clicked without adding this.
+@Transactional
+public void deleteSurgeryCase(Long surgeryCaseId) {
     surgeryCaseRepo.deleteSurgeryCaseBySurgeryCaseId(surgeryCaseId);
   }
 
-  public SurgeryCase findSurgeryCaseBySurgeryCaseId(Long surgeryCaseId) {
+public SurgeryCase findSurgeryCaseBySurgeryCaseId(Long surgeryCaseId) {
     return surgeryCaseRepo.findSurgeryCaseBySurgeryCaseId(surgeryCaseId)
         .orElseThrow(() -> new EntityNotFoundException("Surgery case with id: " + surgeryCaseId + " was not found."));
   }

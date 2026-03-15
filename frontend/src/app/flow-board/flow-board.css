@@ -33,22 +33,31 @@ body {
   border-radius: 4px;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
+.room-card table {
+	width: 100%;
+	table-layout: fixed;
+	border-collapse: collapse;
+	margin-top: 10px;
 }
 
-thead th {
-  background: #e9ecef;
+.room-card th,
+.room-card td {
   padding: 8px;
   border: 1px solid #ccc;
   text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-tbody td {
-  padding: 8px;
-  border: 0px solid #ccc;
-}
+.room-card th:nth-child(1), .room-card td:nth-child(1) { width: 50px; } /* Start Time */
+.room-card th:nth-child(2), .room-card td:nth-child(2) { width: 50px; } /* End Time */
+.room-card th:nth-child(3), .room-card td:nth-child(3) { width: 100px; } /* Status */
+.room-card th:nth-child(4), .room-card td:nth-child(4) { width: 200px; } /* Patient */
+.room-card th:nth-child(5), .room-card td:nth-child(5) { width: 120px; } /* Procedure */
+.room-card th:nth-child(6), .room-card td:nth-child(6) { width: 80px; } /* Surgeon */
+.room-card th:nth-child(7), .room-card td:nth-child(7) { width: 80px; } /* Anesthesia */
+.room-card th:nth-child(8), .room-card td:nth-child(8) { width: 80px; } /* Nurse */
+.room-card th:nth-child(9), .room-card td:nth-child(9) { width: 80px; } /* Scrub */ 
 
 /* tbody tr:nth-child(even) {
   background: #e4ecf3;

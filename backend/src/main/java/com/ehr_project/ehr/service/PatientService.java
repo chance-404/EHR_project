@@ -45,7 +45,9 @@ public class PatientService {
 
     private final PatientRepo patientRepo;
 
-    public PatientService(PatientRepo patientRepo, AllergyRepo allergyRepo, MedicationRepo medicationRepo, ConditionRepo conditionRepo, ObservationRepo observationRepo, EncounterRepo encounterRepo, ProcedureRepo procedureRepo, ImagingStudyRepo imagingStudyRepo) {
+    public PatientService(PatientRepo patientRepo, AllergyRepo allergyRepo, MedicationRepo medicationRepo, 
+						ConditionRepo conditionRepo, ObservationRepo observationRepo, EncounterRepo encounterRepo, 
+						ProcedureRepo procedureRepo, ImagingStudyRepo imagingStudyRepo) {
         this.patientRepo = patientRepo;
         this.allergyRepo = allergyRepo;
         this.medicationRepo = medicationRepo;
@@ -57,7 +59,8 @@ public class PatientService {
     }
 
 
-    public Patient addPatient(Patient patient){
+    @SuppressWarnings("null")
+	public Patient addPatient(Patient patient){
 		setPatientMrn(patient);
         return patientRepo.save(patient);
     }
@@ -156,6 +159,7 @@ public class PatientService {
 		});
 
 		List<com.ehr_project.ehr.model.Condition> rawConditions = conditionRepo.findActiveConditions(mrn);
+		// filters out some conditions irrelevant to peri-op setting
 		rawConditions.removeIf(c -> c.getDescription() != null &&
 								c.getDescription().toLowerCase().matches(".*(education|employment|unemployed|crime|criminal|military|housing|homeless|refugee|victim|activity|social|force|transport|medication).*"));
 		rawConditions.forEach(c -> {

@@ -31,21 +31,25 @@ export class SurgeryCaseService {
 
   public addSurgeryCaseToSchedule(
     patient: string, procedure: string, startTime: string, endTime: string, surgeon: string, anesthesia: string,
-    nurse: string, scrub: string, roomId: number 
+    nurse: string, scrub: string, roomId: number, notes: string, dateOfCase: Date 
   ) {
     const surgeryCase: SurgeryCase = {
       patient: patient,
       procedure: procedure,
-      startTime: startTime,
+      scheduledStartTime: startTime,
       endTime: endTime,
+	  actualStartTime: '',
+	  actualEndTime: '',
+	  notes: notes,
+	  dateOfCase: dateOfCase,
       surgeon: surgeon,
       anesthesia: anesthesia,
       nurse: nurse,
       scrub: scrub,
-      surgeryCaseId: this.makeRandomSurgeryCaseId(),
       roomId: roomId,
       surgeryCaseStatus: 'Patient not here yet',
     }
+
     return this.addSurgeryCase(surgeryCase).pipe(
           catchError(error => {
             console.error('Error adding surgery case:', error);
@@ -54,8 +58,8 @@ export class SurgeryCaseService {
         );
   }
 
-  private makeRandomSurgeryCaseId(): number {
-    return Math.floor(Math.random() * 10000000);
-  }
+//   private makeRandomSurgeryCaseId(): number {
+//     return Math.floor(Math.random() * 10000000);
+//   }
 
 }

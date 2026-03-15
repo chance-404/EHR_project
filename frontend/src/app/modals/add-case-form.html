@@ -1,74 +1,73 @@
 <div class="modal-overlay" id="add-case-modal">
-  <div class="modal-content">
-    <h4 class="heading">Add a Case to Schedule for Room: {{data.roomId}} </h4>
-    <form id="addCaseForm" [formGroup]="addCaseForm">
-      <label for="patient">Patient:</label>
-      <div class="search-container">
-        <input id="patient" 
-               type="search" 
-               [formControlName]="'patient'"
-               (input)="searchPatients($any($event.target).value)"
-               placeholder="Search for patient by last name or MRN">
-        
-        <div class="search-results" *ngIf="showDropdown && filteredPatients.length > 0">
-          <div class="search-result-item" 
-               *ngFor="let patient of filteredPatients"
-               (click)="selectPatient(patient)">
-           {{patient.lastName}}, {{patient.firstName}} {{patient.dateOfBirth}} ({{patient.mrn}})
-          </div>
-        </div>
-      </div>
+	<div class="modal-content">
+		<h4 class="heading">Add a Case to Schedule for Room: {{data.roomId}} </h4>
+		<form id="addCaseForm" [formGroup]="addCaseForm">
+			<label for="patient">Patient:</label>
+			<div class="search-container">
+				<input id="patient" type="search" [formControlName]="'patient'"
+					(input)="searchPatients($any($event.target).value)" autocomplete="off"
+					placeholder="Search for patient by last name or MRN">
 
-      <label for="procedure">Procedure:</label>
-      <input id="procedure" type="text" formControlName="procedure">
+				<div class="search-results" *ngIf="showDropdown && filteredPatients.length > 0">
+					<div class="search-result-item" *ngFor="let patient of filteredPatients"
+						(click)="selectPatient(patient)">
+						{{patient.lastName}}, {{patient.firstName}} {{patient.dateOfBirth}} ({{patient.mrn}})
+					</div>
+				</div>
+			</div>
 
-      <label for="start-time">Start Time:</label>
-      <input id="start-time" type="time" formControlName="startTime">
+			<label for="procedure">Procedure:</label>
+			<input id="procedure" type="text" formControlName="procedure">
 
-      <label for="end-time">End Time:</label>
-      <input id="end-time" type="time" formControlName="endTime">
+			<label for="start-time">Start Time:</label>
+			<input id="start-time" type="time" formControlName="startTime">
 
-      <label for="surgeon">Surgeon:</label>
-      <select id="surgeon" formControlName="surgeon">
-        <option value="" disabled selected>-- Select Surgeon --</option>
-        <option *ngFor="let user of surgeonUsers$ | async" 
-          [value]="user.lastName + ', ' + user.firstName">
-          {{user.lastName}}, {{user.firstName}}
-        </option>
-      </select>
+			<label for="end-time">End Time:</label>
+			<input id="end-time" type="time" formControlName="endTime">
 
-      <label for="anesthesia">Anesthesia:</label>
-      <select id="anesthesia" formControlName="anesthesia">
-        <option value="" disabled selected>-- Select Anesthesia --</option>
-        <option *ngFor="let user of anesthesiaUsers$ | async" 
-          [value]="user.lastName + ', ' + user.firstName">
-          {{user.lastName}}, {{user.firstName}}
-        </option>
-      </select>  
+			<label for="surgeon">Surgeon:</label>
+			<select id="surgeon" formControlName="surgeon">
+				<option value="" disabled selected>-- Select Surgeon --</option>
+				<option *ngFor="let user of surgeonUsers$ | async" [value]="user.lastName + ', ' + user.firstName">
+					{{user.lastName}}, {{user.firstName}}
+				</option>
+			</select>
 
-      <label for="nurse">Nurse:</label>
-      <select id="nurse" formControlName="nurse">
-        <option value="">-- Select Nurse (Optional) --</option>
-        <option *ngFor="let user of nurseUsers$ | async" 
-          [value]="user.lastName + ', ' + user.firstName">
-          {{user.lastName}}, {{user.firstName}}
-        </option>
-      </select>  
+			<label for="anesthesia">Anesthesia:</label>
+			<select id="anesthesia" formControlName="anesthesia">
+				<option value="" disabled selected>-- Select Anesthesia --</option>
+				<option *ngFor="let user of anesthesiaUsers$ | async" [value]="user.lastName + ', ' + user.firstName">
+					{{user.lastName}}, {{user.firstName}}
+				</option>
+			</select>
 
-      <label for="scrub">Scrub:</label>
-      <select id="scrub" formControlName="scrub">
-        <option value="">-- Select Scrub (Optional) --</option>
-        <option *ngFor="let user of scrubUsers$ | async" 
-          [value]="user.lastName + ', ' + user.firstName">
-          {{user.lastName}}, {{user.firstName}}
-        </option>
-      </select>
+			<label for="nurse">Nurse:</label>
+			<select id="nurse" formControlName="nurse">
+				<option value="">-- Select Nurse (Optional) --</option>
+				<option *ngFor="let user of nurseUsers$ | async" [value]="user.lastName + ', ' + user.firstName">
+					{{user.lastName}}, {{user.firstName}}
+				</option>
+			</select>
 
-      <label id="notes">Notes:</label>
-      <textarea cols="55" rows="4"></textarea>
+			<label for="scrub">Scrub:</label>
+			<select id="scrub" formControlName="scrub">
+				<option value="">-- Select Scrub (Optional) --</option>
+				<option *ngFor="let user of scrubUsers$ | async" [value]="user.lastName + ', ' + user.firstName">
+					{{user.lastName}}, {{user.firstName}}
+				</option>
+			</select>
 
-      <button type="submit" id="add-case-button" (click)="addCase(data.roomId)">Add Case to Schedule</button>
-      <button type="button" id="close-modal-button" (click)="closeModal()">Close</button>
-    </form>
-  </div>  
+			<label for="notes">Notes (500 char max):</label>
+			<textarea id="notes" formControlName="notes" cols="55" rows="4" maxLength="500">
+			</textarea>
+
+			<div class="char-counter"
+				[ngClass]="{'text-danger': (500 - (addCaseForm.get('notes')?.value?.length || 0)) < 50}">
+				{{ 500 - (addCaseForm.get('notes')?.value?.length || 0) }} characters remaining
+			</div>
+
+			<button type="submit" id="add-case-button" (click)="addCase(data.roomId)">Add Case to Schedule</button>
+			<button type="button" id="close-modal-button" (click)="closeModal()">Close</button>
+		</form>
+	</div>
 </div>

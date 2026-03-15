@@ -78,7 +78,7 @@ export class AuthenticationService {
   }
 
   handleUnauthorized(): void {
-    console.warn('Invalid token detected...🤨');
+    console.warn('Invalid token detected.');
     this.logout();
   }
 

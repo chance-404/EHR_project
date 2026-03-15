@@ -63,6 +63,14 @@ input[type="search"]:focus {
   box-shadow: 0 0 0 3px rgba(8, 45, 83, 0.1);
 }
 
+.char-counter {
+	font-size: 12px;
+	color: #718096;
+	text-align: right;
+	margin-top: 4px;
+	margin-bottom: 10px;
+}
+
 .search-container {
   position: relative;
   margin-bottom: 8px;

@@ -15,7 +15,7 @@ import io.jsonwebtoken.security.Keys;
 
 @Service
 public class TokenService {
-  // value stored in application.properties
+  
   @Value("${jwt.secret}")
   private String jwtSecret;
 

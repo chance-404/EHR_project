@@ -39,7 +39,8 @@ export class AddCaseComponent {
     surgeon: new FormControl('', [Validators.required]),
     anesthesia: new FormControl('', [Validators.required]),
     nurse: new FormControl(''),
-    scrub: new FormControl('')      
+    scrub: new FormControl(''),
+	notes: new FormControl('', [Validators.maxLength(1000)])      
   });
 
   surgeonUsers$: Observable<User[]>;
@@ -81,20 +82,21 @@ export class AddCaseComponent {
       return;
     }
     
-    const startTime = this.addCaseForm.value.startTime;
-    const endTime = this.addCaseForm.value.endTime;
+	const today = new Date;
 
     // adds the case
     this.surgeryCaseService.addSurgeryCaseToSchedule(
       this.addCaseForm.value.patient,
       this.addCaseForm.value.procedure,
-      startTime,
-      endTime,
+      this.addCaseForm.value.startTime,
+      this.addCaseForm.value.endTime,
       this.addCaseForm.value.surgeon,
       this.addCaseForm.value.anesthesia,
       this.addCaseForm.value.nurse ?? '',
       this.addCaseForm.value.scrub ?? '',
-      this.data.roomId
+      this.data.roomId,
+	  this.addCaseForm.value.notes ?? '',
+	  today
     ).subscribe({
       next: (response: any) => {
         console.log('Surgery case added successfully:', response);
@@ -134,7 +136,7 @@ export class AddCaseComponent {
     this.searchTerm = searchTerm;
     this.showDropdown = true;
     
-    if (!searchTerm) {
+    if (!searchTerm || searchTerm.length < 3) {
       this.filteredPatients = [];
       return;
     }

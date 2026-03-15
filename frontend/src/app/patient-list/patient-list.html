@@ -17,10 +17,10 @@
 				onmouseout="this.style.backgroundColor= 'transparent'">Registration</a>
 		</li>
 		<li style="padding: 0 15px;">
-			<a routerLink="/orders" routerLinkActive="activebutton" ariaCurrentWhenActive="page"
+			<a routerLink="/generate-reports" routerLinkActive="activebutton" ariaCurrentWhenActive="page"
 				style="color: #fff; text-decoration: none; padding: 8px 12px; border-radius: 4px;"
 				onmouseover="this.style.backgroundColor= 'rgba(255,255,255,0.1)'"
-				onmouseout="this.style.backgroundColor= 'transparent'">Orders</a>
+				onmouseout="this.style.backgroundColor= 'transparent'">Reports</a>
 		</li>
 		<li style="padding: 0 15px;">
 			<a routerLink="/logout" routerLinkActive="activebutton" ariaCurrentWhenActive="page"
@@ -105,7 +105,7 @@
 			<td>{{patient?.lastName}}</td>
 			<td>{{patient?.firstName}}</td>
 			<td>{{patient?.middleName}}</td>
-			<td>{{patient?.dateOfBirth}}</td>
+			<td>{{ patient.dateOfBirth | date: 'MM/dd/yyy' }}</td>
 			<td>{{patient?.age}}</td>
 			<td>{{patient?.sex}}</td>
 		</tr>

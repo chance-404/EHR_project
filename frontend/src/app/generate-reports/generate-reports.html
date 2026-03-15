@@ -1,0 +1,45 @@
+<app-header></app-header>
+
+<div class="report-container">
+	<div class="report-header">
+		<h1>Late Surgery Starts</h1>
+
+		<div class="filter-section" [formGroup]="filterDatesForm">
+			<div class="input-group">
+				<label>From:</label>
+				<input type="date" formControlName="startDate" (change)="applyFilters()">
+			</div>
+			<div class="input-group">
+				<label>To:</label>
+				<input type="date" formControlName="endDate" (change)="applyFilters()">
+			</div>
+		</div>
+	</div>
+
+	<p class="timestamp">Report generated: {{ generatedAt | date:'medium' }}</p>
+
+	<main class="table-container">
+		<table class="cases-table">
+			<thead>
+				<tr>
+					<th>Case ID</th>
+					<th>Procedure</th>
+					<th>Date of Surgery</th>
+					<th>Scheduled Start</th>
+					<th>Actual Start</th>
+					<th>Variance</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let case of filteredCases">
+					<td>{{ case.surgeryCaseId }} </td>
+					<td>{{ case.procedure }}</td>
+					<td>{{ case.dateOfCase }}</td>
+					<td>{{ case.scheduledStartTime }}</td>
+					<td>{{ case.actualStartTime }}</td>
+					<td>{{ getVariance(case.scheduledStartTime, case.actualStartTime) }}</td>
+				</tr>
+			</tbody>
+		</table>
+	</main>
+</div>

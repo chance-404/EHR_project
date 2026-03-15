@@ -1,13 +1,13 @@
 import { RouterModule, Routes } from '@angular/router';
 import { PatientList } from './patient-list/patient-list';
 import { Registration } from './registration/registration';
-import { Orders } from './orders/orders';
 import { FlowBoard } from './flow-board/flow-board';
 import { Login } from './login/login';
 import { Logout } from './logout/logout';
 import { AuthGuard } from './service/auth-guard';
 import { NgModule } from '@angular/core';
 import { PatientInfo } from './patient-info/patient-info';
+import { GenerateReports } from './generate-reports/generate-reports';
 
 
 export const routes: Routes = [
@@ -19,10 +19,6 @@ export const routes: Routes = [
       canActivate: [AuthGuard]
     },
 
-    {path: 'orders', component: Orders,
-      canActivate: [AuthGuard]
-    },
-
     {path: 'flow-board', component: FlowBoard,
       canActivate: [AuthGuard]
     },
@@ -30,6 +26,10 @@ export const routes: Routes = [
     {path: 'patient-info/:mrn', component: PatientInfo,
       canActivate: [AuthGuard]
     },
+
+	{path: 'generate-reports', component: GenerateReports,
+		canActivate: [AuthGuard]
+	},
 
     {path: 'login', component: Login,
       canActivate: []

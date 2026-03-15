@@ -43,7 +43,7 @@ export class Registration {
         ? 'Names can only contain letters.'
         : 'Must enter first and last name at a minimum.';
 
-      console.log('Form is invalid');
+      console.log('Form is invalid: ', message);
       return;
     }
 

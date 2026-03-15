@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
@@ -34,6 +35,7 @@ import lombok.Data;
 })
 public class Patient implements Serializable{
     @Id
+	@GeneratedValue
     @Column(name = "id", nullable = false, unique = true)
     private UUID mrn = null;
 
@@ -76,14 +78,11 @@ public class Patient implements Serializable{
 	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
 	private List<Condition> conditions;
 
-    @Transient // this annotation tells DB to ignore it, age will change frequently
-    private Integer age;
-
     public Integer getAge() {
         if (dateOfBirth == null) {
             return null;
         }
-        return LocalDate.now().getYear() - dateOfBirth.getYear();
+		return java.time.Period.between(dateOfBirth, LocalDate.now()).getYears();
     }
 
     @Transient // this annotation tells DB to ignore it, age will change frequently

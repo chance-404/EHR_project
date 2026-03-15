@@ -22,7 +22,7 @@ import com.ehr_project.ehr.service.PatientService;
 
 @RestController
 @RequestMapping("/patients")
-@CrossOrigin(origins = "")
+@CrossOrigin(origins = "${FRONTEND_URL}")
 public class PatientController {
     private final PatientService patientService;
 
@@ -55,7 +55,7 @@ public class PatientController {
 	}
 	
 
-    // only admin login can add patients, just to prevent shenanigans in live
+    // only admin login can add patients, just to prevent shenanigans in live demo
     @PostMapping("/add")
     @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<Patient> addPatient(@RequestBody Patient patient) {

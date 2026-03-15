@@ -62,27 +62,31 @@ export class FlowBoard implements OnInit {
 						surgeryCase.fullPatient = patientMap.get(String(extractedMrn));
 					}
 				});
-				// sort and distribut cases to rooms
-				cases.sort((a, b) => a.startTime.localeCompare(b.startTime));
+				// sort and distribute cases to rooms
+				cases.sort((a, b) => a.scheduledStartTime.localeCompare(b.scheduledStartTime));
 				this.surgeryCases = cases;
 				this.distributeCasesToRooms();
 			},
-			error: (err) => console.error('Error loadin flowboard data:', err)
+			error: (err) => console.error('Error loading flowboard data:', err)
 		});
 	}
 
 
 
   private distributeCasesToRooms(): void { 
-	// clears cases in rooms
-	this.rooms.forEach(room => room.surgeryCase = []);
-    // assigns cases to rooms
-    this.surgeryCases.forEach(surgeryCase => {
-      const room = this.getRoomById(surgeryCase.roomId);
-      if (room) {
-        room.surgeryCase.push(surgeryCase);
-      }
-    });
+	  // clears cases in rooms
+	  this.rooms.forEach(room => room.surgeryCase = []);
+      // assigns cases to rooms
+      this.surgeryCases.forEach(surgeryCase => {
+		  if (surgeryCase.surgeryCaseStatus === 'Completed') {
+			  return;
+		  }
+		  // Do not load 'Completed' cases
+    	  const room = this.getRoomById(surgeryCase.roomId);
+          if (room) {
+        	  room.surgeryCase.push(surgeryCase);
+          }
+      });
   }    
 
   

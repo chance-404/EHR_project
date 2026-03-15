@@ -93,11 +93,16 @@ export class PatientList implements OnInit {
       return;
     }
 
+	if (key.length < 3) {
+		this.patients = [...this.allPatients];
+		return;
+	}
+
     const searchKey = key.toLowerCase().trim();
     this.patients = this.allPatients.filter(patient => 
-      patient.lastName.toLowerCase().includes(searchKey) ||
-      patient.firstName.toLowerCase().includes(searchKey) ||
-      patient.mrn?.includes(searchKey) ||
+      patient.lastName.toLowerCase().startsWith(searchKey) ||
+      patient.firstName.toLowerCase().startsWith(searchKey) ||
+      patient.mrn?.startsWith(searchKey) ||
       patient.dateOfBirth.toString().includes(searchKey)
     );
   }
