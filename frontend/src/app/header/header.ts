@@ -8,6 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-header',
+  standalone: true,
   imports: [FormsModule, RouterModule, CommonModule],
   templateUrl: './header.html',
   styleUrl: './header.css'

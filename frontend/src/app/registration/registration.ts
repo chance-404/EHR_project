@@ -7,6 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-registration',
+  standalone: true,
   imports: [Header, CommonModule, ReactiveFormsModule],
   templateUrl: './registration.html',
   styleUrl: './registration.css'

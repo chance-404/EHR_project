@@ -11,40 +11,34 @@
 					<th>Status</th>
 					<th>Patient</th>
 					<th>Procedure</th>
-					<th>Surgeon</th>
-					<th>Anesthesia</th>
-					<th>Nurse</th>
-					<th>Scrub</th>
+					<th>Staff</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr class="surgery-case-row" *ngFor="let surgeryCase of room.surgeryCase"
 					(click)="openSurgeryCaseModal(surgeryCase)" [ngClass]="{
-              'status-not-here': surgeryCase.surgeryCaseStatus === 'Patient not here',
-              'status-waiting': surgeryCase.surgeryCaseStatus === 'Patient waiting',
-              'status-pre-op': surgeryCase.surgeryCaseStatus === 'Patient in pre-op',
-              'status-ready': surgeryCase.surgeryCaseStatus === 'Patient ready',
-              'status-in-or': surgeryCase.surgeryCaseStatus === 'Patient in OR',
-              'status-pacu': surgeryCase.surgeryCaseStatus === 'Patient in PACU',
-              'status-asu': surgeryCase.surgeryCaseStatus === 'Patient in ASU'
-            }">
+			          'status-not-here': surgeryCase.surgeryCaseStatus === 'Patient not here',
+			          'status-waiting': surgeryCase.surgeryCaseStatus === 'Patient waiting',
+			          'status-pre-op': surgeryCase.surgeryCaseStatus === 'Patient in pre-op',
+			          'status-ready': surgeryCase.surgeryCaseStatus === 'Patient ready',
+			          'status-in-or': surgeryCase.surgeryCaseStatus === 'Patient in OR',
+			          'status-pacu': surgeryCase.surgeryCaseStatus === 'Patient in PACU',
+			          'status-asu': surgeryCase.surgeryCaseStatus === 'Patient in ASU'
+			        }">
 					<td>{{ surgeryCase.scheduledStartTime | timeFormat }}</td>
 					<td>{{ surgeryCase.endTime | timeFormat }}</td>
 					<td [title]="surgeryCase.surgeryCaseStatus">{{ surgeryCase.surgeryCaseStatus }}</td>
-					<td
-						[title]="surgeryCase.fullPatient?.lastName + ', ' + surgeryCase.fullPatient?.firstName + ' (' + (surgeryCase.fullPatient?.dateOfBirth | date:'MM/dd/yyyy') + ')'">
-						{{
-						surgeryCase.fullPatient?.lastName }},
-						{{
-						surgeryCase.fullPatient?.firstName }}
-						{{ surgeryCase.fullPatient?.dateOfBirth | date:'MM/dd/yyyy' }}
-						({{ surgeryCase.fullPatient?.mrn }})
+					<td [title]="surgeryCase.fullPatient?.lastName + ', ' + surgeryCase.fullPatient?.firstName">
+						{{ surgeryCase.fullPatient?.lastName }}, {{ surgeryCase.fullPatient?.firstName }}
 					</td>
 					<td [title]="surgeryCase.procedure">{{ surgeryCase.procedure }}</td>
-					<td [title]="surgeryCase.surgeon">{{ surgeryCase.surgeon }}</td>
-					<td [title]="surgeryCase.anesthesia">{{ surgeryCase.anesthesia }}</td>
-					<td [title]="surgeryCase.nurse">{{ surgeryCase.nurse }}</td>
-					<td [title]="surgeryCase.scrub">{{ surgeryCase.scrub }}</td>
+
+					<td class="staff-column">
+						<div class="staff-member"><strong>Su:</strong> {{ surgeryCase.surgeon }}</div>
+						<div class="staff-member"><strong>A:</strong> {{ surgeryCase.anesthesia }}</div>
+						<div class="staff-member"><strong>N:</strong> {{ surgeryCase.nurse }}</div>
+						<div class="staff-member"><strong>Sc:</strong> {{ surgeryCase.scrub }}</div>
+					</td>
 				</tr>
 			</tbody>
 		</table>

@@ -1,0 +1,32 @@
+#IDE and OS Files
+.vscode/
+.idea/
+*.swp
+*.DS_Store
+Thumbs.db
+
+#Java / Spring Boot
+**/target/
+*.class
+*.jar
+*.war
+*.ear
+*.log
+.factorypath
+.project
+.settings/
+.classpath
+
+#Angular / Node
+**/node_modules/
+**/dist/
+**/tmp/
+.angular/
+.npm/
+connect.lock
+
+#Env and Secrets
+.env
+.env.*
+auth_token.txt
+*.jks

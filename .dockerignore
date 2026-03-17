@@ -1,0 +1,36 @@
+# Dependency Directories
+**/node_modules/
+**/target/
+**/bin/
+.gradle/
+.mvn/
+
+# Local Build Artifacts
+**/dist/
+**/tmp/
+*.log
+*.jar
+*.war
+
+# Environment & Secrets (CRITICAL)
+.env
+.env.*
+auth_token.txt
+*.jks
+*.p12
+credentials.json
+
+# IDE & OS Junk
+.vscode/
+.idea/
+*.swp
+.git/
+.gitignore
+.dockerignore
+.DS_Store
+Thumbs.db
+
+# Angular/Node specific
+.angular/
+.npm/
+npm-debug.log*

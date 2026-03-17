@@ -1,122 +1,136 @@
-body {
-  font-family: Arial, sans-serif;
-  margin: 20px;
-  background-color: #f8f9fa;
-}
-
 .grid-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  	display: flex;
+  	flex-wrap: wrap;
+  	gap: 6px;
+	padding: 3px;
+	justify-content: center;
 }
 
 .room-card {
-  flex: 1 1 calc(50% - 10px); /* Changed to 50% for 2 columns, minus half the gap */
-  min-width: calc(50% - 10px); /* Ensures equal width */
-  max-width: calc(50% - 10px); /* Prevents stretching */
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
+	flex: 0 1 calc(50% - 3px); /* Changed to 50% for 2 columns, minus half the gap */
+	min-width: calc(50% - 3px); /* Ensures equal width */
+	max-width: calc(50% - 3px); /* Prevents stretching */
+	background: white;
+	border: 1px solid #ccc;
+	border-radius: 8px;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+	box-sizing: border-box;
+	padding: 6px;
+	display: flex;
+	flex-direction: column;
 }
 
 .room-card h2 {
-  margin: 0 0 10px;
-  font-size: 1.2rem;
-  text-align: center;
-  background: #007bff;
-  color: white;
-  padding: 5px;
-  border-radius: 4px;
+	margin: 0px;
+	font-size: 1.5rem;
+	text-align: center;
+	background: #007bff;
+	color: white;
+	padding: 2px;
+	border-radius: 4px;
 }
 
 .room-card table {
 	width: 100%;
 	table-layout: fixed;
 	border-collapse: collapse;
-	margin-top: 10px;
+	margin: 0px;
 }
 
 .room-card th,
 .room-card td {
-  padding: 8px;
-  border: 1px solid #ccc;
-  text-align: left;
-  overflow: hidden;
-  text-overflow: ellipsis;
+	padding: 8px;
+	border: 1px solid #ccc;
+	text-align: left;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: #122335;
 }
 
-.room-card th:nth-child(1), .room-card td:nth-child(1) { width: 50px; } /* Start Time */
-.room-card th:nth-child(2), .room-card td:nth-child(2) { width: 50px; } /* End Time */
-.room-card th:nth-child(3), .room-card td:nth-child(3) { width: 100px; } /* Status */
-.room-card th:nth-child(4), .room-card td:nth-child(4) { width: 200px; } /* Patient */
+.staff-column {
+	font-size: 0.9rem;
+	line-height: 1.2;
+	vertical-align: top;
+}
+
+.staff-member {
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+  	display: block;
+}
+
+.staff-member strong {
+  	color: #122335;
+  	display: inline-block;
+  	width: 20px;
+}
+
+.room-card th:nth-child(1), .room-card td:nth-child(1) { width: 55px; } /* Start Time */
+.room-card th:nth-child(2), .room-card td:nth-child(2) { width: 55px; } /* End Time */
+.room-card th:nth-child(3), .room-card td:nth-child(3) { width: 85px; } /* Status */
+.room-card th:nth-child(4), .room-card td:nth-child(4) { width: 140px; } /* Patient */
 .room-card th:nth-child(5), .room-card td:nth-child(5) { width: 120px; } /* Procedure */
-.room-card th:nth-child(6), .room-card td:nth-child(6) { width: 80px; } /* Surgeon */
-.room-card th:nth-child(7), .room-card td:nth-child(7) { width: 80px; } /* Anesthesia */
-.room-card th:nth-child(8), .room-card td:nth-child(8) { width: 80px; } /* Nurse */
-.room-card th:nth-child(9), .room-card td:nth-child(9) { width: 80px; } /* Scrub */ 
+.room-card th:nth-child(6), .room-card td:nth-child(6) { width: 100px; } /* Staff */
 
 /* tbody tr:nth-child(even) {
-  background: #e4ecf3;
+  	background: #e4ecf3;
 } */
 
 .surgery-case-row {
-  cursor: pointer;
+  	cursor: pointer;
 }
 
 .surgery-case-row:hover {
-  background-color: #aab5d1;
+  	background-color: #aab5d1;
 }
 
 .add-surgeryCase-btn {
-  margin-top: 2px;
-  padding: 6px 10px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  background: #082d53;
-  color: white;
-  border: none;
-  border-radius: 4px;
+	margin-top: 0px;
+	padding: 6px 10px;
+	font-size: 0.9rem;
+	cursor: pointer;
+	background: #082d53;
+	color: white;
+	border: none;
+	border-radius: 4px;
 }
 
 .add-surgeryCase-btn:hover {
-  background-color: #233975;
-  box-shadow: 0 4px 8px rgba(8, 45, 83, 0.3);
+	background-color: #2d4893;
+	box-shadow: 0 4px 8px rgba(8, 45, 83, 0.3);
 }
 
 .surgery-case-row td {
-  color: #333;
+  	color: #122335;
 }
 
 .status-not-here {
-  background-color: #f8f9fa;
+  	background-color: #f8f9fa;
 }
 
 .status-waiting {
-  background-color: #db66d5;
+  	background-color: #db66d5;
 }
 
 .status-pre-op {
-  background-color: #5097e9; 
+  	background-color: #5097e9; 
 }
 
 .status-ready {
-  background-color: #57bd5c;
+  	background-color: #57bd5c;
 }
 
 .status-in-or {
-  background-color: #f86c1b;
+  	background-color: #f86c1b;
 }
 
 .status-pacu {
-  background-color: #7550a5;
+  	background-color: #7550a5;
 }
 
 .status-asu {
-  background-color: #f53333ea;
+  	background-color: #f53333ea;
 }
 
 

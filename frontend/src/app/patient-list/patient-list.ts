@@ -10,6 +10,7 @@ import { AuthenticationService } from '../authentication/authentication.service'
 
 @Component({
   selector: 'app-patient-list',
+  standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './patient-list.html',
   styleUrl: './patient-list.css'

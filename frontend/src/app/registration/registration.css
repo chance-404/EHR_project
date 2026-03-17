@@ -38,7 +38,7 @@ body {
 #registerPatientForm label {
     font-size: 12px;
     font-weight: 700;
-    color: #64748b;
+    color: #233d61;
     text-transform: uppercase;
     margin-bottom: 8px;
 	margin-top: 8px;
@@ -48,6 +48,7 @@ body {
 #registerPatientForm select {
     height: auto;
     padding: 10px 12px;
+	margin-bottom: 16px;
     border: 1px solid #cbd5e0;
     border-radius: 6px;
     color: #1e293b;

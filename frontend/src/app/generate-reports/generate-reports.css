@@ -37,7 +37,7 @@ h1 {
 }
 
 .input-group label {
-    font-size: 12px;
+    font-size: 0.8rem;
     font-weight: 700;
     color: #64748b;
     text-transform: uppercase;
@@ -81,7 +81,7 @@ h1 {
 .cases-table td {
     padding: 16px;
     border-bottom: 1px solid #e2e8f0;
-    font-size: 15px;
+    font-size: 0.9rem;
     color: #334155;
 }
 
@@ -90,9 +90,8 @@ h1 {
 }
 
 .cases-table td:first-child {
-    font-family: 'Monaco', 'Consolas', monospace;
-    font-size: 13px;
-    color: #64748b;
+    font-size: 0.9rem;
+    color: #4f6584;
 }
 
 /* make late starts red */
