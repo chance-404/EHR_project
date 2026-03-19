@@ -1,21 +1,26 @@
-FROM maven:3.8.4-openjdk-17 AS build
-
+# Build
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
 
+# Cache dependencies
 COPY pom.xml .
-COPY src /app/src
+RUN mvn dependency:go-offline -B
 
+# Build the JAR
+COPY src ./src
 RUN mvn clean package -DskipTests
 
-FROM openjdk:17-jdk-slim
-
+# Run
+FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
-COPY --from=build /app/target/ehr-backend-0.0.1.jar /app/app.jar
+# Copy the JAR 
+COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Memory limits for 2GB VPS
+ENTRYPOINT ["java", "-Xmx512m", "-Xms256m", "-jar", "app.jar"]
 
 
 
