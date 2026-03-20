@@ -1,5 +1,10 @@
 pipeline {
     agent any
+
+	environment {
+        // Limits Maven's memory usage during the build
+        MAVEN_OPTS = "-Xmx256m"
+    }
     
     stages {
         stage('Checkout') {

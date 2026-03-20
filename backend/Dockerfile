@@ -2,6 +2,9 @@
 FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
 
+# Limit Maven's memory during download and build
+ENV MAVEN_OPTS="-Xms128m -Xmx256m"
+
 # Cache dependencies
 COPY pom.xml .
 RUN mvn dependency:go-offline -B
