@@ -18,7 +18,17 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            # Ensure the directory exists
+            mkdir -p ~/EHR_project
             cd ~/EHR_project
-            git pull origin main
+            
+            # Pull latest code
+            if [ -d ".git" ]; then
+              git pull origin main
+            else
+              git clone https://github.com/${{ github.repository }}.git .
+            fi
+            
+            # Make sure the script is executable and run it
             chmod +x deploy.sh
             ./deploy.sh
