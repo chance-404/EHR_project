@@ -29,6 +29,8 @@ pipeline {
                         docker run -d \
                           --name ehr-backend \
                           -p 8080:8080 \
+						  --memory="512m" \
+						  --env-file ~/EHR_project/.env \
                           --add-host=host.docker.internal:host-gateway \
                           ehr-backend
                         """

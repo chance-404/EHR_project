@@ -1,25 +1,23 @@
 services:
   backend:
-    build: ./backend # Path to folder with Dockerfile
+    build: ./backend
     container_name: ehr-backend
-    env_file: .env
+    env_file: ehr-env.env
     ports:
       - "8080:8080"
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # Allows container to see VPS Postgres
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/ehr_db
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/ehr_db
       - SPRING_DATASOURCE_USERNAME=${DB_USER}
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - DATASOURCE_URL=jdbc:postgresql://db:5432/ehr_db
-      - DATASOURCE_USER=${DB_USER}
-      - DATASOURCE_PASSWORD=${DB_PASSWORD}
-      - FRONTEND_URL=${FRONTEND_URL}
       - JWT_SECRET=${JWT_SECRET}
   
   frontend:
-    build: ./frontend # Path to frontend Dockerfile
+    build: ./frontend
     container_name: ehr-frontend
     ports:
-      - "4200:80" # Maps container port 80 (Nginx) to host port 4200
+      - "8082:80"
     depends_on:
       - backend
