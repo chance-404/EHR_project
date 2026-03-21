@@ -10,7 +10,7 @@
 	</div>
 
 	<div class="form-group">
-		<label for="userId" placeholder="enter user ID">User ID: (for demo: nurse12)</label>
+		<label for="userId" placeholder="enter user ID">User ID: <small>(for demo: nurse12)</small></label>
 		<input id="userId" type="login" formControlName="userId"
 			[class.error]="loginForm.get('userId')?.invalid && loginForm.get('userId')?.touched">
 
