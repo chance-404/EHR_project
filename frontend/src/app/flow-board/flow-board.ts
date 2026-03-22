@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Header } from "../header/header";
 import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Dialog, DialogModule } from '@angular/cdk/dialog';
 import { SurgeryCase } from '../surgery case/surgery-case';
 import { SurgeryCaseService } from '../surgery case/surgery-case.service';
@@ -21,7 +21,7 @@ export interface Room {
 @Component({
   	selector: 'app-flow-board',
   	standalone: true,
-  	imports: [Header, RouterModule, CommonModule, DialogModule, TimeFormatPipe],
+  	imports: [Header, RouterModule, CommonModule, DialogModule, TimeFormatPipe, DatePipe],
   	templateUrl: './flow-board.html',
   	styleUrl: './flow-board.css'
 })
