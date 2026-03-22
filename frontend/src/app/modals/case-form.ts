@@ -33,7 +33,7 @@ export class SurgeryCaseComponent implements OnInit{
 	SurgeryCaseForm = new FormGroup({
 		patient: new FormControl('', [Validators.required]),
 		procedure: new FormControl('', [Validators.required]),
-		startTime: new FormControl('', [Validators.required]),
+		scheduledStartTime: new FormControl('', [Validators.required]),
 		actualStartTime: new FormControl(''),
 		endTime: new FormControl('', [Validators.required]),
 		actualEndTime: new FormControl(''),
@@ -81,7 +81,7 @@ export class SurgeryCaseComponent implements OnInit{
 			this.SurgeryCaseForm.patchValue({
 				patient: this.currentSurgeryCase.patient,
 				procedure: this.currentSurgeryCase.procedure,
-				startTime: this.currentSurgeryCase.scheduledStartTime,
+				scheduledStartTime: this.currentSurgeryCase.scheduledStartTime,
 				actualStartTime: this.currentSurgeryCase.actualStartTime,
 				endTime: this.currentSurgeryCase.endTime,
 				actualEndTime: this.currentSurgeryCase.actualEndTime,
@@ -106,7 +106,7 @@ export class SurgeryCaseComponent implements OnInit{
 			surgeryCaseId: this.currentSurgeryCase.surgeryCaseId,
 			patient: formValue.patient!,
 			procedure: formValue.procedure!,
-			scheduledStartTime: formValue.startTime!,
+			scheduledStartTime: formValue.scheduledStartTime!,
 			actualStartTime: formValue.actualStartTime! || '',
 			endTime: formValue.endTime!,
 			actualEndTime: formValue.actualEndTime! || '',
