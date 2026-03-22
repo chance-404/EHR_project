@@ -49,19 +49,20 @@
 }
 
 .patient-column {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     line-height: 1.2;
+	vertical-align: top;
 }
 
 .patient-name {
   	overflow: hidden;
   	text-overflow: ellipsis;
-  	white-space: nowrap;
+  	display: block;
 }
 
 .patient-dob {
+	overflow: hidden;
+  	text-overflow: ellipsis;
+  	display: block;
 	font-size: 0.9rem;
 }
 

@@ -33,7 +33,7 @@
 							surgeryCase.fullPatient?.firstName }}</div>
 						<div class="patient-dob">{{surgeryCase.fullPatient?.dateOfBirth }}</div>
 					</td>
-					<td [title]="surgeryCase.procedure">{{ surgeryCase.procedure }} | date: 'MM/dd/yyyy'</td>
+					<td [title]="surgeryCase.procedure">{{ surgeryCase.procedure | date: 'MM/dd/yyyy'}}</td>
 
 					<td class="staff-column">
 						<div class="staff-member"><strong>Su:</strong> {{ surgeryCase.surgeon }}</div>
