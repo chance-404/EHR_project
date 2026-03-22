@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { Component, EventEmitter, inject, Inject, OnInit, Output } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { DIALOG_DATA, DialogModule, DialogRef } from "@angular/cdk/dialog";
@@ -10,12 +10,13 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { UserService } from "../user/user.service";
 import { map, Observable } from "rxjs";
 import { User } from "../user/user";
+import { TimeFormatPipe } from "../pipes/time-format.pipe";
 
 
 @Component({
 	selector: 'app-case',
 	standalone: true,
-	imports: [CommonModule, ReactiveFormsModule, DialogModule],
+	imports: [CommonModule, ReactiveFormsModule, DialogModule, DatePipe, TimeFormatPipe],
 	templateUrl: './case-form.html',
 	styleUrl: './case-form.css'
 })
@@ -42,7 +43,7 @@ export class SurgeryCaseComponent implements OnInit{
 		scrub: new FormControl(''),      
 		selectedRoom: new FormControl(''),
 		surgeryCaseStatus: new FormControl(''),
-		notes: new FormControl('', [Validators.maxLength(1000)])
+		notes: new FormControl('', [Validators.maxLength(500)])
   });
 
   surgeonUsers$: Observable<User[]>;

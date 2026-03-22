@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { Component, EventEmitter, inject, Inject, Output } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { SurgeryCase } from "../surgery case/surgery-case";
@@ -11,11 +11,12 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { map, Observable } from "rxjs";
 import { User } from "../user/user";
 import { UserService } from "../user/user.service";
+import { TimeFormatPipe } from "../pipes/time-format.pipe";
 
 @Component({
   selector: 'app-add-case',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, DialogModule],
+  imports: [CommonModule, ReactiveFormsModule, DialogModule, TimeFormatPipe, DatePipe],
   templateUrl: './add-case-form.html',
   styleUrl: './add-case-form.css'
 })
