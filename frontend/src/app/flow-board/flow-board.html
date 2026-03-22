@@ -28,8 +28,11 @@
 					<td>{{ surgeryCase.scheduledStartTime | timeFormat }}</td>
 					<td>{{ surgeryCase.endTime | timeFormat }}</td>
 					<td [title]="surgeryCase.surgeryCaseStatus">{{ surgeryCase.surgeryCaseStatus }}</td>
-					<td [title]="surgeryCase.fullPatient?.lastName + ', ' + surgeryCase.fullPatient?.firstName">
-						{{ surgeryCase.fullPatient?.lastName }}, {{ surgeryCase.fullPatient?.firstName }}
+					<td class="patient-column"
+						[title]="surgeryCase.fullPatient?.lastName + ', ' + surgeryCase.fullPatient?.firstName + ', ' + surgerCase.fullPatient?.mrn">
+						<div class="patient-info">{{ surgeryCase.fullPatient?.lastName }}, {{
+							surgeryCase.fullPatient?.firstName }}</div>
+						<div class="patient-info">{{surgeryCase.fullPatient?.dateOfBirth }}</div>
 					</td>
 					<td [title]="surgeryCase.procedure">{{ surgeryCase.procedure }}</td>
 

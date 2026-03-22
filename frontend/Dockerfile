@@ -22,7 +22,7 @@ RUN rm /etc/nginx/conf.d/default.conf
 # must match angular.json "outputPath"
 COPY --from=build /app/dist/browser /usr/share/nginx/html
 
-# Copy a Nginx conf
+# Copy Nginx conf
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
