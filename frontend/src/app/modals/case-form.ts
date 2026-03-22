@@ -79,9 +79,7 @@ export class SurgeryCaseComponent implements OnInit{
   ngOnInit(): void {
 		if (this.currentSurgeryCase) {
 			this.SurgeryCaseForm.patchValue({
-				patient: this.currentSurgeryCase.fullPatient 
-				? `${this.currentSurgeryCase.fullPatient.lastName}, ${this.currentSurgeryCase.fullPatient.firstName}` 
-				: this.currentSurgeryCase.patient,
+				patient: this.currentSurgeryCase.patient,
 				procedure: this.currentSurgeryCase.procedure,
 				scheduledStartTime: this.currentSurgeryCase.scheduledStartTime,
 				actualStartTime: this.currentSurgeryCase.actualStartTime,

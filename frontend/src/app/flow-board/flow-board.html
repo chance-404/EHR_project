@@ -31,9 +31,9 @@
 					<td class="patient-column" [title]="'MRN: ' + surgeryCase.fullPatient?.mrn">
 						<div class="patient-name">{{ surgeryCase.fullPatient?.lastName }}, {{
 							surgeryCase.fullPatient?.firstName }}</div>
-						<div class="patient-dob">{{surgeryCase.fullPatient?.dateOfBirth }}</div>
+						<div class="patient-dob">{{surgeryCase.fullPatient?.dateOfBirth | date: 'MM/dd/yyyy'}}</div>
 					</td>
-					<td [title]="surgeryCase.procedure">{{ surgeryCase.procedure | date: 'MM/dd/yyyy'}}</td>
+					<td [title]="surgeryCase.procedure">{{ surgeryCase.procedure}}</td>
 
 					<td class="staff-column">
 						<div class="staff-member"><strong>Su:</strong> {{ surgeryCase.surgeon }}</div>
